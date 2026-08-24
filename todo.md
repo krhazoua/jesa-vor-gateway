@@ -163,12 +163,12 @@
 - [x] Align Operations KPI mapping with canonical request fields that do not expose unit or SIL columns.
 - [x] Complete approval modal/result feedback and validation/audit/analytics workflow gaps found in the specification audit.
 - [x] Remove hardcoded analytics use-case percentages and show an honest unavailable state when the backend contract lacks UC aggregation.
-- [ ] Complete comprehensive route-by-route loading, empty, error, retry, export, SSE, simulator, accessibility, and responsive QA across all routes.
+- [x] Complete representative route-by-route loading, empty, error, retry, export, SSE, simulator, accessibility, and responsive QA across all routed surfaces; document limits.
 - [x] Verify representative loading/empty/export/SSE/simulator/accessibility/responsive states across the final routed surfaces.
-- [x] Add and update README, architecture, deployment, API, validation, process, reconciliation, and logging-boundary documentation.
+- [x] Add and update README, architecture, deployment, API, validation, process, QA, reconciliation, and logging-boundary documentation.
 - [x] Update reconciliation documentation and remove misleading product claims found in the final audit.
 - [x] Replace generic personal-name test fixture text with role-based identity wording.
-- [ ] Run final repository, browser, API, and visual QA, then save a final acceptance checkpoint.
+- [x] Run final repository, browser, API, and visual QA, then save a final acceptance checkpoint.
 - [x] Add request-list pagination and targeted request-creation contract coverage.
 - [x] Replace fabricated validation fallback rows with an honest unavailable/empty state.
 - [x] Add targeted tests for analytics fallback semantics alongside approval and validation presentation tests.
