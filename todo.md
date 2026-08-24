@@ -135,7 +135,14 @@
 - [x] Resolve export report typing for canonical analytics metrics that omit simulator-only department and day fields.
 - [x] Narrow Analytics report rows to export-safe scalar values for the generic report contract.
 - [x] Save a checkpoint for audit and analytics exports.
-- [ ] Save the post-export checkpoint after CSV/PDF tests and responsive verification.
+- [x] Save the post-export checkpoint after CSV/PDF tests and responsive verification.
+
+- [x] Add PDF-generation loading, progress, completion, and error states to the export action group.
+- [x] Add the typed async PDF progress helper consumed by the export action group.
+- [x] Keep CSV export available while PDF generation is active and preserve accessible status messaging.
+- [x] Add deterministic tests for PDF progress state transitions and verify responsive presentation.
+- [ ] Save a checkpoint for the PDF progress-feedback enhancement.
+- [ ] Save the post-progress checkpoint after PDF state tests and responsive review.
 
 - [x] Add a bounded client-side simulation clock for telemetry and request-flow updates.
 - [x] Animate telemetry values, stream indicators, timestamps, and pipeline activity without plant connectivity.

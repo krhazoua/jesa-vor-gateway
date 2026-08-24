@@ -106,6 +106,25 @@ export function buildPdfReport(report: Omit<ReportDefinition, "filename">) {
   return doc;
 }
 
+export type PdfProgressCallback = (progress: number, step: string) => void;
+
+const waitForPdfStage = (milliseconds: number) => new Promise<void>(resolve => {
+  globalThis.setTimeout(resolve, milliseconds);
+});
+
+export async function downloadPdfReportWithProgress(report: ReportDefinition, onProgress: PdfProgressCallback) {
+  onProgress(12, "Preparing report data");
+  await waitForPdfStage(45);
+  onProgress(42, "Building PDF layout");
+  await waitForPdfStage(45);
+  const document = buildPdfReport(report);
+  onProgress(82, "Finalizing file");
+  await waitForPdfStage(45);
+  const filename = report.filename.endsWith(".pdf") ? report.filename : `${report.filename}.pdf`;
+  document.save(filename);
+  onProgress(100, "Download complete");
+}
+
 export function downloadPdfReport(report: ReportDefinition) {
   const filename = report.filename.endsWith(".pdf") ? report.filename : `${report.filename}.pdf`;
   buildPdfReport(report).save(filename);
