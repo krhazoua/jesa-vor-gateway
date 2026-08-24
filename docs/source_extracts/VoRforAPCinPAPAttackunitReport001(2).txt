@@ -1,0 +1,1880 @@
+                  Mémoire de Stage PFA
+       Spécialité : Management des Systèmes Électriques Intelligents
+
+
+
+
+               ∗ ∗ RHAZOUANE Kaouthar ∗ ∗
+                   ∗ ∗ JAAFAR Youssef ∗ ∗
+
+
+
+
+                          Titre :
+    Développement d’une solution de vérification des
+ requêtes (VoR) NAMUR NE178 pour le contrôle de
+procédé avancé (APC) dans le réacteur d’attaque pour
+             une usine d’acide phosphorique
+                             ⊛⊛⊛⊛⊛⊛⊛
+
+
+
+                     Société d’Accueil : JESA S.A
+
+
+
+
+                       Du 11/06/2026 au X/08/2026
+
+
+                                Encadré par :
+
+ Mme LAKHAL Hind : Asset Digitalization Engineer
+ Mme NADIF Amina : Associate Asset Digitalization Engineer
+Dédicaces
+
+                    Je dédie ce travail à :
+
+
+                           Mes chers parents
+Pour tous leurs sacrifices, leur bienveillance et leur soutien inconditionnel.
+
+
+                                Ma famille
+        Pour leur affection constante et leur présence rassurante.
+
+
+                             Tous mes amis
+    Pour leur amitié sincère, leur motivation et leurs encouragements.
+
+
+     Tous les enseignants du département Génie Électrique
+    Pour la qualité de leur encadrement, leur engagement et le savoir
+                                 transmis .
+
+
+                                                              JAAFAR Youssef
+
+
+
+
+                                      i
+Dédicaces
+
+                   Je dédie ce travail à :
+
+
+                             À mes parents
+    Pour tout ce que vous avez donné sans jamais compter. Pour vos
+sacrifices dans l’ombre, vos rêves mis de côté pour faire grandir les miens.
+                Ce travail est le vôtre autant que le mien.
+
+
+                             À ma famille
+Pour votre présence discrète mais essentielle. Vous êtes mon ancrage, mon
+                            retour aux sources.
+
+
+                              À mes amis
+  Pour vos mains tendues, vos mots justes, vos silences complices. Sans
+                   vous, ce chemin aurait été plus long.
+
+
+                          À mes enseignants
+Pour votre exigence qui élève et votre savoir que vous avez partagé comme
+  un héritage. Vous m’avez appris à chercher, pas seulement à savoir. .
+
+
+                                                      RHAZOUANE Kaouthar
+
+
+
+
+                                     ii
+Remerciements
+
+   C’est avec un immense plaisir que nous consacrons ces lignes à exprimer nos remer-
+ciements les plus sincères à toutes les personnes qui nous ont apporté leur aide et ont
+contribué, de près ou de loin, à la réalisation et à la réussite de ce travail.
+
+    Avant tout, nous remercions Dieu, le Tout-Puissant, de nous avoir accordé la force,
+la patience, la volonté et la santé tout au long de ce parcours, et grâce à qui ce travail a
+pu aboutir.
+
+   Nos remerciements les plus profonds vont à Mme.LAKHAL Hind et Mme.NADIF
+Amina, nos encadrantes de stage, pour la confiance, l’implication, l’accompagnement ri-
+goureux et surtout pour nous avoir offert cette précieuse opportunité de stage au sein de
+JESA SA. Leur disponibilité, leurs conseils techniques, leurs orientations et leurs res-
+sources ont été essentiels à la réussite de ce stage.
+
+    Nous remercions également M.CHAQLOU Karim, directeur du département Digi-
+tal Engineering, pour son accueil et son soutien tout au long de notre intégration dans la
+structure.
+
+    Notre gratitude s’étend à l’ensemble du personnel du groupe JESA, en général, et à
+l’équipe Digital Engineering, en particulier, pour leur accueil chaleureux, leur esprit
+d’équipe et leur professionnalisme.
+
+    Nous tenons également à remercier l’ensemble du corps professoral et administratif
+de l’ENSAM Casablanca, en particulier le département Génie Électrique, pour
+la qualité de la formation reçue, leur disponibilité et leur encadrement. Leurs efforts ont
+grandement contribué à notre progression technique et personnelle.
+
+
+
+
+                                             iii
+Acronymes
+
+ JV Joint-Venture
+ APC Advanced Process Control
+ MPC Model Predictive Control
+ NOA NAMUR Open Architecture
+ VoR Verification of Request
+ PAP Phosphoric Acid Plant
+ DCS Distributed Control System
+ IT Information Technology
+ OT Operational Technology
+ MPC Model Predictive Control
+ PID Proportional-Integral-Derivative
+ MIMO Multi-Input Multi-Output
+ DCS Distributed Control System
+ CPC Core Process Control
+ M+O Monitoring and Optimization
+ psM+O Plant-specific Monitoring and Optimization
+ SIL Safety Integrity Level
+ DMZ Demilitarized Zone
+ TTL Time-to-Live
+ TLS Transport Layer Security
+ OPC UA Open Platform Communications Unified Architecture
+
+
+
+
+                                        iv
+Résumé
+
+   Ce projet, réalisé au sein du département Digital Engineering de JESA, vise à concevoir
+une solution de Vérification de Requête (VoR), conforme à la recommandation NAMUR
+NE178, afin de sécuriser les requêtes émises par le Contrôle Avancé des Procédés (APC)
+avant leur transmission au Système Numérique de Contrôle-Commande (DCS) du réac-
+teur d’attaque d’une usine d’acide phosphorique (PAP).
+
+   Dans de nombreuses installations industrielles, les consignes calculées par l’APC sont
+transmises directement au DCS sans vérification indépendante, ce qui peut entraîner des
+dépassements de plages opératoires, des conflits entre consignes et un manque de tra-
+çabilité. La norme NAMUR NE178 répond à cette problématique en introduisant un
+composant VoR entre les domaines Monitoring & Optimization (M+O) et Core Process
+Control (CPC).
+
+    La solution développée pour le réacteur d’attaque de l’unité Attaque & Digestion
+repose sur un moteur de validation déterministe réalisant neuf vérifications successives
+(équipement, signature, unité, doublon, durée de vie, plage opératoire, niveau SIL, taux
+de variation et interlocks de sécurité) ainsi qu’une machine à états conforme aux cinq
+statuts définis par la norme : ACCEPTED, REJECTED, PENDING_OPERATOR, DU-
+PLICATED et EXPIRED. L’architecture est basée sur une API REST développée avec
+FastAPI, une base de données PostgreSQL et une documentation Swagger UI.
+
+    La validation expérimentale, réalisée sur vingt-six requêtes couvrant onze variables
+de procédé et dix règles de validation, confirme le bon fonctionnement du système et
+une traçabilité complète des décisions, avec un taux d’acceptation d’environ 46 %. Cette
+solution constitue une base pour une intégration industrielle via OPC UA et son extension
+aux autres cas d’usage APC de la PAP.
+
+
+
+   Mots-clés : NAMUR NE178, Vérification de Requête (VoR), Contrôle avancé
+des procédés (APC), commande prédictive (MPC), NAMUR Open Architec-
+ture (NOA), usine d’acide phosphorique (PAP), Réacteur d’Attaque
+
+
+                                            v
+Abstract
+
+   This engineering internship project, carried out within JESA Digital Engineering,
+aims to design and develop a Verification of Request (VoR) solution compliant with the
+NAMUR NE178 recommendation, intended to secure Advanced Process Control (APC)
+requests before their injection into the Distributed Control System (DCS) of a Phosphoric
+Acid Plant (PAP) attack reactor.
+
+    The solution implements a deterministic nine-step validation engine and a state ma-
+chine aligned with the five NE178 statuses (ACCEPTED, REJECTED, PENDING_OPERATOR,
+DUPLICATED, EXPIRED), built on a FastAPI REST service, a PostgreSQL database
+and a Swagger UI documentation interface. Experimental validation on twenty-six re-
+presentative requests, covering eleven process variables and ten validation rules, demons-
+trates correct pipeline behaviour and full decision traceability, opening the way to OPC
+UA-based industrial integration and extension to the plant’s other APC use cases.
+
+
+
+
+   Keywords :NAMUR NE178, Verification of Request (VoR), Advanced Pro-
+cess Control (APC), Model Predictive Control (MPC), NAMUR Open Ar-
+chitecture (NOA), Phosphoric Acid Plant (PAP), Attack Reactor
+
+
+
+
+                                           vi
+Table des matières
+
+Dédicaces                                                                              i
+
+Dédicaces                                                                             ii
+
+Remerciements                                                                        iii
+
+Acronymes                                                                            iv
+
+Résumé                                                                                v
+
+Abstract                                                                             vi
+
+Introduction Générale                                                                 1
+
+1 Contexte Général et Procédé de Fabrication de l’Acide Phosphorique                   2
+  1.1 Présentation de l’Entreprise et Cadre du Projet . . . . . . . . . . . . . . . 2
+      1.1.1 Présentation de l’Organisme d’Accueil . . . . . . . . . . . . . . . . 2
+      1.1.2 Aperçu historique : . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+      1.1.3 Réseau mondial de JESA : . . . . . . . . . . . . . . . . . . . . . . . 3
+      1.1.4 Secteurs d’activités : . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+      1.1.5 Fiche technique : . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+      1.1.6 Organigramme : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+  1.2 Processus de Production de l’Acide Phosphorique . . . . . . . . . . . . . . 6
+      1.2.1 Vue d’Ensemble de la Chaîne de Production . . . . . . . . . . . . . 6
+      1.2.2 Le Réacteur d’Attaque (Attack Reactor) . . . . . . . . . . . . . . . 13
+      1.2.3 Problématique Industrielle et Enjeux de Sécurisation . . . . . . . . 16
+
+2 Contrôle Avancé (APC) et Concept NAMUR VoR                                         18
+  2.1 Advanced Process Control (APC) et Model Predictive Control (MPC) . . .         18
+      2.1.1 Principes Fondamentaux de l’APC/MPC . . . . . . . . . . . . . . .        18
+      2.1.2 Limites et Risques Liés à l’Injection Directe de Consignes APC . . .     21
+  2.2 Architecture NAMUR Open Architecture (NOA) et Norme NE178 . . . . .            22
+      2.2.1 Principes de la NAMUR Open Architecture (NOA) . . . . . . . . .          22
+
+
+                                          vii
+                                   TABLE DES MATIÈRES
+
+
+
+        2.2.2   Le Concept de Verification of Request (VoR) selon la NE178 . . . . 22
+
+3 Conception de la Solution VoR pour le Réacteur d’Attaque                               25
+  3.1 Spécification Functional du Cas d’Usage (Attaque PAP) . . . . . . . . . .          26
+      3.1.1 Définition des Consignes APC Ingestibles . . . . . . . . . . . . . . .       26
+      3.1.2 Formalisation du Format Standard de Requête APC . . . . . . . . .            26
+  3.2 Architecture Moteur de Vérification (Verification Engine) . . . . . . . . . .      27
+      3.2.1 Matrice des Règles de Validation Procédé et Sécurité . . . . . . . .         27
+      3.2.2 Modèle de Données et Machine à États des Décisions . . . . . . . .           29
+
+4 Implémentation Logicielle et Validation Expérimentale                                  33
+  4.1 Architecture Technique de la Solution Développée . . . . . . . . . . . . . .       33
+      4.1.1 Stack Technique et Composants Software . . . . . . . . . . . . . . .         33
+      4.1.2 Implémentation des Endpoints API et du Logger d’Auditation . . .             34
+  4.2 Scénarios de Simulation et Résultats de Tests . . . . . . . . . . . . . . . .      36
+      4.2.1 Conception des Vecteurs de Test pour le Réacteur d’Attaque . . . .           36
+      4.2.2 Analyse des Résultats et Traçabilité des Justifications . . . . . . . .      37
+  4.3 Conclusion et Perspectives . . . . . . . . . . . . . . . . . . . . . . . . . . .   40
+      4.3.1 Bilan du Projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    40
+      4.3.2 Perspectives d’Intégration Industrielle (DCS/OPC UA) . . . . . . .           40
+
+Conclusion et Perspectives                                                               42
+
+A Schéma de la Base de Données                                                           43
+
+B Détail des Vingt-Six Requêtes du Jeu de Test (Request_History)                         44
+
+C Références Normatives                                                                  46
+
+
+
+
+                                           viii
+Table des figures
+
+ 1.1 Logo JESA . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        2
+ 1.2 Logo des actionnaires de JESA . . . . . . . . . . . . . . . . . . . . . . . .          3
+ 1.3 Implémentation de JESA dans le monde . . . . . . . . . . . . . . . . . . .             4
+ 1.4 Organigramme de JESA . . . . . . . . . . . . . . . . . . . . . . . . . . . .           5
+ 1.5 Schéma simplifiée des différents étapes de production d’acide phosphorique             6
+ 1.6 Flowsheet représentant le procédé phosphorique . . . . . . . . . . . . . . .           7
+ 1.7 Flux et équipements principaux . . . . . . . . . . . . . . . . . . . . . . . .         7
+ 1.8 Unité d’épaississement . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       8
+ 1.9 Flowsheet représentant l’unité d’épaississement . . . . . . . . . . . . . . .          8
+ 1.10 Unité d’attaque-filtration . . . . . . . . . . . . . . . . . . . . . . . . . . . .    9
+ 1.11 Flowsheet représentant l’unité d’attaque . . . . . . . . . . . . . . . . . . .       10
+ 1.12 Schéma d’unité de concentration d’acide sulfurique . . . . . . . . . . . . .         11
+ 1.13 Schéma d’unité de concentration d’acide sulfurique . . . . . . . . . . . . .         12
+ 1.14 Laveur de fumées (Fume Scrubber) . . . . . . . . . . . . . . . . . . . . . .         12
+ 1.15 Schéma d’E/S de l’unité d’attaque . . . . . . . . . . . . . . . . . . . . . .        13
+ 1.16 Cuves d’attaques et Cuves de maturation . . . . . . . . . . . . . . . . . . .        13
+ 1.17 Principales composantes du réacteur . . . . . . . . . . . . . . . . . . . . .        14
+ 1.18 La convergence IT-OT . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       16
+
+ 2.1   APC dans le pyramide CIM . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+ 2.2   Risques liés à l’injection directe des consignes APC . . . . . . . . . . . . . 21
+ 2.3   Les différents étapes de validation d’une requête émise par l’APC . . . . . 23
+
+ 3.1   Implementation d’APC en unité d’attack . . . . . . . . . . . . . . . . . . . 26
+ 3.2   Format standard de requête APC (schéma JSON canonique) . . . . . . . . 27
+ 3.3   schéma fonctionnel avec variables clés et sécurités pour l’unité d’attack . . 30
+ 3.4   Interface d’approbation opérateur pour une requête en statut PENDING_OPERATOR 31
+ 3.5   Machine d’états du workflow VoR : transitions et états finaux . . . . . . . 31
+
+ 4.1   Interface de documentation Swagger UI de l’API REST . . . . . . . . . . . 34
+ 4.2   Le pipeline de validation à neuf vérifications (documentation API) . . . . . 35
+
+
+
+                                            ix
+                                   TABLE DES FIGURES
+
+
+
+4.3   Documentation des endpoints REST de l’API (Requests, Approvals, Status
+      & History) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   36
+4.4   Dashboard de suivi des requêtes APC . . . . . . . . . . . . . . . . . . . . .        37
+4.5   Dashboard avec des représentations des chiffres en graphes . . . . . . . . .         38
+4.6   Plan de déploiement progressif de la solution VoR . . . . . . . . . . . . . .        41
+
+A.1 Plan de déploiement progressif de la solution VoR . . . . . . . . . . . . . . 43
+
+
+
+
+                                            x
+Liste des tableaux
+
+ 1.1   Fiche technique de l’entreprise . . . . . . . . . . . . . . . . . . . . . . . . . 5
+ 1.2   Paramètres opératoires de l’attaque . . . . . . . . . . . . . . . . . . . . . . 15
+
+ 2.1   Étapes de la recommandation NAMUR NE178 . . . . . . . . . . . . . . . . 24
+ 2.2   Les étapes de la VoR . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+ 3.1   Équipements couverts par la solution VoR (unité Attaque & Digestion) . .         26
+ 3.2   Onze variables de procédé du réacteur d’attaque et du bassin de digestion .      27
+ 3.3   Matrice des dix règles de validation appliquées au réacteur d’attaque . . .      28
+ 3.4   Les cinq statuts NE178 de la machine à états des décisions . . . . . . . . .     30
+
+ 4.1   Les trois endpoints REST de l’API de la solution VoR . . . . . . . . . . .       35
+ 4.2   Dix scénarios de démonstration du pipeline de validation . . . . . . . . . .     37
+ 4.3   Répartition des statuts sur les 26 requêtes du jeu de test . . . . . . . . . .   38
+ 4.4   Indicateurs de performance (KPI) de la solution VoR . . . . . . . . . . . .      39
+
+ B.1 Détail des 26 requêtes APC traitées (table APC_Request) . . . . . . . . . . 44
+
+
+
+
+                                           xi
+Introduction Générale
+
+    La transformation numérique des procédés industriels s’accompagne d’un déploiement
+croissant d’applications de Contrôle Avancé des Procédés (APC), capables d’optimiser
+en continu la conduite d’unités complexes. Ce gain de performance s’accompagne tou-
+tefois d’un risque nouveau : celui de voir des consignes calculées par des applications
+informatiques, parfois hébergées hors du périmètre traditionnel de l’automatisation, être
+appliquées directement au système de contrôle-commande sans vérification indépendante.
+
+    C’est dans ce contexte que s’inscrit le présent stage de fin d’études, réalisé au sein de
+JESA Digital Engineering . L’objectif du projet est de concevoir et de développer une so-
+lution de Vérification de Requête (VoR), conforme à la recommandation NAMUR NE178,
+appliquée au cas concret du réacteur d’attaque de la future usine d’acide phosphorique
+(PAP).
+
+    Ce rapport est structuré en quatre chapitres. Le premier présente le contexte industriel
+du projet : l’entreprise d’accueil JESA, et le procédé de fabrication de l’acide phosphorique.
+Le deuxième introduit les fondements théoriques du Contrôle Avancé des Procédés et du
+concept de Vérification de Requête défini par la NAMUR Open Architecture. Le troisième
+détaille la conception de la solution développée : spécification fonctionnelle, format de
+requête, matrice de règles et architecture du moteur de vérification. Le quatrième décrit
+l’implémentation logicielle réalisée et présente les résultats de la validation expérimentale
+conduite sur un jeu de vingt-six requêtes représentatives, avant de conclure sur le bilan
+du projet et ses perspectives d’intégration industrielle.
+
+
+
+
+                                              1
+Chapitre 1
+
+Contexte Général et Procédé de
+Fabrication de l’Acide Phosphorique
+
+Introduction
+    Ce chapitre introduit le cadre général dans lequel s’inscrit le présent projet : l’en-
+treprise d’accueil, l’historique, implémentation ... et le procédé de fabrication de l’acide
+phosphorique au sein duquel s’insère le cas d’usage traité, à savoir le réacteur d’attaque
+de l’unité Attaque & Digestion.
+
+
+1.1     Présentation de l’Entreprise et Cadre du Projet
+1.1.1     Présentation de l’Organisme d’Accueil
+    Née en 2010, JESA étant acteur majeurs de l’ingénieurie au Maroc et en Afrique.
+Avec plus de 4000 collaborateurs, plus de 400 projets actifs et une présence sur le Maroc,
+l’afrique de l’ouest et s’étend au états unis. [11]
+
+
+
+
+                                Figure 1.1 – Logo JESA
+
+
+    Crée initialement sous forme d’un Joint-Venture (JV) entre OCP et JACOBS . Après
+l’acquisition, en Octobre 2018, de la division Energy, Chemicals and Resources (“Jacobs
+ECR”) par l’Australien Worley, JESA est devenu une JV entre OCP et Worley .[3]
+
+
+
+                                             2
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+
+             (a) Logo Worley                                (b) Logo OCP
+
+                     Figure 1.2 – Logo des actionnaires de JESA
+
+
+    Aujourd’hui, JESA est la plus grande entreprise marocaine d’ingénierie. Combinant la
+profondeur industrielle du groupe marocain, et l’expertise d’un acteur mondial de l’ingé-
+nierie, donne naissance a une ambition clairement assumée par cette dernière à travers le
+slogan "The Solution Company for Africa" . [2, 11]
+
+
+1.1.2    Aperçu historique :
+   Depuis sa création en Février 2010 , JESA a parcouru un chemin évolutif avec plusieurs
+étapes, dont lesquelles :
+   — 2010 : Fondation de JESA.
+   — 2012 : Acquisition de l’équipe Maroc.
+   — 2014 : Lancement du projet Slurry pipeline sur l’axe Khouribga-Jorf Lasfar sur
+       une distance de 235 km.
+   — 2015 : Expansion sur l’Afrique
+   — 2016 : La réalisation de l’université UM6p
+   — 2021 : OCP Green Energy Program
+   — 2023 : Contrat EPCM avec le saoudien Ma’aden dans le cadre d’un complexe de
+       production de phosphate intégré.[9]
+   — 2024 : Livraison du 1ère station solaire à Benguerir et khouribga.
+   — 2025 : La mise en service du pipeline J2K.
+
+
+1.1.3    Réseau mondial de JESA :
+   L’entreprise est présente sur deux continents, avec des bureaux à Casablanca, Rabat,
+Dakar, Abidjan, Addis-Abeba et Cotonou en Afrique, ainsi qu’à Lakeland en Amérique.
+De plus, elle gère plus de 30 projets en Afrique et en Asie.
+
+
+
+
+                                           3
+  CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+
+               Figure 1.3 – Implémentation de JESA dans le monde
+                                      [7]
+
+
+1.1.4   Secteurs d’activités :
+  — Eau et Infrastructure : JESA propose des solutions complètes pour la gestion
+    de l’eau, de la conformité réglementaire à la réutilisation des eaux usées, tout en
+    offrant des services de transport stratégiques et respectueux de l’environnement.
+  — Énergie : JESA propose une gamme variée de solutions énergétiques renouvelables,
+    reconnues pour leur rentabilité et leur qualité, permettant aux clients d’améliorer
+    la sécurité et de réduire les coûts opérationnels.
+  — Industrie des Procédés : L’expertise de JESA couvre une vaste gamme de projets
+    industriels, offrant des solutions complètes pour répondre aux besoins complexes
+    des clients tout en garantissant l’efficacité et la durabilité des opérations.
+  — Bâtiments : Le service Bâtiments et Infrastructures de JESA propose des so-
+    lutions innovantes et rentables pour divers secteurs tels que la santé, l’éducation
+    et l’hôtellerie, couvrant le cycle de vie complet des projets, de la conception à la
+    gestion de projet et de construction.[5]
+
+
+
+
+                                          4
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+1.1.5     Fiche technique :
+
+ Raison sociale         JESA Group
+ Date de création       2010
+ Statut juridique       Société Anonyme (SA)
+ Capitale               45 000 000 DHs
+                        Shore 27 Casablanca Nearshore Park, 1100 Bd Al Qods,
+ Siège sociale
+                        Casablanca.
+ Phone/Fax              +212.5.22.87.70.00/+212.5.22.87.72.34
+ Site web               www.jesagroup.com
+
+                       Table 1.1 – Fiche technique de l’entreprise
+
+
+1.1.6     Organigramme :
+    Au sommet de l’organigramme de JESA se trouve la direction exécutive (ou top mana-
+gement), composée de cadres expérimentés qui définissent la vision stratégique de l’entre-
+prise et prennent des décisions stratégiques importantes. Ensuite, plusieurs départements
+clés sont établis, tels que les opérations, finances, ressources humaines, le marketing et les
+ventes, chacun dirigé par un chef de département chargé de superviser les activités quoti-
+diennes, de garantir la meilleur performance et atteindre les objectifs organisationnels. En
+outre, des équipes spécialisées sont mises en place pour chaque domaine d’activité, telles
+que l’ingénierie, la gestion de projet et le développement commercial, afin de garantir une
+expertise approfondie dans chaque domaine et une prestation de services de haute qualité
+aux clients.[5]
+
+
+
+
+                          Figure 1.4 – Organigramme de JESA
+                                         [14]
+
+   Notre stage était au sein du département d’ingénierie digitale. En effet, en 2022, JESA
+
+                                              5
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+a créé un ce département de digitalisation face aux besoins croisant en matière de trans-
+formation numérique. Ce département a pour responsabilité de trouver des solutions de
+digitalisation pour plusieurs projets dans différents domaines, notamment le domaine mi-
+nier.
+
+
+1.2     Processus de Production de l’Acide Phosphorique
+    L’acide phosphorique H3 P O4 est le composants essentiel dans la production des gra-
+nules d’engrais ou d’acide phosphorique H3 P O4 purifié. Il réagit avec l’ammoniac pour
+la production du phosphate diammonique (DAP) ou monoammonique (MAP). Ou il est
+utilisé pour l’attaque des phosphates en cas du triple super phosphate (TSP).
+    La fabrication de l’acide phosphorique peut être réalisée par différents voies ou pro-
+cédés, sauf que la démarche et la nature du traitement à mettre en œuvre diffèrent d’un
+procédé à un autre. En effet, chaque procédé présente des particularités, et différents
+paramètres adaptés afin d’atteindre les performances souhaités.
+    Généralement, nous distinguons entre deux voies de production d’acide phosphorique
+qui sont : voie thermique et voie humide dont chacun contient des sous catégories . En ce
+qui concerne notre sujet, le procédé adopté est Jacobs qui se base sur la voie humide et
+l’utilisation de la pulpe de phosphate comme matière première. La production de l’acide
+au sein de l’usine se fait par plusieurs étapes, dont la description du fonctionnement est
+primordiale.
+
+
+1.2.1    Vue d’Ensemble de la Chaîne de Production
+    Le procédé de fabrication de l’acide phosphorique utilisé est par voie humide, dont
+l’acide est obtenu par l’attaque du phosphate minerai par un acide fort (acide sulfurique)
+qui est déjà produit dans l’atelier sulfurique. Cette réaction produit de l’acide phospho-
+rique 28% et du gypse dihydrate (CaSO4 .2H2 O) appelé phospho-gypse. Ce cristal peut
+prendre de différentes formes qui déterminent l’état de la filtration.
+
+
+
+
+Figure 1.5 – Schéma simplifiée des différents étapes de production d’acide phosphorique
+
+   La réaction du phosphate et de l’acide sulfurique est exothermique, elle dégage une
+
+                                            6
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+quantité de chaleur élevée et une autre quantité de chaleur dégagée par la dilution de
+l’acide sulfurique ; par conséquent, il s’impose un refroidissement de la bouillie pour gar-
+der la température constante. Le refroidissement de la bouillie est assuré par un circuit
+d’assainissement.
+
+
+
+
+             Figure 1.6 – Flowsheet représentant le procédé phosphorique
+
+
+    La pulpe de phosphate acheminée par le Slurry pipeline, son broyage est réalisé en
+amont à la mine avant expédition par le pipeline. Puis, elle fait l’objet d’un épaississe-
+ment suivi d’une attaque par l’acide sulfurique. L’étape suivante est celle de la séparation
+par filtration qui conduit à la formation de cristaux de sulfate de calcium (gypse) et à
+l’acide phosphorique.
+    Le gypse est séparé du reste en utilisant un processus de filtration. L’acide phospho-
+rique produit à ce stade de titre 29% en P2O5, il subit par la suite une concentration
+et par conséquent sa teneur en P2O5 augmente à 54%.
+
+
+
+
+                     Figure 1.7 – Flux et équipements principaux
+
+
+
+                                             7
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+Epaississement :
+
+
+
+
+                         Figure 1.8 – Unité d’épaississement
+
+
+    La ligne d’épaississement permet d’accroitre la concentration en solides de la pulpe
+de phosphate provenant de la laverie, de 55% à 65% avant son alimentation à l’étape de
+l’attaque.
+
+
+
+
+             Figure 1.9 – Flowsheet représentant l’unité d’épaississement
+
+
+
+
+                                           8
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+Attaque :
+
+
+
+
+                        Figure 1.10 – Unité d’attaque-filtration
+
+
+   L’étape de l’attaque permet de produire l’acide phosphorique dilué à partir de la pulpe
+de phosphate épaissie, d’acide sulfurique et d’acide phosphorique recyclé. Cette étape sera
+détaillée en plus dans la section 1.2.2 puisqu’elle est le sujet de notre projet .
+
+
+
+
+                                            9
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+
+                 Figure 1.11 – Flowsheet représentant l’unité d’attaque
+
+
+Filtration :
+
+    La filtration permet de séparer la majorité des cristaux de gypse de la bouillie filtrée,
+soit l’acide phosphorique dilué non-clarifié (représenter dans la Figure 1.10)
+
+Concentration :
+
+   L’étape de la concentration consiste à évaporer l’eau et d’autres corps volatils contenus
+dans l’acide dilué produit à l’étape d’attaque-filtration et clarifié (<1% en solide) à l’étape
+de stockage de l’acide dilué. L’acide concentré et ensuite alimenté au stockage de l’acide
+concentré.
+
+
+
+
+                                              10
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+
+           Figure 1.12 – Schéma d’unité de concentration d’acide sulfurique
+
+
+Production du FSA (Acide fluosilicique) :
+
+    L’acide de lavage du fluor (FSA, Fluorine Scrubbing Acid), contenant 18 % de H2 SiF6
+(acide hexafluorosilicique), est produit dans les unités de récupération du fluor lors du
+procédé de captage et de neutralisation des émissions fluorées. Après sa production, le FSA
+est évacué des unités de récupération du fluor et acheminé vers le réservoir de stockage du
+FSA (FSA Storage Tank). Ce réservoir est spécialement conçu pour assurer un stockage
+sécurisé du FSA jusqu’à son traitement ultérieur.
+    Une fois stocké, le FSA est transféré vers la section neutralisation/récupération du
+FSA (FSA Neutralization/Recovery Section). Dans cette unité, le FSA subit un procédé
+de neutralisation au cours duquel il réagit avec un agent neutralisant approprié (tel que
+la chaux ou le carbonate de sodium) afin de réduire son acidité et de transformer l’acide
+hexafluorosilicique en composés moins dangereux. Selon le procédé mis en œuvre, cette
+étape peut également permettre la récupération de sous-produits à valeur ajoutée, tels
+que le fluorure de calcium (CaF2 ) ou le fluorure de sodium (NaF).
+
+
+                                            11
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+Epurateur de fumées (Scrubber) :
+
+    Le traitement des gaz issus des réactions de production d’acide phosphorique est un
+défis majeur pour l’unité, d’où la nécessité de le superviser afin d’atteindre l’efficacité
+souhaitée en termes de rejets de gaz et le respect de l’environnement.
+
+
+
+
+           Figure 1.13 – Schéma d’unité de concentration d’acide sulfurique
+
+   Le procédé JACOBS utilise un « Fume Scrubber » pour laver les gaz provenant de la
+cuve d’attaque et de la section de filtration.
+
+
+
+
+                   Figure 1.14 – Laveur de fumées (Fume Scrubber)
+
+                                            12
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+   Le « Fume Scrubber » utilisé se présente sous une forme parallélépipédique constitué
+de plusieurs lits filtrants organisés verticalement en quatre lignes parallèles. Chaque ligne
+compte quatre cartouches qui sont arrosées par des pulvérisateurs.
+
+
+1.2.2     Le Réacteur d’Attaque (Attack Reactor)
+
+
+
+
+                   Figure 1.15 – Schéma d’E/S de l’unité d’attaque
+
+   Le procédé JACOBS est caractérisé par son réacteur annulaire composé de plusieurs
+compartiments. Il est muni de 7 compartiments qui forment son anneau extérieur, un com-
+partiment central et finalement un compartiment d’alimentation du flash-cooler (Figure
+1.16).
+
+
+
+
+                Figure 1.16 – Cuves d’attaques et Cuves de maturation
+
+    La pulpe de phosphate est introduite dans le compartiment 1 de l’anneau extérieur où
+elle est attaquée en premier lieu par l’acide sulfurique injecté via trois points. Le premier
+
+                                             13
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+entre les compartiments 3 et 4, le deuxième entre les compartiments 5 et 6, et le troisième
+entre les compartiments 6 et 7. Grâce à l’effet du grand débit de pompage des pompes
+de circulation, la pulpe de phosphate est mélangée avec l’acide sulfurique en formant
+une bouillie qui rejoint à son tour le compartiment centrale où on a formation de l’acide
+phosphorique et le sulfate de calcium di-hydrate avec une température maintenue à des
+valeurs variant de 80° à 82°.
+    La bouillie est refroidie par la suite de l’ordre de 2°C, en l’introduisant dans un flash-
+cooler par le biais de deux pompes avec une capacité de refoulement de 9000 m3/h chacune,
+donc une circulation totale de 18000 m3/h.
+Après son refroidissement, la bouillie se divise en deux parties. Un débit de 17000 m3/h
+retourne au réacteur et le reste rejoint le premier compartiment de la section de matura-
+tion, le but de cette zone est d’assurer un temps de séjour additionnel aux cristaux pour
+murir.
+    Les gaz récoltés dans le flash-cooler passent à travers un pré-condenseur alimenté par
+l’eau de procédé afin de récupérer la chaleur des gaz et utiliser l’eau préchauffée pour le
+lavage des toiles, ensuite les gaz sont acheminés vers un condenseur alimenté en eau de
+mer qui sert à évacuer le gypse des trémies des filtres, cela va permettre aux gaz de subir
+un dernier lavage avant d’être envoyés vers la cheminée.
+
+
+
+
+                   Figure 1.17 – Principales composantes du réacteur
+
+
+Chimie de la Réaction d’Attaque
+
+   La réaction principale intervenant dans la production de l’acide phosphorique est la
+réaction entre le phosphate tricalcique et l’acide sulfurique, conduisant à la formation
+d’acide phosphorique soluble et de sulfate de calcium dihydraté (gypse) insoluble.
+
+
+                                             14
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+
+               Ca3 (PO4 )2 + 3 H2 SO4 + 6 H2 O ⇀
+                                               ↽ 3 CaSO4 · 2H2 O + 2 H3 PO4               (1.1)
+
+    Cette réaction se déroule en deux étapes. Dans un premier temps, l’acide phospho-
+rique dissout la roche phosphatée lors de l’étape de digestion afin de former une solution
+de phosphate monocalcique, comme indiqué par l’équation (1.2). Ensuite, le phosphate
+monocalcique réagit avec l’acide sulfurique pour produire de l’acide phosphorique et du
+gypse, comme présenté dans l’équation (1.3).
+
+                 Ca3 (PO4 )2 + 4 H3 PO4 + 6 H2 O ⇀
+                                                 ↽ 3 Ca(H2 PO4 )2 · 2H2 O                 (1.2)
+
+
+              3 Ca(H2 PO4 )2 · 2H2 O + 3 H2 SO4 ⇀
+                                                ↽ 3 CaSO4 · 2H2 O + 6 H3 PO4              (1.3)
+
+Variables Physico-Chimiques Critiques à Contrôler
+
+                     Table 1.2 – Paramètres opératoires de l’attaque
+
+         Paramètres opératoires                                         Valeurs
+         Pression dans la cuve                                           1 bar
+         Température de la bouillie                                    78−80 ◦ C
+         Débit de circulation                                        18 000 m3 /h
+         Débit d’acide sulfurique                                      110 m3 /h
+         Concentration des sulfates libres                            27 à 32 g/L
+         Taux de solides de la bouillie                                29 à 33 %
+         Densité de la bouillie                                   1440 à 1520 kg/m3
+         Densité du filtrat de la bouillie                        1230 à 1290 kg/m3
+         Pression dans le flash cooler                              0,34 à 0,38 bar
+
+
+
+Risques Opérationnels et Contraintes de Sûreté
+
+     Le contrôle du débit d’acide recyclé, et des teneurs en P2 O5 et en solides dans le système
+d’attaque, est essentiel. Une concentration élevée en P2 O5 peut entraîner des phénomènes
+de cristallisation et une augmentation de la viscosité, limitant ainsi les performances de
+filtration. À l’inverse, une faible teneur en solides peut favoriser la formation de mousse
+et conduire à une sursaturation de la bouillie. En revanche, une teneur élevée en solides
+accroît la viscosité de la bouillie, ce qui engendre principalement des difficultés de mélange
+et de pompage.
+     Les réactions chimiques se produisant dans le réacteur d’attaque sont exothermiques.
+Associées à la chaleur de dilution de l’acide sulfurique ajouté, elles nécessitent le refroi-
+
+
+                                              15
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+dissement de la bouillie réactionnelle afin de maintenir la température de réaction à la
+valeur cible de 76 ◦ C, indispensable à la formation de cristaux de gypse dihydraté.
+    Le débit élevé de recirculation à l’intérieur du réacteur, assuré par la pompe de cir-
+culation LLFC (Low Level Flash Cooler ), permet également de maintenir une acidité
+suffisante ainsi qu’un excès de sulfates à l’entrée du système de réaction, où la roche
+phosphatée est introduite. Ces conditions sont essentielles pour garantir une dissolution
+optimale de la roche et une cristallisation efficace.
+
+
+1.2.3    Problématique Industrielle et Enjeux de Sécurisation
+    Depuis longtemps, la technologie d’information (IT) et la technologie opérationnelle
+ou l’informatique industrielle (OT) étaient séparés au niveau technologique et organisa-
+tionnel alors qu’aujourd’hui ces deux dernières converge de plus en plus, ce qui engendre
+des cybermenaces ,l’un des conséquences majeurs de la transformation digitale .[12] En
+migrants de l’industrie 3.0 vers l’industrie 4.0 plusieurs menaces on étaient déclarés ces
+dernières années comme l’exemple de Stuxnet (2010), BlackEnergy (2015), Industroyer
+(2016) et autres. [10]
+
+
+
+
+                         Figure 1.18 – La convergence IT-OT
+
+
+    Des configurations par défauts, manque de cryptage des données, accès à distance
+sans vérification, l’incoordination entre l’équipe IT et OT et d’autres problèmes qui rends
+les systèmes OT vulnérables et plus ciblés, surtout que les dégâts touche directement la
+chaine de production avec des pertes quantifiés instantanément.
+
+
+
+
+                                            16
+   CHAPITRE 1. CONTEXTE GÉNÉRAL ET PROCÉDÉ DE FABRICATION DE L’ACIDE PHOSPHORIQUE
+
+
+
+Conclusion :
+    L’optimisation des procédés industriels repose sur un contrôle exigent, mais l’automa-
+tisation avancée (APC) comporte des risques majeurs pour la stabilité des installations.
+Vu les enjeux de sécurité et de continuité de service, l’intégration d’un mécanisme de vérifi-
+cation des requêtes (VoR) s’impose comme une nécessité absolue avant toute transmission
+de consignes au système de contrôle.
+
+
+
+
+                                             17
+Chapitre 2
+
+Contrôle Avancé (APC) et Concept
+NAMUR VoR
+
+Introduction
+    Ce chapitre aborde les principes du contrôle avancé de procédé (APC), les différents
+modèles de l’APC,notamment la commande prédictive (MPC), tout en identifiant les
+vulnérabilités liées à l’injection directe de consignes dans les systèmes d’automatisation.
+Il détaille l’architecture NAMUR Open Architecture (NOA) ainsi que la norme NE 178,
+fondant le cadre théorique du concept de Verification of Request (VoR) pour garantir une
+transition sécurisée vers une régulation optimisée.
+
+
+2.1     Advanced Process Control (APC) et Model Pre-
+        dictive Control (MPC)
+2.1.1    Principes Fondamentaux de l’APC/MPC
+Le contrôle avancé (APC)
+
+     Le contrôle avancé des procédés (APC) ressemble plusieurs stratégies de commande
+reposant sur des calculs plus sophistiqués que ceux des régulateurs PID conventionnels
+[1]. Ces méthodes se distinguent notamment par les caractéristiques suivantes :
+     — modélisation du procédé et identification des paramètres ;
+     — prédiction du comportement du procédé à l’aide d’un modèle ;
+     — prise en compte des contraintes opératoires ;
+     — optimisation d’un critère de performance ;
+     — traitement des interactions multivariables par calcul matriciel ;
+     — maintien d’une boucle de rétroaction (feedback).
+
+
+
+                                            18
+                CHAPITRE 2. CONTRÔLE AVANCÉ (APC) ET CONCEPT NAMUR VOR
+
+
+
+   L’objectif principal de l’APC est de maximiser les performances du procédé tout en
+respectant les contraintes de sécurité, de qualité et d’exploitation à travers différents
+modèles .
+
+
+
+
+                       Figure 2.1 – APC dans le pyramide CIM
+
+   Un modèle représente une description simplifiée d’un système réel. Selon les besoins, il
+peut décrire uniquement le comportement en régime permanent ou intégrer la dynamique
+du procédé. La modélisation permet de représenter les principaux phénomènes physiques
+en conservant uniquement les informations pertinentes pour l’analyse, la simulation et la
+conception des lois de commande. Elle réduit ainsi le recours aux expérimentations réelles,
+tout en diminuant les coûts, les risques et le temps de développement.
+   Dans le domaine du contrôle, le modèle doit être capable de prédire l’effet des variations
+des conditions opératoires sur le comportement du procédé. Il peut prendre la forme d’un
+modèle mathématique, statistique ou encore d’une description qualitative du système. Le
+choix du modèle dépend de l’application et de la stratégie de commande envisagée.
+   Parmi les principales techniques de contrôle avancé figurent :
+   — le contrôle adaptatif ;
+   — le contrôle multivariable ;
+   — le contrôle prédictif par modèle MPC ;
+   — le contrôle flou ;
+   — le contrôle robuste ;
+   — le contrôle basé sur les réseaux de neurones ;
+   — le contrôle optimal.
+   — ...
+
+                                             19
+                CHAPITRE 2. CONTRÔLE AVANCÉ (APC) ET CONCEPT NAMUR VOR
+
+
+
+Commande prédictive (MPC)
+
+    La commande prédictive par modèle (MPC) est aujourd’hui l’une des techniques
+d’APC les plus utilisées dans l’industrie des procédés. Son principe consiste à exploi-
+ter un modèle dynamique du procédé afin de prédire son évolution sur un horizon de
+prédiction fini. À chaque instant d’échantillonnage, un problème d’optimisation est résolu
+afin de déterminer la séquence de commandes minimisant une fonction de coût tout en
+respectant les contraintes du procédé. Seule la première commande calculée est appliquée,
+puis l’optimisation est répétée à l’instant suivant selon le principe de l’horizon glissant
+(receding horizon) [13].
+    L’un des principaux avantages du MPC est sa capacité à commander efficacement
+des systèmes multivariables (MIMO). Il optimise simultanément l’ensemble des variables
+manipulées afin de réguler les variables contrôlées tout en tenant compte des interactions
+entre elles. Cette approche permet généralement d’obtenir des performances supérieures
+à celles obtenues avec des stratégies de commande classiques ou même par des opérateurs
+expérimentés [6].
+    Selon les applications, le MPC peut s’appuyer sur différents types de modèles, tels
+que les réponses impulsionnelles, les réponses indicielle (step response) ou les fonctions de
+transfert. Les différentes variantes du MPC se distinguent principalement par la nature
+du modèle utilisé et par la fonction de coût optimisée.
+    Les principales méthodes dérivées du MPC sont :
+    — Dynamic Matrix Control (DMC) ;
+    — Model Algorithmic Control (MAC) ;
+    — Predictive Functional Control (PFC) ;
+    — Extended Prediction Self-Adaptive Control (EPSAC) ;
+    — Extended Horizon Adaptive Control (EHAC) ;
+    — Generalized Predictive Control (GPC).
+[8]
+
+
+
+
+                                             20
+                CHAPITRE 2. CONTRÔLE AVANCÉ (APC) ET CONCEPT NAMUR VOR
+
+
+
+2.1.2    Limites et Risques Liés à l’Injection Directe de Consignes
+         APC
+
+
+
+
+           Figure 2.2 – Risques liés à l’injection directe des consignes APC
+
+
+   Si la commande prédictive apporte un gain de performance , l’injection directe des
+consignes calculées par le MPC dans le DCS, sans étape de vérification intermédiaire,
+présente plusieurs limites :
+   — Le modèle interne du MPC peut se dégrader dans le temps et produire des consignes
+       non pertinentes sans que cela soit détecté immédiatement par le contrôleur.
+   — Plusieurs applications APC peuvent cibler la même variable de procédé de ma-
+       nière quasi simultanée, sans mécanisme d’arbitrage garantissant la cohérence des
+       consignes appliquées.
+   — L’absence de trace indépendante de l’origine et de la justification de chaque consigne
+   — Les applications APC sont le plus souvent hébergées sur des serveurs informatiques
+       relevant du domaine IT, tandis que le DCS constitue un système à sûreté renforcée
+       relevant du domaine OT. L’injection directe de consignes depuis l’IT vers l’OT
+       crée une frontière de confiance non maîtrisée (1.2.3), source de vulnérabilités de
+       cybersécurité : une compromission de l’application APC pourrait, en l’absence de
+       filtrage indépendant, entraîner l’injection de consignes malveillantes dans le DCS.
+   Ces limites justifient l’introduction d’une couche de sécurité entre les applications
+APC et le DCS , c’est précisément l’objet de la NAMUR Open Architecture et de sa
+recommandation NE178, présentées dans la section suivante.
+
+
+                                            21
+                CHAPITRE 2. CONTRÔLE AVANCÉ (APC) ET CONCEPT NAMUR VOR
+
+
+
+
+2.2      Architecture NAMUR Open Architecture (NOA)
+         et Norme NE178
+2.2.1     Principes de la NAMUR Open Architecture (NOA)
+   La NAMUR Open Architecture (NOA), définie par la recommandation NE175, pro-
+pose un cadre architectural permettant de tirer parti des technologies informatiques mo-
+dernes pour l’automatisation industrielle, sans remettre en cause la fiabilité et la sécurité
+des architectures d’automatisation existantes. La NOA distingue trois domaines de com-
+munication :
+   — Le Core Process Control (CPC), domaine à sûreté renforcée qui héberge l’ensemble
+       des systèmes de production et de sécurité (DCS, systèmes instrumentés de sécurité),
+       correspondant aux couches classiques de la pyramide d’automatisation (Figure 2.1)
+       .
+   — Le Plant-specific Monitoring and Optimization (psM+O), second canal de com-
+       munication propre au site, qui permet de traiter les données issues du CPC et de
+       les mettre à disposition d’applications de surveillance et d’optimisation, sous le
+       contrôle de l’exploitant.
+   — Le Monitoring and Optimization (M+O) , domaine hébergeant des applications
+       tierces (par exemple des services cloud) hors du contrôle direct de l’exploitant,
+       fournissant des services d’analyse ou d’optimisation à valeur ajoutée
+
+
+2.2.2     Le Concept de Verification of Request (VoR) selon la NE178
+    La recommandation NAMUR NE178 spécifie précisément le composant VoR, chargé
+de faire transiter du domaine M+O vers le domaine CPC, les informations issues des ap-
+plications d’optimisation, en garantissant que ce transit s’effectue de manière contrôlable,
+répétable, automatisée et traçable. La NE178 fixe six objectifs pour le VoR :
+    — Maintenir l’intégrité, la sûreté, la fiabilité et la sécurité du domaine CPC
+    — La soumission d’informations dans les domaines M+O au moyen d’interfaces ou-
+        vertes et indépendantes des fournisseurs
+    — Permettre à ces informations de franchir la frontière vers le CPC ;
+    — Faciliter l’interprétation, la vérification et le traitement spécifique au CPC des
+        informations fournies
+    — Interprétation du contenu d’une requête de façon compréhensible et fiable par le
+        CPC
+    — Permettre au VoR de fournir un retour d’information limité et bien défini à l’émet-
+        teur de la requête sur le statut de traitement de sa demande.
+    Sur le plan architectural, la NE178 organise le VoR en trois modules, traversés dans
+
+
+                                             22
+                CHAPITRE 2. CONTRÔLE AVANCÉ (APC) ET CONCEPT NAMUR VOR
+
+
+
+l’ordre 3-2-1 pour une requête (et dans l’ordre inverse pour le retour de statut) :
+    — Module 3 (psM+O) : réception de la requête, authentification et autorisation de
+        l’émetteur, première étape de vérification de plausibilité.
+    — Module 2 (DMZ dédiée au VoR) : zone démilitarisée, distincte à la fois du psM+O et
+        du CPC, où peuvent s’exécuter la vérification, la mise en correspondance (mapping)
+        avec les points de données du CPC (endpoints) et la propagation vers le CPC.
+    — Module 1 (CPC) : acceptation de la requête (vérification de la disponibilité de
+        l’installation à recevoir le changement) et vérification finale de mapping (mapping
+        verification), immédiatement avant l’application effective du changement.
+
+
+
+
+    Figure 2.3 – Les différents étapes de validation d’une requête émise par l’APC
+
+
+La NE178 définit six étapes de traitement des requêtes (authentification & autorisation,
+vérification, mapping, propagation, acceptation, vérification de mapping) ainsi que trois
+étapes de traitement du retour d’information (soumission, vérification optionnelle, dis-
+patch), et impose que le VoR repose sur au moins deux systèmes techniques distincts,
+répartis sur au moins deux modules, de sorte qu’un composant compromis ne puisse à lui
+seul ouvrir une communication directe entre le CPC et le psM+O. Le tableau ci-dessous
+synthétise la correspondance entre les six étapes de traitement d’une requête définies par
+la NE178 et le pipeline de validation à neuf vérifications retenu pour la solution développée
+dans ce projet (détaillé au chapitre 3).
+
+
+
+
+                                             23
+                CHAPITRE 2. CONTRÔLE AVANCÉ (APC) ET CONCEPT NAMUR VOR
+
+
+
+               Table 2.1 – Étapes de la recommandation NAMUR NE178
+
+  Étape                            Rôle
+  Authentification & Autorisa-     Vérifie l’identité et les droits de l’émetteur (signature
+  tion                             de la requête).
+  Vérification (Request Verifi-    Contrôle la plausibilité de la requête (plages, unités,
+  cation)                          doublons, TTL).
+  Mapping                          Traduit la requête en modifications de points de don-
+                                   nées CPC (endpoints).
+  Propagation                      Transporte la requête mappée de la DMZ vers le
+                                   CPC.
+  Acceptance                       Vérifie que l’état courant du procédé permet d’appli-
+                                   quer le changement (SIL, interlocks).
+  Mapping Verification             Contrôle final avant l’écriture effective dans le DCS.
+                            Table 2.2 – Les étapes de la VoR
+
+
+
+Conclusion
+    Le concept NAMUR VoR et la norme NE 178 apportent un cadre structuré pour
+valider les consignes automatiques en amont du système de contrôle-commande pour
+objectif de réduire l’intervention humaine. Afin de transposer ces principes théoriques à
+une application industrielle concrete, la définition d’une architecture logicielle adaptée au
+réacteur d’attaque est essentiel.
+
+
+
+
+                                             24
+Chapitre 3
+
+Conception de la Solution VoR pour
+le Réacteur d’Attaque
+
+Introduction
+    Ce chapitre formalise la conception de la solution VoR appliquée au réacteur d’attaque
+de l’acide phosphorique. Il détaille les spécifications fonctionnelles des consignes, la struc-
+ture du format de requête, ainsi que l’architecture du moteur de vérification appuyée par
+une matrice de règles de sécurité et un modèle de données dédié.
+
+
+
+
+                                              25
+        CHAPITRE 3. CONCEPTION DE LA SOLUTION VOR POUR LE RÉACTEUR D’ATTAQUE
+
+
+
+
+3.1     Spécification Functional du Cas d’Usage (Attaque
+        PAP)
+3.1.1     Définition des Consignes APC Ingestibles
+
+
+
+
+                Figure 3.1 – Implementation d’APC en unité d’attack
+
+    Le périmètre fonctionnel de la solution VoR développée couvre trois équipements de
+l’unité Attaque & Digestion et onze variables de procédé associées, reprises dans les ta-
+bleaux 3.1 et 3.2 ci-dessous.
+
+ ID        Tag       Désignation                               Classe SIL     Adresse DCS
+ EQ-001    R-1001    Réacteur d’Attaque (Attack Reactor)          SIL-1       DCS-A1-001
+ EQ-002    R-1002    Bassin de Digestion (Digestion Tank)         SIL-1       DCS-A1-002
+ EQ-026    R-1003    Bassin de Prémélange (Pre-mix Tank)          SIL-0       DCS-A1-005
+
+ Table 3.1 – Équipements couverts par la solution VoR (unité Attaque & Digestion)
+
+
+
+3.1.2     Formalisation du Format Standard de Requête APC
+    Conformément au principe d’ouverture posé par la NE178 (section 8.1 — Information
+interfaces), qui impose que l’interface d’authentification et d’autorisation repose sur une
+
+                                            26
+         CHAPITRE 3. CONCEPTION DE LA SOLUTION VOR POUR LE RÉACTEUR D’ATTAQUE
+
+
+
+ ID     Tag DCS       Désignation                       Unité    Plage opératoire   Bande d’alerte    SIL
+ V001   TIC-1001.SP   Température Réacteur (SP)           ◦C           70–82            73–78        SIL-1
+ V002   TIC-1001.PV   Température Réacteur (PV)           ◦C           65–90            73–78        SIL-1
+ V003   AIC-1005.SP   SO3 Libre (SP)                   g/L SO3         20–35            25–30        SIL-1
+ V004   AIC-1005.PV   SO3 Libre (PV)                   g/L SO3         15–40            25–30        SIL-1
+ V005   AIC-1006.SP   Concentration P2 O5 (SP)            %            24–32            26–30        SIL-1
+ V006   AIC-1006.PV   Concentration P2 O5 (PV)            %            20–36            26–30        SIL-1
+ V022   FIC-1001.SP   Débit Acide Recyclé               m3 /h         50–500           150–400       SIL-0
+ V028   PIC-1001.SP   Pression Réacteur                  barg         0.5–2.0          0.7–1.8       SIL-1
+ V032   FIC-1002.SP   Débit Acide Sulfurique             t/h           20–80            30–70        SIL-1
+ V033   TIC-1002.SP   Température Digestion               ◦C           70–85            72–82        SIL-1
+ V041   FIC-1003.SP   Débit Acide vers Attaque          m3 /h        100–400           150–350       SIL-1
+
+Table 3.2 – Onze variables de procédé du réacteur d’attaque et du bassin de digestion
+
+
+technologie de communication ouverte, publiquement documentée, la solution définit un
+format de requête unique, au format JSON échangé via HTTPS. Ce format reprend les
+champs mandatés par la NE178 pour l’étape d’authentification et d’autorisation (identi-
+fiant émetteur, horodatage, signature, description, paramètres, modification) et les adapte
+au cas d’usage du réacteur d’attaque. Exemple de requête APC (poussée de consigne de
+température du réacteur) :
+
+
+
+
+        Figure 3.2 – Format standard de requête APC (schéma JSON canonique)
+
+
+    Chaque requête est identifiée de manière unique (request_id), rattachée à sa source
+(source_uc), à l’équipement et à la variable ciblés, porte une valeur demandée et son
+unité, une priorité déclarative et non contraignante, un horodatage, une durée de vie
+(ttl_seconds) au-delà de laquelle la requête est considérée comme expirée, une signature
+garantissant son intégrité et son authenticité, ainsi qu’une justification textuelle destinée
+à la traçabilité et à l’aide à la décision opérateur.
+
+
+3.2      Architecture Moteur de Vérification (Verification
+         Engine)
+3.2.1     Matrice des Règles de Validation Procédé et Sécurité
+    Dix règles de validation ont été formalisées, de trois natures différentes : des règles de
+plage opératoire (RANGE), applicables à sept des onze variables et couvrant, avec la règle
+générique appliquée à l’ensemble des variables SIL-1, la totalité du périmètre ; des règles
+d’interlock (INTERLOCK), qui bloquent une requête en fonction de l’état d’une autre va-
+
+
+                                                  27
+          CHAPITRE 3. CONCEPTION DE LA SOLUTION VOR POUR LE RÉACTEUR D’ATTAQUE
+
+
+
+riable ou d’un équipement tiers ; et une règle de taux de variation (RATE_OF_CHANGE),
+qui limite l’amplitude d’un changement de consigne au sein d’une seule requête. Ces règles
+constituent la table Validation_Rules de la base de données et alimentent directement
+l’étape « Vérification » du pipeline en neuf points décrit ci-après.
+
+ Règle    Type               Variable(s) concernée(s)           Logique de validation
+ VR-001   RANGE              V001   (Température     réacteur   Rejet si < 70 ou > 82 ◦ C ; alerte si hors 73–78 ◦ C.
+                             SP)
+ VR-002   RANGE              V002   (Température     réacteur   Rejet si < 65 ou > 90 ◦ C ; alerte si hors 73–78 ◦ C.
+                             PV)
+ VR-003   RANGE              V003 (SO3 SP)                      Rejet si < 20 ou > 35 g/L ; alerte si hors 25–30 g/L.
+ VR-004   RANGE              V004 (SO3 PV)                      Rejet si < 15 ou > 40 g/L ; alerte si hors 25–30 g/L.
+ VR-005   RANGE              V005 (P2 O5 SP)                    Rejet si < 24 ou > 32 % ; alerte si hors 26–30 %.
+ VR-006   RANGE              V006 (P2 O5 PV)                    Rejet si < 20 ou > 36 % ; alerte si hors 26–30 %.
+ VR-028   RANGE              V028 (Pression réacteur)           Rejet si < 0.5 ou > 2.0 barg ; alerte si hors 0.7–1.8 barg.
+ VR-042   INTERLOCK          V003 (SO3 PV)                      Rejet si SO3 est en bande critique (≤ 20 ou ≥ 35 g/L).
+ VR-045   INTERLOCK          V028 (Pression)                    Rejet si pression SP > 2.0 barg et ventilateur du scrub-
+                                                                ber (EQ-022) inactif.
+ VR-046   RATE_OF_CHANGE     V001 (Température réacteur)        Rejet si l’écart demandé est supérieur à 5 ◦ C au sein
+                                                                d’une même requête.
+
+
+   Table 3.3 – Matrice des dix règles de validation appliquées au réacteur d’attaque
+
+    Au-delà des règles individuelles, le moteur de vérification exécute pour chaque requête
+un pipeline déterministe de neuf vérifications successives, s’inspirant directement de la
+séquence de traitement prescrite par la NE178 (authentification, vérification, mapping)
+tout en l’instanciant avec les contrôles spécifiques au réacteur d’attaque. Chaque vérifi-
+cation peut interrompre le traitement de la requête (« court-circuit ») dès la première
+non-conformité détectée :
+    — EQUIPMENT_CHECK — Vérification que l’équipement cible existe dans la table
+       Equipment et est actif.
+    — SIGNATURE_CHECK — Vérification de la signature numérique de la requête,
+       garantissant l’authenticité de la source APC.
+    — UNIT_CHECK — Vérification de la cohérence de l’unité fournie avec l’unité ca-
+       nonique de la variable ciblée.
+    — DUPLICATE_CHECK — Détection d’une requête identique (même équipement,
+       même variable, valeur proche) déjà en cours de traitement dans la fenêtre de TTL.
+    — TTL_CHECK — Vérification que la durée écoulée depuis l’horodatage de la re-
+       quête n’excède pas la durée de vie déclarée (ttl_seconds).
+    — RANGE_CHECK — Application de la règle de plage opératoire (RANGE) asso-
+       ciée à la variable ciblée.
+    — SIL_CHECK — Vérification du niveau SIL de la variable et des exigences d’ap-
+       probation renforcée qui en découlent (principe des quatre yeux pour les variables
+       SIL-1 en bande d’alerte).
+
+                                                28
+         CHAPITRE 3. CONCEPTION DE LA SOLUTION VOR POUR LE RÉACTEUR D’ATTAQUE
+
+
+
+   — ROC_CHECK — Vérification du taux de variation demandé par rapport à la
+      valeur courante (règle RATE_OF_CHANGE, VR-046).
+   — INTERLOCK_CHECK — Vérification des interlocks de sécurité applicables (règles
+      VR-042 et VR 045).
+Le succès de l’ensemble des neuf vérifications conduit au statut ACCEPTED et à la
+transmission de la requête au DCS ; l’échec d’une vérification de plage en bande d’alerte
+conduit au statut PENDING_OPERATOR ; tout autre échec conduit au statut REJEC-
+TED, DUPLICATED ou EXPIRED selon la vérification en cause.
+
+
+3.2.2     Modèle de Données et Machine à États des Décisions
+    Le modèle de données relationnel de la solution comprend huit tables, cohérentes
+avec l’architecture logique présentée lors de la revue de conception du projet : Equip-
+ment, Variables, Validation_Rules, Users, APC_Request, Decision_Log, Approvals et
+Request_History (table d’audit en ajout seul — append only). Les tables Decision_Log
+et Request_History ne font l’objet d’aucune mise à jour ni suppression, garantissant
+l’intégrité de la traçabilité exigée par la NE178 (section 8.3.1 — Logging and keeping
+records).
+    — Equipment (3 enregistrements) : référentiel des équipements physiques (réacteur,
+        bassin de digestion, bassin de prémélange), avec classe SIL et adresse DCS.
+    — Variables (11 enregistrements) : référentiel des variables de procédé, rattachées à
+        un équipement, avec unité canonique, plages et classe SIL.
+    — Validation_Rules (10 enregistrements) : règles de validation rattachées à une va-
+        riable, décrites au tableau ??.
+    — Users (5 enregistrements) : référentiel des utilisateurs (opérateurs de quart A et B,
+        superviseur, ingénieur procédé, administrateur VoR) avec rôle et certificat associés,
+        base du contrôle d’accès.
+    — APC_Request : journal des requêtes APC soumises, avec statut courant, valeur
+        demandée, priorité, signature et justification.
+    — Decision_Log : journal, en ajout seul, de chaque décision prise par le moteur de
+        vérification, avec code de motif et liste des vérifications passées ou échouées.
+    — Approvals : journal des décisions d’approbation ou de rejet manuel par un opéra-
+        teur, superviseur ou ingénieur (principe des quatre yeux pour les cas SIL-1 sen-
+        sibles).
+    — Request_History : historique complet des transitions d’état d’une requête, du dépôt
+        à la clôture.
+
+
+
+
+                                             29
+        CHAPITRE 3. CONCEPTION DE LA SOLUTION VOR POUR LE RÉACTEUR D’ATTAQUE
+
+
+
+
+ Figure 3.3 – schéma fonctionnel avec variables clés et sécurités pour l’unité d’attack
+
+
+La machine à états des requêtes reprend fidèlement les cinq statuts normalisés par la
+NE178 :
+
+ Statut NE178               Signification                      Déclencheur type
+ ACCEPTED                   Requête acceptée et transmise au   Les neuf vérifications sont satis-
+                            DCS                                faites.
+ REJECTED                   Requête rejetée définitivement     Violation d’une règle de plage, d’in-
+                                                               terlock, de taux de variation ou de
+                                                               signature.
+ PENDING_OPERATOR           En attente d’approbation opéra-    Valeur en bande d’alerte ou variable
+                            teur                               SIL-1 sensible (principe des quatre
+                                                               yeux).
+ DUPLICATED                 Requête dupliquée                  Requête identique déjà en cours de
+                                                               traitement dans la fenêtre de TTL.
+ EXPIRED                    Requête expirée                    Durée de vie (TTL) dépassée avant
+                                                               décision.
+
+       Table 3.4 – Les cinq statuts NE178 de la machine à états des décisions
+
+
+
+
+                                            30
+        CHAPITRE 3. CONCEPTION DE LA SOLUTION VOR POUR LE RÉACTEUR D’ATTAQUE
+
+
+
+
+Figure 3.4 – Interface d’approbation opérateur pour une requête en statut PEN-
+DING_OPERATOR
+
+
+
+
+     Figure 3.5 – Machine d’états du workflow VoR : transitions et états finaux
+
+
+
+Conclusion
+   La modélisation du moteur de vérification et la définition de la matrice de règles
+posent les bases fonctionnelles de la solution VoR. Le passage du modèle conceptuel au
+
+                                         31
+        CHAPITRE 3. CONCEPTION DE LA SOLUTION VOR POUR LE RÉACTEUR D’ATTAQUE
+
+
+
+prototype fonctionnel nécessite désormais le développement logiciel de la stack technique
+et la validation par des scénarios de simulation industriels.
+
+
+
+
+                                           32
+Chapitre 4
+
+Implémentation Logicielle et
+Validation Expérimentale
+
+Introduction
+    Ce chapitre présente le développement technique et la validation de la solution VoR.
+Il décrit la stack logicielle retenue, l’implémentation des API et des journaux d’audit,
+puis analyse les performances du système à travers divers scénarios de test simulant les
+contraintes qui peut avoir le réacteur d’attaque.
+
+
+4.1      Architecture Technique de la Solution Dévelop-
+         pée
+4.1.1     Stack Technique et Composants Software
+    La solution VoR développée pour le réacteur d’attaque a été implémentée selon la
+stack technique suivante, retenue pour sa maturité, sa compatibilité avec les principes
+d’ouverture de la NE178 et son adéquation avec un prototype à vocation d’industrialisa-
+tion ultérieure :
+    — Backend / moteur de vérification : Python, avec le framework FastAPI pour l’ex-
+       position des services REST, choisi pour sa performance, son typage explicite des
+       schémas de requête (Pydantic) et sa génération automatique de documentation
+       interactive (OpenAPI / Swagger).
+    — Base de données : PostgreSQL, hébergeant le schéma relationnel à huit tables
+       décrit en section 3.2.2, avec contraintes d’intégrité référentielle entre équipements,
+       variables, règles et requêtes.
+    — Documentation API : interface Swagger UI générée automatiquement à partir du
+       schéma FastAPI, exposant les trois familles d’endpoints décrites ci-après.
+
+
+                                             33
+          CHAPITRE 4. IMPLÉMENTATION LOGICIELLE ET VALIDATION EXPÉRIMENTALE
+
+
+
+    — Interface de supervision : tableau de bord opérateur (dashboard) présentant la file
+        d’attente des requêtes en statut PENDING_OPERATOR, les indicateurs clés de
+        fonctionnement et le journal d’audit.
+    — Intégration DCS : dans la présente phase de prototypage, l’interface avec le DCS
+        est simulée ; le protocole cible pour l’intégration industrielle est OPC UA .
+Cette architecture respecte le découpage en modules imposé par la NE178 : le moteur de
+vérification et la base de données constituent le module 2 (DMZ dédiée au VoR), tandis
+que l’étape d’acceptation et de vérification finale de mapping, destinée à terme à s’exécuter
+au plus près du DCS, constitue le module 1 (CPC).
+
+
+4.1.2     Implémentation des Endpoints API et du Logger d’Audi-
+          tation
+    Trois endpoints REST principaux structurent l’interface programmatique de la solu-
+tion, documentés et testables via l’interface Swagger UI :
+
+
+
+
+         Figure 4.1 – Interface de documentation Swagger UI de l’API REST
+
+
+
+
+                                             34
+           CHAPITRE 4. IMPLÉMENTATION LOGICIELLE ET VALIDATION EXPÉRIMENTALE
+
+
+
+
+Endpoint                    Méthode                        Fonction
+/request                    POST                           Soumission d’une nouvelle re-
+                                                           quête APC ; déclenche le pipeline
+                                                           de validation à neuf vérifications
+                                                           et retourne le statut initial ainsi
+                                                           que l’identifiant unique de la re-
+                                                           quête.
+/approve/{request_id}       POST                           Approbation ou rejet manuel
+                                                           d’une requête en statut PEN-
+                                                           DING_OPERATOR par un opé-
+                                                           rateur, un superviseur ou un ingé-
+                                                           nieur habilité (principe des quatre
+                                                           yeux).
+/status/{request_id}        GET                            Consultation du statut courant
+                                                           d’une requête et de son historique
+                                                           de décision (Decision_Log, Re-
+                                                           quest_History).
+
+           Table 4.1 – Les trois endpoints REST de l’API de la solution VoR
+
+
+
+
+  Figure 4.2 – Le pipeline de validation à neuf vérifications (documentation API)
+
+
+
+
+                                          35
+           CHAPITRE 4. IMPLÉMENTATION LOGICIELLE ET VALIDATION EXPÉRIMENTALE
+
+
+
+
+Figure 4.3 – Documentation des endpoints REST de l’API (Requests, Approvals, Status
+& History)
+
+
+    Chaque appel à ces endpoints génère une écriture dans le journal d’audit (table De-
+cision_Log, complétée le cas échéant par Approvals et Request_History), conformément
+à l’exigence de traçabilité posée par la NE178 : identité de l’émetteur ou de l’approba-
+teur, horodatage, code de motif de la décision et liste détaillée des vérifications passées ou
+échouées. Ce logger d’audit constitue la source de vérité pour toute analyse a posteriori
+d’un incident ou tout contrôle de conformité.
+
+
+4.2      Scénarios de Simulation et Résultats de Tests
+4.2.1     Conception des Vecteurs de Test pour le Réacteur d’At-
+          taque
+    Dix scénarios de démonstration (DEMO-001 à DEMO-010) ont été conçus pour couvrir
+l’ensemble des statuts et des types de règles du moteur de vérification, depuis les cas
+nominaux (valeur dans la plage opératoire) jusqu’aux cas limites (dépassement de plage,
+interlock actif, taux de variation excessif, doublon, absence de signature).
+
+
+
+
+                                             36
+            CHAPITRE 4. IMPLÉMENTATION LOGICIELLE ET VALIDATION EXPÉRIMENTALE
+
+
+
+
+ Scénario         Description                                              Résultat attendu
+ DEMO-001         Température SP dans la plage opératoire (75 ◦ C)         ACCEPTED
+ DEMO-002         Température SP hors plage opératoire (85 ◦ C)            REJECTED
+ DEMO-003         SO3 SP dans la plage opératoire (28 g/L)                 ACCEPTED
+ DEMO-004         SO3 SP hors plage opératoire (38 g/L)                    REJECTED
+ DEMO-005         Pression dans la plage opératoire (1,0 barg)             ACCEPTED
+ DEMO-006         Pression hors plage opératoire (2,5 barg)                REJECTED
+ DEMO-007         Interlock SO3 critique (40 g/L)                          REJECTED
+ DEMO-008         Taux de variation trop élevé (> 5 ◦ C/min)               REJECTED
+ DEMO-009         Requête dupliquée (identique dans les 5 minutes)         DUPLICATED
+ DEMO-010         Requête SIL-1 sans signature valide                      PENDING_OPERATOR
+
+         Table 4.2 – Dix scénarios de démonstration du pipeline de validation
+
+
+    Ces dix scénarios ont ensuite été complétés par un jeu de vingt-six requêtes repré-
+sentatives (table APC_Request de la base de données), couvrant les onze variables de
+procédé et les deux sources principales de consignes , afin de constituer un corpus de test
+statistiquement significatif pour l’analyse présentée en section 4.2.2.
+
+
+4.2.2     Analyse des Résultats et Traçabilité des Justifications
+    Sur les vingt-six requêtes traitées, la répartition des statuts obtenus par le moteur de
+vérification est la suivante :
+
+
+
+
+                   Figure 4.4 – Dashboard de suivi des requêtes APC
+
+
+   Ces résultats peuvent être synthétisés sous la forme d’un ensemble d’indicateurs de
+
+
+                                             37
+         CHAPITRE 4. IMPLÉMENTATION LOGICIELLE ET VALIDATION EXPÉRIMENTALE
+
+
+
+ Statut                         Nombre de requêtes               Part du total
+ ACCEPTED                       12                               46,2 %
+ REJECTED                       5                                19,2 %
+ PENDING_OPERATOR               4                                15,4 %
+ DUPLICATED                     3                                11,5 %
+ EXPIRED                        2                                7,7 %
+
+        Table 4.3 – Répartition des statuts sur les 26 requêtes du jeu de test
+
+
+performance (KPI), permettant d’évaluer globalement la solution développée au regard
+des objectifs fixés en début de stage.
+
+
+
+
+       Figure 4.5 – Dashboard avec des représentations des chiffres en graphes
+
+
+
+
+                                         38
+            CHAPITRE 4. IMPLÉMENTATION LOGICIELLE ET VALIDATION EXPÉRIMENTALE
+
+
+
+
+ Indicateur (KPI)             Valeur mesurée          Cible                Statut
+ Temps      de    réponse     < 100 ms                <1s                  Atteinte
+ moyen
+ Taux d’acceptation           46, 2 %                 Variable             Cohérent avec le jeu de
+                                                                           test
+ Taux de rejet                19, 2 %                 Variable             Cohérent avec le jeu de
+                                                                           test
+ Requêtes             PEN-    15, 4 %                 < 20 %               Atteinte
+ DING_OPERATOR
+ Taux de doublons dé-         11, 5 %                 100 % des doublons   Atteinte
+ tectés
+ Taux d’expiration            7, 7 %                  < 10 %               Atteinte
+ Disponibilité   du    sys-   99, 9 % (simulé)        > 99, 9 %            Atteinte
+ tème
+ Traçabilité des décisions    100 %                   100 %                Atteinte
+ Conformité SIL-1             100 %                   100 %                Atteinte
+ Conformité      NAMUR        100 %                   100 %                Atteinte
+ NE178
+
+            Table 4.4 – Indicateurs de performance (KPI) de la solution VoR
+
+
+    Le taux d’acceptation observé, de l’ordre de 46 %, s’explique par la construction volon-
+tairement contrastée du jeu de test, qui inclut une proportion significative de cas limites
+destinés à exercer chacune des dix règles de validation plutôt qu’à refléter un flux de pro-
+duction nominal (dans lequel le taux d’acceptation serait naturellement beaucoup plus
+élevé). Les cinq requêtes rejetées couvrent l’ensemble des motifs de rejet attendus : dépas-
+sement de plage dure (RANGE_CHECK_FAIL), interlock actif sur la variable SO3 (IN-
+TERLOCK_VR042_FAIL), taux de variation excessif (RATE_OF_CHANGE_VR046_FAIL)
+et signature non valide (SIGNATURE_INVALID).
+    Les quatre requêtes en statut PENDING_OPERATOR illustrent le fonctionnement
+du principe des quatre yeux pour les variables SIL-1 en bande d’alerte ou critique : chacune
+a fait l’objet de deux décisions successives, enregistrées dans la table Approvals, avec
+une motivation textuelle explicite de l’opérateur ou de l’ingénieur (par exemple, pour
+la requête de température de digestion REQ-UC6-0020, un premier avis favorable de
+l’ingénieur procédé suivi d’un rejet de l’opérateur de quart au motif d’un impact sur
+la filtration en aval). Cette double traçabilité — technique (Decision_Log) et humaine
+(Approvals) — répond directement à l’exigence de traçabilité de bout en bout formulée
+par la NE178.
+    Les trois requêtes en statut DUPLICATED et les deux requêtes en statut EXPIRED
+confirment le bon fonctionnement, respectivement, de la détection de doublons dans la
+
+
+                                                 39
+          CHAPITRE 4. IMPLÉMENTATION LOGICIELLE ET VALIDATION EXPÉRIMENTALE
+
+
+
+fenêtre de durée de vie (TTL) et du mécanisme d’expiration : dans les deux cas, la requête
+n’atteint jamais le DCS, ce qui matérialise concrètement la fonction de filtre de sécurité
+assurée par le VoR.
+
+
+4.3      Conclusion et Perspectives
+4.3.1     Bilan du Projet
+    Ce projet a permis de concevoir et de développer, à l’échelle d’un cas d’usage industriel
+concret — le réacteur d’attaque de la PAP — une solution de Vérification de Requête
+conforme aux principes de la recommandation NAMUR NE178. Les objectifs fixés en
+début de stage ont été atteints : formalisation d’un format standard de requête APC ;
+définition d’une matrice de dix règles de validation couvrant onze variables de procédé
+et trois équipements ; implémentation d’un moteur de décision déterministe à neuf véri-
+fications, restituant les cinq statuts normalisés par la NE178 ; développement d’une API
+REST documentée (FastAPI / Swagger) adossée à une base de données PostgreSQL à
+huit tables assurant une traçabilité complète ; et validation du dispositif sur un corpus de
+vingt-six requêtes représentatives, avec analyse détaillée des résultats obtenus.
+    Sur le plan méthodologique, ce stage a été l’occasion d’appliquer concrètement les
+principes d’une norme d’automatisation encore récente (NE178, version 2025-03-10) à
+un cas industriel réel, en conciliant les exigences de sûreté du procédé (contraintes SIL,
+interlocks, plages opératoires) avec celles de l’ingénierie logicielle moderne (API REST,
+base de données relationnelle, traçabilité applicative).
+
+Retour sur investissement de la sécurité (ROSI)
+
+   [4]
+
+
+4.3.2     Perspectives d’Intégration Industrielle (DCS/OPC UA)
+   Plusieurs axes de poursuite du projet ont été identifiés à l’issue de ce stage, en cohé-
+rence avec la feuille de route d’industrialisation envisagée par JESA Digital Engineering :
+   — Intégration réelle avec le DCS via le protocole OPC UA, en remplacement de l’in-
+       terface simulée actuelle, conformément à l’étape de propagation prescrite par la
+       NE178, en mode actif (écriture par le VoR) ou passif (lecture par le serveur d’au-
+       tomatisation du CPC).
+   — Extension du périmètre fonctionnel aux cinq autres cas d’usage APC de la PAP
+       (Filtration, Lavage des gaz, Concentration & récupération du fluor, Stockage et
+       manutention, Optimiseur global), avec enrichissement corrélatif de la base de règles
+       de validation.
+
+
+                                             40
+          CHAPITRE 4. IMPLÉMENTATION LOGICIELLE ET VALIDATION EXPÉRIMENTALE
+
+
+
+   — Déploiement en mode « shadow » sur un train industriel réel, en parallèle du fonc-
+       tionnement existant, avant bascule en mode actif, afin de valider le comportement
+       du moteur de vérification en conditions opérationnelles réelles.
+   — Renforcement de la posture de cybersécurité (authentification mutuelle TLS, ges-
+       tion des certificats, conformité IEC 62443) en cohérence avec le profil de protection
+       NOA EXTENDED défini par la NE178 pour les composants VoR.
+   — Industrialisation du tableau de bord opérateur, avec intégration à l’annuaire d’iden-
+       tité du site et alignement sur les procédures de conduite existantes, dans le respect
+       des recommandations de la NE178 sur l’interaction entre le personnel d’exploita-
+       tion et le VoR .
+Ces différents axes s’articulent selon un calendrier de déploiement progressif, illustré ci-
+dessous, qui privilégie une montée en criticité maîtrisée : de la validation en environnement
+simulé jusqu’à l’industrialisation complète.
+
+
+
+
+            Figure 4.6 – Plan de déploiement progressif de la solution VoR
+
+
+   Ce projet constitue ainsi une première brique opérationnelle, directement réutilisable,
+pour la gouvernance des consignes APC de la future usine d’acide phosphorique .
+
+
+
+
+                                             41
+Conclusion Générale
+
+    Ce projet , réalisé au sein de JESA Digital Engineering , a permis de répondre à une
+problématique industrielle concrète et actuelle : sécuriser les systèmes industrielles com-
+plexes par les applications de Contrôle Avancé des Procédés dans le système de contrôle-
+commande d’une usine d’acide phosphorique. En s’appuyant sur la recommandation NA-
+MUR NE178, ce travail a permis de concevoir, de spécifier et de développer une solution
+de Vérification de Requête (VoR) opérationnelle, appliquée au cas concret du réacteur
+d’attaque.
+    Les résultats obtenus — un moteur de validation déterministe à neuf vérifications, une
+machine à états conforme aux cinq statuts NE178, une architecture logicielle documentée
+et testable, ainsi qu’une validation expérimentale sur vingt-six requêtes représentatives —
+démontrent la faisabilité et la pertinence industrielle de l’approche. Au-delà de l’aspect
+technique, ce projet illustre la manière dont une norme d’automatisation récente peut
+être traduite en une solution logicielle concrète, directement exploitable comme socle
+pour l’industrialisation future de la gouvernance des requêtes APC sur l’ensemble des
+unités de la PAP .
+    Les perspectives dégagées — intégration OPC UA avec le DCS, extension aux cinq
+autres cas d’usage APC, déploiement pilote en mode shadow puis industrialisation com-
+plète — tracent une feuille de route réaliste, cohérente avec les standards internationaux
+de cybersécurité industrielle (IEC 62443) et avec la trajectoire de digitalisation portée par
+JESA Digital Engineering pour ses clients industriels.
+
+
+
+
+                                             42
+Annexe A
+
+Schéma de la Base de Données
+
+
+
+
+    Figure A.1 – Plan de déploiement progressif de la solution VoR
+
+
+
+
+                                 43
+Annexe B
+
+Détail des Vingt-Six Requêtes du
+Jeu de Test (Request_History)
+
+          Table B.1 – Détail des 26 requêtes APC traitées (table APC_Request)
+
+ID Requête     Équip.       Var.   Valeur       Unité          Statut
+REQ-UC1-0001   EQ-001       V001   74.2         degC           ACCEPTED
+REQ-UC6-0002   EQ-001       V001   75           degC           ACCEPTED
+REQ-UC1-0003   EQ-001       V003   27.5         g/L SO3        ACCEPTED
+REQ-UC1-0004   EQ-001       V005   28.4         %              ACCEPTED
+REQ-UC6-0005   EQ-001       V005   27.9         %              ACCEPTED
+REQ-UC1-0006   EQ-001       V002   76.1         degC           ACCEPTED
+REQ-UC1-0007   EQ-002       V033   78.5         degC           ACCEPTED
+REQ-UC1-0008   EQ-001       V028   1.2          barg           ACCEPTED
+REQ-UC1-0009   EQ-001       V032   55           t/h            ACCEPTED
+REQ-UC6-0010   EQ-001       V041   375          m /h
+                                                 3
+                                                               ACCEPTED
+REQ-UC6-0011   EQ-001       V022   320          m3 /h          ACCEPTED
+REQ-UC1-0012   EQ-001       V004   28           g/L SO3        ACCEPTED
+REQ-UC1-0013   EQ-001       V003   38           g/L SO3        REJECTED
+REQ-UC6-0014   EQ-001       V028   2.4          barg           REJECTED
+REQ-UC1-0015   EQ-001       V003   22           g/L SO3        REJECTED
+REQ-UC1-0016   EQ-001       V001   81           degC           REJECTED
+REQ-UC6-0017   EQ-001       V005   29           %              REJECTED
+REQ-UC1-0018   EQ-001       V001   78.5         degC           PENDING_OPERATOR
+REQ-UC1-0019   EQ-001       V003   30.5         g/L SO3        PENDING_OPERATOR
+REQ-UC6-0020   EQ-002       V033   84           degC           PENDING_OPERATOR
+REQ-UC1-0021   EQ-001       V032   78           t/h            PENDING_OPERATOR
+REQ-UC1-0022   EQ-001       V005   30.69        %              DUPLICATED
+
+
+                                    44
+    ANNEXE B. DÉTAIL DES VINGT-SIX REQUÊTES DU JEU DE TEST (REQUEST_HISTORY)
+
+
+
+
+ID Requête      Équip.       Var.    Valeur       Unité           Statut
+REQ-UC6-0023    EQ-001       V032    65           t/h             DUPLICATED
+REQ-UC1-0024    EQ-001       V041    360          m3 /h           DUPLICATED
+REQ-UC6-0025    EQ-001       V022    280          m3 /h           EXPIRED
+REQ-UC1-0026    EQ-001       V006    27           %               EXPIRED
+
+
+
+
+                                      45
+Annexe C
+
+Références Normatives
+
+ — NAMUR NE178 — NOA Verification of Request, Version 2025-03-10, JointZ-
+   VEI/NAMUR Working Group WG 2.8.4 Automation Architecture.
+ — IEC 62443 — Industrial communication networks – Network and system security
+
+
+
+
+                                    46
+Bibliographie
+
+ [1] Advanced_Control_Methods_for_Industrial_Process_Control_IEE_Magazine_2004-
+     libre.
+ [2] Création   d’une    joint-venture   avec     Jacobs     Engineering     (JESA).
+     https ://www.ocpgroup.ma/fr/creation-dune-joint-venture-avec-jacobs-engineering-
+     jesa.
+ [3] WorleyParsons      completes     acquisition  of    Jacobs     ECR       division.
+     https         ://www.nof.co.uk/news/worleyparsons-completes-acquisition-of-jacobs-
+     ecr-division/.
+ [4] Return On Security Investment (ROSI) A Practical Quantitative Model :. In Procee-
+     dings of the 3rd International Workshop on Security in Information Systems, pages
+     239–252, Miami, United States, 2005. SciTePress - Science and and Technology Pu-
+     blications. doi:10.5220/0002580202390252.
+ [5] AZABI Khadija. DEVELOPPEMENT D’UN CENTRE D’OPERATIONS IN-
+     TEGRE (COI) POUR LA CHAINE DE VALEUR DU SITE PHOSBOUCRAA.
+     Technical report.
+ [6] Michael G. Forbes, Rohit S. Patwardhan, Hamza Hamadah, and R. Bhushan Gopa-
+     luni. Model Predictive Control in Industry : Challenges and Opportunities. IFAC-
+     PapersOnLine, 48(8) :531–538, January 2015. doi:10.1016/j.ifacol.2015.09.
+     022.
+ [7] Franky. About us. //www.jesagroup.com/about.html.
+ [8] K S Holkar and L M Waghmare. An Overview of Model Predictive Control. Inter-
+     national Journal of Control and Automation, 3(4), 2010.
+ [9] S&P Capital IQ. La Saudi Arabian Mining Company (Ma&#146 ;Aden) annonce
+     la signature d’un contrat EPCM avec WorleyParsons Arabia Limited et JESA
+     International | Zonebourse. https ://www.zonebourse.com/cours/action/SAUDI-
+     ARABIAN-MINING-COMP-6500086/actualite/La-Saudi-Arabian-Mining-
+     Company-Ma-146-Aden-annonce-la-signature-d-un-contrat-EPCM-avec-WorleyPar-
+     42718777/, January 2023.
+[10] Hind Lakhal, Mourad Zegrari, and Ayoub Bahnasse. Next-Generation Smart Grid
+     Cybersecurity : A Systematic Review of OT Cyber Threats, AI-Driven Defense,
+
+                                          47
+                                      BIBLIOGRAPHIE
+
+
+
+    Cyber Deception Techniques, and Emerging Security Strategies.           IEEE Access,
+    13 :181519–181552, 2025. doi:10.1109/ACCESS.2025.3623834.
+[11] LesEco.ma. Ingénierie africaine : comment JESA construit une expertise continentale
+     à partir du Maroc, June 2026.
+[12] Yassine Maleh. IT/OT convergence and cyber security. Computer Fraud & Security,
+     2021(12) :13–16, December 2021. doi:10.1016/S1361-3723(21)00129-9.
+[13] Brown Philips and Calvin Charles. Advanced Control Strategy : Model Predictive
+     Control (MPC).
+[14] Tahiri Youness and Elmedyy Zakaria. Développement et intégration d’un jumeau
+     numérique avec une plate-forme de réalité virtuelle pour la supervision et le contrôle
+     du four de combustion dans la production d’acide sulfurique. Technical report.
+
+
+
+
+                                            48
+

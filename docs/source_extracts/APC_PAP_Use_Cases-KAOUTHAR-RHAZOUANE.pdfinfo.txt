@@ -1,0 +1,19 @@
+Author:          hp
+Creator:         Microsoft® Word 2019
+Producer:        Microsoft® Word 2019
+CreationDate:    Thu Jun 25 10:25:54 2026 UTC
+ModDate:         Thu Jun 25 10:25:54 2026 UTC
+Custom Metadata: no
+Metadata Stream: yes
+Tagged:          yes
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           23
+Encrypted:       no
+Page size:       595.32 x 841.92 pts (A4)
+Page rot:        0
+File size:       1740771 bytes
+Optimized:       no
+PDF version:     1.7

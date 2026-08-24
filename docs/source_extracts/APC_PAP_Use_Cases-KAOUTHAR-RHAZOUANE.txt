@@ -1,0 +1,1007 @@
+                                                                                  APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Table des matières
+Process Description ................................................................................................................................. 3
+
+APC Use Cases Overview......................................................................................................................... 4
+
+Attack & Digestion Control Strategy........................................................................................................ 5
+
+   Overview ............................................................................................................................................. 5
+
+   Control Objectives............................................................................................................................... 6
+
+   System Characteristics ........................................................................................................................ 6
+
+   Control Variables & Constraints .......................................................................................................... 7
+
+Filtration Control Strategy ....................................................................................................................... 8
+
+   Overview ............................................................................................................................................. 8
+
+   Control Objectives............................................................................................................................... 9
+
+   System Characteristics ...................................................................................................................... 10
+
+   Control Variables & Constraints ........................................................................................................ 10
+
+Gas Scrubbing Control Strategy ............................................................................................................ 11
+
+   Overview ........................................................................................................................................... 11
+
+   Control Objectives............................................................................................................................. 12
+
+   System Characteristics ...................................................................................................................... 13
+
+   Control Variables & Constraints ........................................................................................................ 13
+
+Acid Concentration & Fluorine Recovery Control Strategy ................................................................... 14
+
+   Overview ........................................................................................................................................... 14
+
+   Control Objectives............................................................................................................................. 15
+
+   System Characteristics ...................................................................................................................... 16
+
+   Control Variables & Constraints ........................................................................................................ 16
+
+Acid Handling & Storage Control Strategy ............................................................................................ 18
+
+   Overview ........................................................................................................................................... 18
+
+   Control Objectives............................................................................................................................. 18
+
+   System Characteristics ...................................................................................................................... 19
+
+   Control Variables & Constraints ........................................................................................................ 19
+
+Plant-Wide Optimizer (PWO) ................................................................................................................ 20
+
+   Overview ........................................................................................................................................... 20
+
+                                                                            1
+                                                                                 APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+   Control Objectives............................................................................................................................. 21
+
+   Optimization Structure...................................................................................................................... 21
+
+      Units APCs ..................................................................................................................................... 22
+
+      Line Optimizers ............................................................................................................................. 22
+
+      Plant-Wide Optimizer .................................................................................................................... 22
+
+Summary of Expected APC Benefits...................................................................................................... 23
+
+
+
+
+                                                                           2
+                                                        APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+       APC Phosphoric Acid Plant Use Cases &
+                                Control Strategies
+
+Process Description
+The phosphoric acid plant produces 1,615 TPD P2O5 as 28% P2O5 phosphoric acid using the
+dihydrate wet process. The plant comprises one reaction train, two filtration trains, and four
+concentration trains, with integrated fluorine recovery and acid storage systems.
+
+      •   Attack & Digestion: Phosphate rock (65% solids slurry) reacts with sulfuric acid and
+          recycled phosphoric acid in a multi-compartment attack reactor. The exothermic reaction
+          produces phosphoric acid and gypsum (CaSO4.2H2O) crystals at 76°C. The slurry
+          undergoes digestion to complete crystallization before filtration.
+
+      •   Filtration: Gypsum slurry is fed to two parallel filtration trains. The gypsum cake is counter-
+          currently washed in three stages to recover P2O5. Filtrate (weak acid at 28% P2O5) is sent
+          to storage, while washed gypsum cake is discharged to the gypsum pond.
+
+      •   Gas Scrubbing: A gas scrubbing tower cleans emissions from attack tanks, digestion, and
+          filtration sections. Gases are washed in two stages with circulating water to remove HF and
+          SiF4 before discharge to the stack.
+
+      •   Acid Concentration & Fluorine Recovery: Weak acid (28% P2O5) is concentrated to 54%
+          P2O5 using four parallel vacuum evaporator trains. Low-pressure steam (170°C / 5 barg)
+          provides heat through graphite heat exchangers. Fluorine vapors are recovered as 18%
+          H2SiF6 (fluorosilicic acid).
+
+      •   Acid Handling & Storage: Weak acid (28% P2O5) and concentrated acid (54% P2O5) are
+          clarified in settlers to remove sludge before storage. Fluorosilicic acid (18% H2SiF6) is
+          stored separately for downstream neutralization/recovery.
+
+      •   Cooling Tower & Utilities: A cooling tower provides cold water to concentration and filter
+          condensers. Utilities include process water, cooling water, pond water, LP steam,
+          instrument air, and plant air.
+
+This integrated process ensures efficient P2O5 extraction, stable acid quality, optimized sulfuric acid
+consumption, and compliant emissions control.
+
+
+
+
+                                                   3
+                                                         APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+APC Use Cases Overview
+This document applies to the deployment of Advanced Process Control (APC) solutions across key
+operational areas within the phosphoric acid plant.
+
+      •    Attack & Digestion Control Strategy: Focused on stabilizing reaction temperature (76°C),
+           controlling free sulfate SO3 concentration (25–30 g/l), optimizing P2O5 extraction
+           efficiency, and maintaining stable slurry conditions for downstream filtration.
+
+      •    Filtration Control Strategy: Targeted at maximizing filtration rate, minimizing P2O5 losses
+           in gypsum cake, optimizing cake wash water usage, and maintaining stable filter operation
+           across two parallel trains.
+
+      •    Gas Scrubbing Control Strategy: Aimed at maintaining HF and SiF4 emissions below
+           regulatory limits, optimizing scrubber liquid circulation, and minimizing fresh water
+           consumption.
+
+      •    Acid Concentration & Fluorine Recovery Control Strategy: Focused on stabilizing product
+           acid concentration (54% P2O5), optimizing steam consumption, controlling evaporator
+           scaling, and maximizing FSA recovery (18% H2SiF6).
+
+      •    Acid Handling & Storage Control Strategy: Targeted at maintaining tank levels, optimizing
+           sludge recycle, ensuring acid quality through settling control, and managing product acid
+           temperature.
+
+      •    Plant-Wide Optimizer (PWO): Acts as a supervisory APC layer to coordinate and optimize
+           the operation of multiple units simultaneously under plant-wide economic and production
+           objectives.
+
+
+
+
+          Figure 1: APC Phosphoric Acid Plant Strategy
+
+
+                                                    4
+                                                          APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+The APC scope focuses strictly on the advanced control layer, comprising multivariable control,
+predictive models, optimizer design, and supervisory coordination between unit processes. The APC
+shall also be capable of integrating with other digitalization solutions to enable enhanced plant-wide
+control and ensure scalability for future projects.
+
+This structure ensures that the APC project is seamlessly integrated into the plant’s overall
+digitalization strategy, improving both localized process control and global plant optimization without
+interfering with the base automation infrastructure.
+
+
+
+Attack & Digestion Control Strategy
+
+Overview
+The attack and digestion section consists of a monolithic concrete attack reactor with multiple
+agitated compartments, a low-level flash cooler (LLFC), and a three-compartment digestion tank.
+Phosphate rock is fed as a 65% solids slurry and reacts with sulfuric acid and recycled phosphoric
+acid. The reaction is exothermic and produces phosphoric acid and gypsum crystals. The LLFC
+maintains the reaction temperature at 76°C under vacuum through evaporative cooling. The
+digestion tank provides residence time to complete crystallization and reduce supersaturation before
+filtration.
+
+
+
+
+Figure 2: Attack & Digestion PFD
+
+
+
+
+                                                      5
+                                                         APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Control Objectives
+      •   Maintain reaction temperature at 76°C (range 71–80°C) by controlling flash cooler
+          circulation rate and vacuum.
+
+      •   Control free sulfate SO3 concentration at 25–30 g/l (~2% excess) to optimize P2O5
+          extraction and prevent gypsum coating on rock particles.
+
+      •   Stabilize P2O5 concentration at 28% (range 26–30%) to ensure optimal filtration
+          performance and prevent crystallization issues.
+
+      •   Maintain stable reaction slurry solids content to prevent foaming, viscosity problems, and
+          mixing issues.
+
+      •   Ensure adequate digestion residence time to complete gypsum crystallization and reduce
+          post-precipitation in weak acid storage.
+
+      •   Prevent short-circuiting of unreacted rock from the reaction system to the filtration
+          section.
+
+      •   Minimize P2O5 extraction losses (both citrate-insoluble and citrate-soluble losses).
+
+
+System Characteristics
+
+Process Dynamics               Slow to moderate process dynamics with response times ranging from
+                               several minutes (temperature) to tens of minutes (concentration, sulfate).
+
+Process Behavior               Highly nonlinear behavior with strong interactions between temperature,
+                               sulfate concentration, P2O5 content, slurry solids, and crystal growth.
+                               Chemical equilibrium and crystallization kinetics dominate process behavior.
+
+Process Configuration          Closed-loop reaction circuit with internal recirculation via the LLFC
+                               circulation pump, external recycle acid from filters, and gravity overflow from
+                               attack reactor to digestion tank.
+
+Main Operational Challenges    Maintaining optimal sulfate excess without causing gypsum coating;
+                               controlling supersaturation and crystal growth; flash cooler scaling and
+                               vacuum stability; rock quality variability (P2O5 content 29–31%); foaming
+                               and viscosity issues at extreme solids content.
+
+Key Quality Variable           P2O5 extraction efficiency and free sulfate SO3 concentration.
+
+Main Optimization Targets      Maximize P2O5 extraction (+1–2%), stabilize acid concentration at 28% P2O5
+                               (±0.5%), optimize sulfuric acid consumption (–2 to –5%), minimize scaling
+                               tendency.
+
+
+
+                                                     6
+                                                     APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Control Variables & Constraints
+
+Category   Variable                        Description / Purpose
+
+MV         Phosphate Rock Feed Rate        Controls plant throughput. Rock slurry at 65% solids; solid
+                                           flowrate monitored by flowmeter and densimeter.
+
+MV         Sulfuric Acid Feed Rate         Controls free sulfate SO3 concentration. Adjusted to maintain
+                                           25–30 g/l SO3 excess (~2%) in attack slurry.
+
+MV         Recycled Acid Flow Rate         Controls P2O5 concentration and solids level in attack
+                                           system. Overflow from product acid to recycled acid line.
+
+MV         Flash Cooler Circulation Rate   Controls reaction temperature at 76°C via evaporative
+                                           cooling. High recirculation ensures low delta T (<3°C).
+
+MV         Cake Wash Water Flow            Regulates product acid strength (28% P2O5 target) by
+                                           controlling dilution in the recycle loop.
+
+CV         Reactor Temperature             Maintains dihydrate crystal formation at 76°C (range 71–
+                                           80°C). Critical for crystal stability and filtration performance.
+
+CV         Free Sulfate (SO3)              Maintained at 25–30 g/l. Too low = co-crystallized P2O5
+                                           losses; too high = gypsum coating on rock particles.
+
+CV         P2O5 Concentration              Target 28% (range 26–30%). High = crystallization/viscosity
+                                           problems; low = foaming and supersaturation.
+
+CV         Reaction Slurry Solids          Must be maintained in optimal range to prevent foaming (low
+                                           solids) or viscosity issues (high solids).
+
+CV         Digestion Residence Time        Ensures completion of crystallization and reduction of
+                                           supersaturation before filtration.
+
+CV         LLFC Delta T                    Temperature drop across flash cooler (design 2.5°C, limit
+                                           <3°C). Minimizes nucleation and scaling.
+
+DV         Phosphate Rock Quality          Variations in %P2O5 (29–31%), particle size, and impurities
+                                           (Fe2O3, Al2O3, CaCO3) affecting reaction kinetics.
+
+DV         Rock Particle Size              Affects dissolution rate, extraction efficiency, and citrate-
+                                           insoluble losses.
+
+DV         Rock Impurities                 Fe2O3, Al2O3 form sludge precipitates; CaCO3 generates CO2
+                                           and affects sulfate balance.
+
+
+
+
+                                                7
+                                                       APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Figure 3: Attack & Digestion Control Strategy
+
+
+
+Filtration Control Strategy
+
+Overview
+The filtration section separates phosphoric acid from gypsum crystals using two parallel filtration
+trains, each equipped with a vacuum box and an external filter separator. The gypsum cake
+undergoes three-stage counter-current washing to recover P2O5. Filtrate (28% P2O5 weak acid) is
+directed to the weak acid distribution system, while the washed gypsum cake is discharged to the
+gypsum pond. Vapors from the filter separator pass through a condenser before reaching the
+vacuum pump. Effective filtration control is critical for maximizing P2O5 recovery and minimizing
+losses in the gypsum cake.
+
+
+
+
+                                                   8
+                                                       APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Figure 4 : Filtration PFD
+
+
+Control Objectives
+      •   Maximize filtration rate while maintaining cake quality and wash efficiency.
+
+      •   Minimize water-soluble P2O5 losses in the gypsum cake (target reduction: 10–20%).
+
+      •   Maintain stable cake thickness across both filtration trains for optimal washing
+          performance.
+
+      •   Optimize cake wash water distribution across three counter-current wash stages.
+
+      •   Maintain filtrate clarity and minimize solids carryover to weak acid storage.
+
+      •   Control gypsum cake moisture to stable levels before discharge.
+
+      •   Prevent filter flooding and ensure stable vacuum conditions.
+
+
+
+
+                                                   9
+                                                          APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+System Characteristics
+
+Process Dynamics                Moderate process dynamics with response times ranging from minutes (feed
+                                rate, wash water) to tens of minutes (cake quality, P2O5 loss).
+
+Process Behavior                Nonlinear behavior with interactions between slurry density, crystal size
+                                distribution, cake thickness, wash efficiency, and vacuum level. Filter
+                                performance degrades with cloth aging and scaling.
+
+Process Configuration           Two parallel filtration trains with vacuum boxes, three-stage counter-current
+                                cake washing, filter separators with condensers, and shared vacuum systems.
+
+Main Operational Challenges     Filter cloth blinding and degradation; cake thickness variability; wash water
+                                distribution imbalance; crystal quality variations affecting permeability;
+                                vacuum fluctuations; filter flooding during upsets.
+
+Key Quality Variable            Water-soluble P2O5 loss in gypsum cake and filtrate clarity.
+
+Main Optimization Targets       Minimize P2O5 cake losses, maximize filtration rate, stabilize cake quality,
+                                optimize wash water consumption, extend filter cloth life (+15–20%).
+
+
+
+Control Variables & Constraints
+
+Category     Variable                           Description / Purpose
+
+MV           Filter Feed Rate                   Controls slurry flow to each filtration train, balancing
+                                                throughput and cake quality.
+
+MV           Cake Wash Water Flow               Controls P2O5 recovery from gypsum cake and product acid
+                                                strength. Three-stage counter-current wash.
+
+MV           Filter Rotation Speed              Controls cake formation time, cake thickness, and filtration
+                                                cycle duration.
+
+MV           Cloth Wash Water Flow              Maintains filter cloth permeability and prevents blinding by
+                                                removing embedded solids.
+
+MV           Vacuum Level                       Controls filtration driving force, cake moisture, and filtration
+                                                rate.
+
+CV           Cake Thickness                     Monitors cake formation quality and consistency across the
+                                                filter surface.
+
+CV           Filtration Rate                    Measures acid production rate and filter performance (TPD
+                                                P2O5 per train).
+
+CV           Cake P2O5 Loss (Water-Soluble)     Key quality variable — measures P2O5 recovery efficiency in
+                                                washing. Target reduction 10–20%.
+
+CV           Filtrate Clarity                   Monitors solids carryover to weak acid storage; high clarity
+                                                indicates good filtration performance.
+
+
+                                                     10
+                                                          APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Category     Variable                         Description / Purpose
+
+CV           Gypsum Cake Moisture             Indicates wash efficiency and vacuum performance; target
+                                              stable moisture before discharge.
+
+CV           Filter Vacuum                    Monitors vacuum stability; fluctuations indicate cake
+                                              cracking, flooding, or cloth issues.
+
+DV           Slurry Density                   Impacts cake formation rate, thickness, and filtration
+                                              capacity.
+
+DV           Crystal Size Distribution        Influences cake permeability, wash efficiency, and P2O5 loss.
+                                              Affected by attack conditions.
+
+DV           Filter Cloth Condition           Degradation over time reduces permeability and filtration
+                                              performance; DV for APC horizon.
+
+
+
+
+Figure 5: Filtration Control Strategy.
+
+
+
+Gas Scrubbing Control Strategy
+
+Overview
+The gas scrubbing system cleans process gases containing HF and SiF4 from the attack reactor,
+digestion tank, and filtration sections. An empty counter-current gas scrubbing tower with a scrubber
+fan sucks gases from all emission points, scrubs them in two stages with circulating water, and
+
+
+                                                  11
+                                                       APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+discharges cleaned gas to the stack. Water make-up is performed using process water (second stage)
+and pond water (first stage). Effective scrubber control is essential for environmental compliance and
+fluorine recovery.
+
+
+
+
+Figure 6: Gas Scrubbing PFD
+
+
+Control Objectives
+      •   Maintain stack gas emissions (HF, SiF4) within regulatory limits (target reduction: 20–30%).
+
+      •   Optimize scrubber liquid circulation rate to maximize fluorine absorption efficiency.
+
+      •   Maintain scrubber liquid pH in optimal range for fluorine capture.
+
+      •   Control scrubber liquid temperature to prevent fluorosilicate scaling and maintain
+          absorption efficiency.
+
+      •   Minimize fresh water consumption by optimizing process water and pond water make-up.
+
+      •   Ensure stable scrubber fan operation and maintain reactor under slight vacuum.
+
+
+
+
+                                                  12
+                                                              APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+System Characteristics
+
+Process Dynamics                  Fast process dynamics with response times from seconds to minutes (gas
+                                  flow, pH, temperature) due to high gas-liquid contact efficiency.
+
+Process Behavior                  Nonlinear absorption behavior with interactions between gas flow rate,
+                                  fluorine concentration, liquid pH, temperature, and circulation rate.
+                                  Absorption efficiency depends on gas-liquid equilibrium.
+
+Process Configuration             Single empty counter-current scrubbing tower with two-stage washing,
+                                  circulation pumps, process water and pond water make-up, scrubber fan,
+                                  and stack discharge.
+
+Main Operational Challenges       Variable gas flow and fluorine loading from upstream processes; pH control
+                                  stability; fluorosilicate scaling at low temperatures; water balance
+                                  management; seasonal variations in pond water temperature.
+
+Key Quality Variable              Stack gas HF and SiF4 concentrations.
+
+Main Optimization Targets         Minimize HF/SiF4 emissions (–20 to –30%), optimize scrubbing water
+                                  consumption, maximize fluorine recovery, ensure stable reactor vacuum.
+
+
+
+Control Variables & Constraints
+
+Category     Variable                             Description / Purpose
+
+MV           Scrubber Circulation Rate            Controls gas-liquid contact efficiency and fluorine absorption
+                                                  rate.
+
+MV           Process Water Make-up (2nd           Provides clean wash water for final scrubbing stage;
+             Stage)                               influences pH and liquid quality.
+
+MV           Pond Water Make-up (1st Stage)       Provides bulk water for primary scrubbing; absorbs majority
+                                                  of fluorine load.
+
+MV           Scrubber Fan Speed                   Controls gas suction rate and maintains slight vacuum in
+                                                  attack reactor and digestion tank.
+
+CV           Stack Gas HF Concentration           Key environmental parameter — must remain below
+                                                  regulatory emission limits.
+
+CV           Stack Gas SiF4 Concentration         Key environmental parameter — monitors silicon
+                                                  tetrafluoride emissions.
+
+CV           Scrubber Liquid pH                   Optimal pH range required for efficient fluorine absorption
+                                                  and prevention of SiO2 precipitation.
+
+CV           Scrubber Liquid Temperature          Monitors cooling requirements; high temperatures reduce
+                                                  absorption efficiency, low temperatures cause scaling.
+
+CV           Scrubber Liquid Level                Maintains inventory for stable circulation and prevents pump
+
+
+                                                         13
+                                                        APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Category     Variable                          Description / Purpose
+                                               starvation.
+
+CV           Reactor Vacuum Pressure           Maintains slight depression to prevent gas escape from
+                                               attack reactor compartments.
+
+DV           Gas Flow Rate from Attack Tanks   Varies with reaction intensity, rock feed rate, and CaCO3
+                                               content (CO2 generation).
+
+DV           Fluorine Content in Gases         Depends on rock quality (CaF2 content), reaction
+                                               temperature, and acid concentration.
+
+DV           Ambient / Pond Water              Seasonal variation affects scrubber liquid temperature and
+             Temperature                       absorption efficiency.
+
+
+
+
+Figure 7: Gas Scrubbing Control Strategy
+
+
+
+Acid Concentration & Fluorine Recovery Control Strategy
+
+Overview
+The acid concentration section concentrates weak phosphoric acid from 28% to 54% P2O5 using four
+parallel vacuum evaporator trains. Each train consists of an evaporator vessel, a circulation pump, a
+graphite tube heat exchanger, a condenser, and a vacuum pump. Low-pressure steam (170°C / 5
+barg) provides heat. Fluorine vapors liberated during concentration (HF, SiF4) are recovered through
+
+
+                                                   14
+                                                       APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+a dedicated fluorine absorption system producing 18% H2SiF6 (fluorosilicic acid). Effective control is
+critical for product quality, steam efficiency, and environmental compliance.
+
+
+
+
+Figure 8: Acid Concentration & Fluorine Recovery PFD
+
+
+Control Objectives
+      •   Maintain product acid concentration at 54% P2O5 with minimal variability.
+
+      •   Control evaporator temperature (85–87.5°C) to prevent scaling and ensure stable boiling.
+
+      •   Optimize LP steam consumption by controlling steam flowrate and monitoring heat
+          exchanger performance.
+
+      •   Maintain stable condenser vacuum for efficient evaporation and energy recovery.
+
+      •   Maximize FSA recovery at 18% H2SiF6 concentration with minimal phosphoric acid
+          contamination.
+
+      •   Manage heat exchanger scaling by monitoring steam pressure trend and scheduling
+          cleaning cycles.
+
+
+                                                  15
+                                                           APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+System Characteristics
+
+Process Dynamics                Slow process dynamics with response times from tens of minutes to hours
+                                due to thermal inertia, residence time, and scaling accumulation.
+
+Process Behavior                Highly nonlinear thermal process with strong coupling between steam flow,
+                                evaporator temperature, vacuum level, acid concentration, and scaling.
+                                Multiple interactions across four parallel trains.
+
+Process Configuration           Four parallel concentration trains, each with evaporator, circulation loop,
+                                heat exchanger, condenser, vacuum system, and fluorine absorption unit.
+
+Main Operational Challenges     Heat exchanger scaling reduces heat transfer over time; vacuum stability
+                                affected by cooling water temperature; foaming and entrainment at high
+                                concentration; fluorine recovery efficiency; maintaining product quality
+                                across four parallel trains with different fouling states.
+
+Key Quality Variable            Product acid concentration (54% P2O5) and evaporator temperature
+                                stability.
+
+Main Optimization Targets       Stabilize product concentration at 54% P2O5, minimize steam consumption,
+                                maximize FSA recovery (18% H2SiF6), extend heat exchanger cleaning
+                                intervals.
+
+
+
+Control Variables & Constraints
+
+Category     Variable                            Description / Purpose
+
+MV           Weak Acid Feed Rate                 Controls production rate and evaporator inventory. Feed
+                                                 from weak acid storage at 28% P2O5.
+
+MV           LP Steam Flow                       Provides heat via graphite heat exchanger. Flow controlled to
+                                                 maintain evaporator temperature (85–87.5°C).
+
+MV           Heat Exchanger Bypass               Controls heat input distribution and provides temperature
+                                                 trimming capability.
+
+MV           Vacuum Pump Speed / Capacity        Controls evaporator pressure and boiling temperature;
+                                                 maintains stable vacuum.
+
+MV           Cooling Water Flow to Condenser Controls vacuum level by condensing water vapors and
+                                                 removing non-condensables.
+
+CV           Product Acid Concentration          Target 54% P2O5 — key quality variable for downstream
+                                                 processes and product specification.
+
+CV           Evaporator Temperature              Controlled at 85–87.5°C (inlet ~85°C, outlet ~87.5°C). Low
+                                                 delta T (~2.5°C) minimizes scaling.
+
+CV           Condenser Vacuum                    Monitors vacuum stability; declining vacuum indicates air
+
+
+
+                                                     16
+                                                           APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Category    Variable                             Description / Purpose
+                                                 ingress, scaling, or cooling water issues.
+
+CV          FSA Concentration (H2SiF6)           Target 18% H2SiF6 — monitors fluorine recovery efficiency
+                                                 and product quality.
+
+CV          Product Acid Temperature             Monitors cooling requirements before storage and prevents
+                                                 downstream scaling.
+
+CV          Heat Exchanger Steam Inlet           Trend indicates scaling level; high pressure alarm triggers
+            Pressure                             cleaning cycle.
+
+CV          Evaporator Level                     Maintained constant by standpipe overflow; monitors
+                                                 hydraulic stability.
+
+DV          Steam Pressure Variations            Upstream steam header pressure fluctuations affecting heat
+                                                 input stability.
+
+DV          Cooling Water Temperature            Seasonal variations and cooling tower performance affecting
+                                                 vacuum level.
+
+DV          Heat Exchanger Scaling / Fouling     Progressive reduction in heat transfer coefficient over
+                                                 operating cycle (weeks).
+
+
+
+
+Figure 9: Acid Concentration Control Strategy.
+
+
+
+
+                                                     17
+                                                          APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Acid Handling & Storage Control Strategy
+
+Overview
+The acid handling and storage section manages weak phosphoric acid (28% P2O5), concentrated
+phosphoric acid (54% P2O5), and fluorosilicic acid (18% H2SiF6). Weak acid from filtration is clarified
+in two settlers before storage. Concentrated acid from the evaporators undergoes maturation and
+clarification in two additional settlers. Sludge from all settlers is recycled to the attack reactor to
+recover contained P2O5. The section ensures adequate inventory management, acid quality control
+through settling, and reliable supply to downstream processes.
+
+
+
+
+Figure 10: Acid Handling & Storage PFD
+
+
+Control Objectives
+      •   Maintain stable weak acid tank level (28% P2O5) to ensure continuous supply to
+          concentration trains.
+
+      •   Maintain stable concentrated acid tank level (54% P2O5) to meet downstream demand.
+
+      •   Control FSA tank level (18% H2SiF6) and manage transfer to neutralization/recovery.
+
+
+                                                     18
+                                                           APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+      •    Optimize sludge recycle flow to maximize P2O5 recovery while minimizing settling
+           disruption.
+
+      •    Maintain product acid temperature within specifications to prevent post-precipitation and
+           scaling.
+
+      •    Ensure adequate settling time and promote crystallization for efficient sludge separation.
+
+
+System Characteristics
+
+Process Dynamics                Very slow process dynamics with response times from hours to days due to
+                                large tank inventories, settling residence times, and gradual sludge
+                                accumulation.
+
+Process Behavior                Nonlinear behavior with interactions between tank levels, settling efficiency,
+                                sludge recycle, crystallization kinetics, and downstream demand variations.
+                                Temperature affects precipitation rate and sludge volume.
+
+Process Configuration           Weak acid settlers (2 tanks), weak acid storage tank, concentrated acid
+                                maturation tank, concentrated acid settlers (2 tanks), FSA storage tank,
+                                sludge recycle system with pumps and distribution.
+
+Main Operational Challenges     Settling efficiency variability due to temperature and acid concentration;
+                                sludge handling and recycle balance; tank inventory management across
+                                multiple products; post-precipitation in storage; seasonal temperature
+                                effects on precipitation rates.
+
+Key Quality Variable            Settled acid clarity (weak and concentrated) and sludge recycle stability.
+
+Main Optimization Targets       Stabilize tank levels, maximize settling efficiency, optimize sludge recycle
+                                rate, minimize P2O5 loss in sludge, maintain product acid quality.
+
+
+
+Control Variables & Constraints
+
+Category     Variable                           Description / Purpose
+
+MV           Weak Acid Transfer Pump Speed      Controls flow rate from weak acid storage to concentration
+                                                section.
+
+MV           Concentrated Acid Transfer Pump Controls product acid flow to downstream processes or
+             Speed                              storage.
+
+MV           FSA Transfer Pump Speed            Controls fluorosilicic acid transfer to neutralization/recovery
+                                                section.
+
+MV           Sludge Recycle Flow                Controls sludge return to attack reactor for P2O5 recovery;
+                                                small bypass to promote crystallization.
+
+
+
+                                                     19
+                                                         APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Category     Variable                         Description / Purpose
+
+MV           Settler Rake Speed               Controls solids transport to central discharge and prevents
+                                              bed accumulation.
+
+CV           Weak Acid Tank Level             Maintains inventory buffer for continuous concentration
+                                              operation (28% P2O5).
+
+CV           Concentrated Acid Tank Level     Maintains inventory buffer for downstream demand (54%
+                                              P2O5).
+
+CV           FSA Tank Level                   Monitors fluorosilicic acid inventory (18% H2SiF6) for transfer
+                                              scheduling.
+
+CV           Acid Sludge Level / Bed Level    Monitors sludge accumulation in settlers to prevent overload
+                                              and optimize rake operation.
+
+CV           Product Acid Temperature         Prevents post-precipitation and scaling in storage tanks and
+                                              transfer lines.
+
+CV           Settler Overflow Clarity         Monitors settling performance and acid quality going to
+                                              storage.
+
+CV           Rake Torque                      Prevents mechanical overload and indicates excessive solids
+                                              buildup in settlers.
+
+DV           Production Rate Variations       Upstream fluctuations in weak acid production from filtration
+                                              section.
+
+DV           Downstream Demand                Variations in concentrated acid demand from fertilizer or
+                                              other downstream plants.
+
+DV           Settling Efficiency              Temperature and concentration dependent; affects sludge
+                                              volume and clarity.
+
+
+
+
+Plant-Wide Optimizer (PWO)
+
+Overview
+The Plant-Wide Optimization (PWO) layer provides a high-level supervisory control structure,
+coordinating all process areas of the phosphoric acid plant—including attack and digestion, filtration,
+gas scrubbing, acid concentration, fluorine recovery, and acid handling—to achieve global plant
+objectives. The PWO enhances the performance of local APC loops by managing the setpoints of unit
+and line optimizers based on global economic, operational, and process targets. The objective is to
+maximize P2O5 production, maintain consistent acid quality (28% and 54% P2O5), optimize sulfuric
+acid and steam consumption, minimize emissions, and ensure stable operation across all process
+areas.
+
+
+
+                                                   20
+                                                         APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+The system shall follow a modular optimization architecture, enabling the flexible deployment of
+optimization layers at the unit, line, and plant-wide levels, as illustrated in the optimization hierarchy
+diagram.
+
+
+Control Objectives
+      •    Maximize overall plant P2O5 production while respecting acid quality, environmental, and
+           operational constraints.
+
+      •    Stabilize acid quality indicators: attack acid concentration (28% P2O5 ±0.5%), product acid
+           concentration (54% P2O5), and sulfate SO3 level (25–30 g/l).
+
+      •    Minimize sulfuric acid consumption (target –2 to –5%) and LP steam consumption through
+           coordinated optimization.
+
+      •    Minimize HF/SiF4 emissions (target –20 to –30%) by coordinating gas scrubbing with
+           upstream operating conditions.
+
+      •    Minimize P2O5 losses across attack (extraction efficiency +1–2%) and filtration (cake losses
+           –10 to –20%).
+
+      •    Dynamically reallocate constraints and priorities across units to respond to rock quality
+           variations, equipment availability, or downstream demand changes.
+
+      •    Ensure operational transparency, allowing operators to monitor and supervise all
+           optimization actions across unit, line, and plant-wide levels.
+
+
+Optimization Structure
+The PWO will follow the modular hierarchy illustrated below:
+
+
+
+
+                                                    21
+                                                          APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+Figure 11: PWO Hierarchy
+
+Units APCs
+
+     •   Supervise individual processing units (e.g., attack & digestion, filtration, gas scrubbing, acid
+         concentration, acid storage).
+
+     •   Adjust local APC setpoints (e.g., sulfate SO3 setpoint, reactor temperature, steam flowrate)
+         to meet unit-specific KPIs.
+
+     •   Focus on stabilizing local process variables (e.g., acid concentration, extraction rate,
+         emission levels).
+
+Line Optimizers
+
+     •   Coordinate multiple units operating in series within a production line (e.g., attack-
+         digestion-filtration-concentration line).
+
+     •   Manage trade-offs between units (e.g., adjusting attack conditions to stabilize filtration
+         feed quality, or coordinating concentration rate with weak acid inventory).
+
+     •   Prioritize line-level targets such as P2O5 throughput, extraction efficiency, acid quality, and
+         energy consumption.
+
+Plant-Wide Optimizer
+
+     •   Supervises all lines across the entire phosphoric acid plant.
+
+     •   Coordinates P2O5 production rate, sulfuric acid and steam consumption, water balance,
+         emission control, and final product quality targets.
+
+
+
+                                                     22
+                                                         APC Phosphoric Acid Plant Use Cases & Control Strategies
+
+
+
+
+       •    Implements plant-level optimization objectives (e.g., maximizing total P2O5 tonnage while
+            respecting acid concentration specifications, emission limits, and storage capacity
+            constraints).
+
+       •    Integrates with other systems like the plant Laboratory Information Management System
+            (LIMS) for quality feedback and the plant scheduler for production planning.
+
+
+
+Summary of Expected APC Benefits
+The implementation of APC across the phosphoric acid plant is expected to deliver the following
+quantifiable benefits:
+
+
+
+
+KPI                            Expected Benefit   Primary Area               Mechanism
+
+P2O5 Extraction Efficiency     Increase by 1–2%   Attack & Digestion         Optimized sulfate excess and
+                                                                             reaction conditions
+
+P2O5 Loss in Gypsum Cake       Reduce by 10–20% Filtration                   Improved cake washing and
+                                                                             filtration control
+
+Acid Concentration Stability   28% P2O5 ±0.5%     Attack & Digestion         Stabilized recycle acid and wash
+                                                                             water control
+
+Sulfuric Acid Consumption      Reduce by 2–5%     Attack & Digestion         Optimized sulfate excess control
+
+HF/SiF4 Emissions              Reduce by 20–30% Gas Scrubbing                Coordinated scrubbing with
+                                                                             upstream conditions
+
+Filter Cloth Life              Extend by 15–20% Filtration                   Stable operation and reduced
+                                                                             process variability
+
+
+
+
+Figure 12: Plant-Wide Control Strategy
+
+
+
+
+                                                    23
+

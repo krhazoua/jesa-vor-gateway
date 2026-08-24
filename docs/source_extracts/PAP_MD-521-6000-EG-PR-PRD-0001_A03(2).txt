@@ -1,0 +1,749 @@
+                                                Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                  Pre-Feasibility Study             Ma’aden Project N° :             QI950101
+                                                                   Document N°:                     MD-521-6000-EG-PR-PRD-0001
+Main Title:                      Process Description – WAS PAP
+                                                                   Revision:                        A03
+
+
+
+
+                                                         MA'ADEN
+                                             Phosphate 3 Phase II – PFS
+                                                 Process Description
+                                                           WAS PAP
+
+                                                                Ma’aden Phosphate 3 – Phase 2
+
+                                   NAME                         TITLE                 SIGN          DATE
+                        Saud Almajed
+
+
+
+
+                                                          REVIEW GRADE
+                         Result Code                              Description
+                                 A                                 Accepted
+                                       C          Proceed with exceptions to next Submission and
+                                                                     Revision
+                                       R          Do Not Proceed - Revise as noted and Resubmit
+                                Acceptance in any of these categories in no way relieves the
+                               Contractor/Supplier of its responsibility for the due and proper
+                                     performance of the Works in accordance with the
+                                                   Contract/Purchase Order.
+
+                                               PROJECT MANAGER SIGN-OFF:
+                          NAME                                        DATE
+
+
+
+
+Rev.              Issue Date        Revision Description              Prepared by     Checked by     Discipline  Project
+                                                                                                     Approved by Approved by
+        A01         01-10-2024              Issued for Review           MoumenY           SbaitiI         SbaitiI     BenatiaN
+        A02         20-11-2024                Issued for Use            MoumenY           SbaitiI         SbaitiI    TanghortD
+        A03         11-01-2025              Re-Issued for Use           MoumenY           SbaitiI         SbaitiI    TanghortD
+                                                                        Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                                   Pre-Feasibility Study                             Ma’aden Project N° :                               QI950101
+                                                                                                    Document N°:                                       MD-521-6000-EG-PR-PRD-0001
+Main Title:                                       Process Description – WAS PAP
+                                                                                                    Revision:                                          A03
+
+     Table of Content
+
+     1.          Glossary ........................................................................................................................................................... 3
+     2.          General Features ............................................................................................................................................. 4
+     2.1         General .................................................................................................................................................................... 4
+     2.2         Project Description .................................................................................................................................................. 4
+     2.3         Chemical Nomenclature .......................................................................................................................................... 5
+     3.          Process Description.......................................................................................................................................... 7
+     3.1         Chemistry of the Process ......................................................................................................................................... 7
+     3.1.1       Overview ................................................................................................................................................................. 7
+     3.1.2       Key to successful operation..................................................................................................................................... 7
+     3.1.3       Chemical Reactions ................................................................................................................................................. 7
+     3.1.4       Extraction Losses ..................................................................................................................................................... 8
+     3.1.5       Acid Concentration & Temperature ........................................................................................................................ 9
+     3.1.6       Crystallization ........................................................................................................................................................ 10
+     3.1.7       Flash Cooler Temperature Drop ............................................................................................................................ 11
+     3.2         Attack and Digestion Sections ............................................................................................................................... 11
+     3.2.1       Attack Section........................................................................................................................................................ 11
+     3.2.2       Digestion Section ................................................................................................................................................... 13
+     3.3         Gas Scrubbing ........................................................................................................................................................ 13
+     3.4         Filtration ................................................................................................................................................................ 13
+     3.5         Weak Phosphoric Acid Concentration ................................................................................................................... 14
+     3.6         Fluorine Absorption............................................................................................................................................... 15
+     3.7         Acid & FSA Storage ................................................................................................................................................ 15
+     3.7.1       Weak Phosphoric Acid Storage ............................................................................................................................. 15
+     3.7.2       Concentrated Phosphoric Acid .............................................................................................................................. 16
+     3.7.3       Fluorosilicic Acid (FSA) ........................................................................................................................................... 16
+     3.8         Cooling Tower........................................................................................................................................................ 16
+     3.9         Utilities .................................................................................................................................................................. 17
+
+
+     List Of Tables
+
+     Table 1 : List of Accronyms ...................................................................................................................................................3
+     Table 2 : List of PAP Areas.....................................................................................................................................................4
+     Table 3 : List of Chemicals .....................................................................................................................................................5
+                                                   Ma’aden Phosphate 3 Phase II
+
+
+      Project Phase :            Pre-Feasibility Study                  Ma’aden Project N° :   QI950101
+                                                                        Document N°:           MD-521-6000-EG-PR-PRD-0001
+      Main Title:                Process Description – WAS PAP
+                                                                        Revision:              A03
+
+           1.             Glossary
+A03
+                                                         Table 1 : List of Accronyms
+
+            Terminology          Definition or Description
+
+            WAS                  Wa’ad Al Shamal
+
+            ˚C                   Degrees Celsius
+
+            Bar(g)               Bar gauge
+
+            FSA                  Fluorosilicic Acid
+
+            OSBL                 Outside Battery Limits
+
+            ISBL                 Inside Battery Limits
+
+            TPD                  Tons per day
+
+            LLFC                 Low Level Flash Cooler
+
+            LP                   Low Pressure
+
+            MTPH or t/h          Metric Tons Per Hour
+
+            ppm                  Parts per million
+
+            PAP                  Phsophoric Acid Plant
+                                                        Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                          Pre-Feasibility Study              Ma’aden Project N° :    QI950101
+                                                                            Document N°:            MD-521-6000-EG-PR-PRD-0001
+Main Title:                              Process Description – WAS PAP
+                                                                            Revision:               A03
+
+     2.                General Features
+
+     2.1               General
+     This document defines the general features of Phosphoric acid plant, part of Ma’aden Phosphate 3 Phase 2 Complex at
+     Wa’ad Al Shamal (WAS) Area in Saudi Arabia.
+
+     In Phase 2 project PFS, we have identified two potential technology providers: PRAYON and JESA Technologies. The present
+     process description is general and will be revised in next engineering stage following the selection of the PAP technology
+     provider.
+
+     The present process description is general and will be revised in next stage following the selection of the PAP technology
+     provider.
+     2.2               Project Description
+     The project consists of the installation of a 1615 TPD P2O5 capacity phosphoric acid plant with operability factor 310
+     days/annum, annual shutdown 14 days/annum, schedule shutdown 33 days/annum & unplanned shutdown 8
+     days/annum and comprises the following sections:
+
+                                                             Table 2 : List of PAP Areas
+
+      PAP Areas
+
+      Attack and Digestion
+
+
+      Filtration
+
+      Weak Phosphoric Acid Settling and Storage
+
+      Acid Concentration & FSA Recovery
+
+      Concentrated Phosphoric Acid Maturation and Settling
+
+      Fluorosilicic Acid (FSA) Storage
+
+      Cooling tower
+
+      Gas Scrubbing
+
+      Condensate Collection
+
+      MGA Storage
+                                                        Ma’aden Phosphate 3 Phase II
+
+
+      Project Phase :                    Pre-Feasibility Study                  Ma’aden Project N° :                 QI950101
+                                                                                Document N°:                         MD-521-6000-EG-PR-PRD-0001
+      Main Title:                        Process Description – WAS PAP
+                                                                                Revision:                            A03
+
+            PAP Areas
+
+            Utilities
+
+           The availability factors of the plant, design assumptions and raw materials/Utilities & Product specifications are described
+           in detail in the WAS Basis of Design: MD-521-1000-EG-GE-BOD-0001.
+
+           2.3                 Chemical Nomenclature
+                                                                 Table 3 : List of Chemicals
+A03
+            Chemical                                                            Nomenclature
+
+            P                                                                   Phosphorous
+
+            P2O5                                                                Phosphorus pentoxide
+
+            H3PO4                                                               Phosphoric Acid
+
+            Ca(H2PO4)2                                                          Monocalcium Phosphate
+
+            Ca3(PO4)2                                                           Tricalcium Phosphate
+
+            H2SO4                                                               Sulfuric Acid
+
+            H2O                                                                 Water
+
+            CaSO4,2H2O                                                          Calcium Sulfate dihydrate (Gypsum)
+
+            CaCO3                                                               Carbonate
+
+            CO2                                                                 Carbon Dioxide
+
+            CaF2                                                                Calcium Fluoride
+
+            HF                                                                  Hydrogen Fluoride
+
+            H2SiF6                                                              Fluorosilicic Acid
+
+            SiO2                                                                Silica
+
+            Na2O / CaO                                                          Sodium Oxide / Calcium Oxide
+
+            Na2SiF6 / CaSiF6                                                    Sodium Fluosilicate / Calcium Fluorosilicate
+
+            SiF4                                                                Silicon Tetrafluoride
+                                     Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :       Pre-Feasibility Study           Ma’aden Project N° :             QI950101
+                                                      Document N°:                     MD-521-6000-EG-PR-PRD-0001
+Main Title:           Process Description – WAS PAP
+                                                      Revision:                        A03
+
+      Chemical                                        Nomenclature
+
+      Fe2O3 / Al2O3                                   Iron Oxide / Aluminum Oxide
+
+      FePO4 / AlPO4                                   Ferric Phosphate / Aluminum Phosphate
+
+      SO3                                             Sulfur Trioxide
+                                                           Ma’aden Phosphate 3 Phase II
+
+
+      Project Phase :                       Pre-Feasibility Study           Ma’aden Project N° :             QI950101
+                                                                            Document N°:                     MD-521-6000-EG-PR-PRD-0001
+      Main Title:                           Process Description – WAS PAP
+                                                                            Revision:                        A03
+
+           3.                  Process Description
+
+           3.1                 Chemistry of the Process
+
+           3.1.1               Overview
+
+           The phosphoric acid plant process will consist of one (1) reaction train and two (2) filtration trains. The Concentration
+A03
+           and Fluorine Recovery system will consist of four (4) trains in parallel. The process described above is di-hydrate process.
+
+           For Acid clarifiers, Four (4) settlers will be designed (two (2) for weak Phosphoric Acid, two (2) for Concentrated
+           Phosphoric Acid) for sludge elimination.
+
+           3.1.2               Key to successful operation
+
+           The key to successful operation of the phosphoric acid plant is the control and operation of the chemical reaction
+           occurring in the attack system. The objectives in controlling the attack reaction are:
+
+                 •      To obtain a maximum extraction of P2O5 from the rock.
+                 •      To provide an easily filtrable and washable gypsum so there will be a minimal amount of soluble P2O5 discharged
+                        with the waste gypsum.
+
+           The recipe for producing phosphoric acid is to produce good gypsum. When the gypsum produced is low in P2O5, easily
+           filtered and easily washed, then the production rate and efficiency of the phosphoric acid plant are maximised.
+
+           3.1.3               Chemical Reactions
+
+           The principal reaction occurring in phosphoric acid production is the reaction between tricalcium phosphate and sulfuric
+           acid to give soluble phosphoric acid and insoluble calcium sulfate dihydrate (gypsum).
+
+
+                              (1)     Ca3(PO4)2 + 3 H2SO4 + 6 H2O                       3 CaSO4,2H2O + 2 H3PO4
+
+           This reaction takes place in two steps, Phosphoric acid first dissolves the rock in the digestion reaction to form a solution
+           of monocalcium phosphate as shown in equation 1a. The monocalcium phosphate then reacts with sulfuric acid to form
+           phosphoric acid and gypsum as shown in equation 1b.
+
+                              (1a)    6 H2O + Ca3(PO4)2 + 4 H3PO4                           3 Ca(H2PO4)2,2H2O
+
+                              (1b)    3 Ca(H2PO4)2, 2H2O + 3 H2SO4                      3 CaSO4,2H2O + 6 H3PO4
+
+           In addition to this major reaction, there is a number of minor reactions occurring. The most important are:
+
+                                       CaF2 + H2SO4 +2 H2O                                  CaSO4.2H2O + 2 HF
+                                                       Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                       Pre-Feasibility Study           Ma’aden Project N° :               QI950101
+                                                                      Document N°:                       MD-521-6000-EG-PR-PRD-0001
+Main Title:                           Process Description – WAS PAP
+                                                                      Revision:                          A03
+
+                                   6 HF + SiO2                                                 H2SiF6 + 2H2O
+
+                                   H2SiF6 (+ Heat + H2SO4)                                      SiF4 + 2 HF
+
+                                   3SiF4 + 2H2O                                               2 H2SiF6 + SiO2
+
+                                   CaCO3 + H2SO4 +2 H2O                                  CaSO4.2H2O + CO2 + H2O
+
+                                   Fe2O3 (or Al2O3) + 2 H3PO4                            2 FePO4 (or AIPO4) + 3 H2O
+
+                                   Na2O (or K2O) + H2SiF6                                    Na2SiF6 (or K2SiF6) + H2O
+
+     The sodium and potassium fluosilicates (Last reaction) are a source of considerable trouble as the phosphoric acid will
+     be saturated with them. These fluosilicates have a steep solubility versus temperature curve. Fluosilicates form scale in
+     pipelines and equipment as the acid cools.
+
+     Based on experience, the sulfate concentration in the attack system is normally to be maintained at about 2% excess
+     expressed as SO3.
+
+     It is important to closely control the sulfate content. Too little excess sulfate can increase P2O5 loss by causing dicalcium
+     phosphate to co-precipitate with gypsum, leading to co-crystallized P2O5 losses. On the other hand, too much free
+     sulfate can cause gypsum to coat the rock particles, resulting in incomplete reactions and unreacted P2O5 losses. Both
+     situations lead to P2O5 losses. Additionally, very high sulfate levels may create an unstable form of calcium sulfate, which
+     is difficult to filter and may clog the filter.
+
+     Iron and aluminium form phosphate compounds (FePO4 & AIPO4) which usually remain in the hot solution exiting the
+     attack and filtration process. Subsequent ageing and cooling will precipitate these compounds as sludge. Aluminium and
+     Iron can precipitate in other phosphate forms at higher P2O5 concentration. Ageing and cooling of the concentrate acid
+     will precipitate these compounds as sludge. However, this sludge is citrate soluble and its P2O5 content is available in the
+     fertilizer.
+
+     HF and SiF4 are generated partly from the attack tanks and in the flash cooler, and mainly in the evaporation step. Fluorine
+     recovery takes place in the gas scrubber and evaporator scrubbers
+
+
+     3.1.4             Extraction Losses
+
+     P2O5 losses will come from extraction losses occurring in the attack system and water-soluble losses occurring in the
+     filtration section. There are two types of extraction losses:
+                                                       Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                         Pre-Feasibility Study             Ma’aden Project N° :              QI950101
+                                                                          Document N°:                      MD-521-6000-EG-PR-PRD-0001
+Main Title:                             Process Description – WAS PAP
+                                                                          Revision:                         A03
+
+                  The first is due to the unreacted phosphate rock and is also called citrate insoluble loss. This loss can result from
+     insufficient grinding or insufficient contacting of the phosphate rock with the sulfuric acid. This loss may also be due to
+     the coating of the rock particles with a gypsum layer which occurs when the free sulfate content in the liquid phase of
+     the reaction slurry is too high; under these conditions, precipitation is so rapid that the calcium ions dissolved by the
+     phosphoric acid do not have time to diffuse away from the rock/acid interface before being converted to calcium sulfate.
+     The point at which this effect becomes serious varies with the type of rock, the concentration of acid and other
+     conditions. It usually occurs when the free SO3 concentration exceeds about 3.5% in the liquid phase of the attack slurry.
+
+
+                  The second type of extraction loss is the co-crystallised P2O5 and is also called citrate soluble P2O5 loss. This loss
+     is due to the precipitation of dicalcium phosphate (CaHPO4, 2H2O) in the gypsum crystals. As the gypsum crystallises, it
+     does not do so as pure calcium sulfate. A certain percentage of HPO42- (phosphate ions) substitutes for SO42- (sulfate ions)
+     in the crystal lattice. Dicalcium phosphate crystallises in the same way as calcium sulfate and has nearly the same
+     crystallisation characteristics. This loss is greatest in solutions having a high calcium oxide (CaO) concentration and a low
+     sulfate concentration.
+
+
+     To minimise citrate soluble losses, a slight but definite excess of sulfate ions (SO42-) must be maintained through the
+     attack and filtration system.
+
+
+     The following equations illustrate the importance of sufficient SO42- ion in the attack system:
+
+                             3 Ca(H2PO4 )2 + 3 H2SO4 + 6 H2O                          3 CaSO4.2H2O + 6 H3PO4
+
+                             3 Ca(H2PO4 )2 + 2 H2SO4 + 6 H2O                          2 CaSO4.2H2O + CaHPO4.2H2O + 5 H3PO4
+
+                             3 Ca(H2PO4 )2 + H2SO4 + 4 H2O                            CaSO4.2H2O + 2 CaHPO4.2H2O + 4 H3PO4
+
+     3.1.5                Acid Concentration & Temperature
+
+     P2O5 losses will come from extraction losses occurring in the attack system and water-soluble losses occurring in the
+     filtration section. There are two types of extraction
+
+
+     The concentration of phosphoric acid produced in the attack slurry depends upon the temperature of reaction and the
+     type of calcium sulfate crystal produced. Calcium sulfate (Gypsum) can occur in three principal forms:
+
+                         •    Gypsum (CaSO4 .2H2O)
+                         •    Semi or Hemihydrate (CaSO4.½ H2O)
+                         •    Anhydrite (CaSO4)
+                                                  Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                    Pre-Feasibility Study            Ma’aden Project N° :              QI950101
+                                                                    Document N°:                      MD-521-6000-EG-PR-PRD-0001
+Main Title:                        Process Description – WAS PAP
+                                                                    Revision:                         A03
+
+     Filtration considerations make it desirable to produce gypsum, which is the most stable form of calcium sulfate.
+     Hemihydrate in the presence of water or dilute phosphoric acid will tend to hydrate to gypsum, and this hydration can
+     result in the cementing of gypsum crystals in the filter system.
+
+     The equilibrium plot between the three forms of calcium sulfate as a function of P2O5 concentration, sulfate excess and
+     temperature shows that at temperatures below 62°C up to 40% P2O5 can be maintained without production of
+     hemihydrate. This equilibrium is also dependent upon the impurities in the acid and therefore varies with the type and
+     grade of rock.
+
+     As the acid strength increases, the temperature must be decreased to produce stable gypsum crystals. Generally, above
+     32% P2O5 acid, the crystals rapidly diminish in size, filtration capacity is greatly reduced and washing of the cake becomes
+     more difficult. Operation with the temperatures below 70°C will generally reduce filtration rates.
+
+     For these reasons, a 26% to 30% P2O5 acid with a corresponding temperature of 80°C to 71°C is normally found to exist
+     in conventional wet dihydrate process acid plants. In this specific project, a 28% P2O5 acid is targeted with a temperature
+     of 76°C.
+
+
+     3.1.6            Crystallization
+
+     Crystallisation or precipitation is induced through supersaturation. Supersaturation occurs when either CaO or H2SO4 is
+     added to a reaction system which is already saturated with these compounds.
+
+     When H2SO4 is added to a phosphoric acid slurry containing CaO, the concentration of H2SO4 instantaneously rises and
+     then drops as CaSO4 precipitates. The total H2SO4 decreases by an amount proportional to the decrease in the dissolved
+     CaO.
+
+     Excessive supersaturation occurs when the rate of crystallisation is not fast enough to remove the added CaO or H2SO4
+     from solution. Excessive supersaturation can cause equipment problems and is therefore undesirable; precipitation may
+     occur at places where it is not wanted.
+
+     Supersaturation is kept at a minimum by maintaining a very large circulation of slurry to provide the surface for the
+     crystallisation. Supersaturation is also held to a minimum by maintaining an excess of sulfuric acid at all points in the
+     system so that at no time there is an excessive concentration of unprecipitated Ca++ (calcium ions). Mixing of the sulfuric
+     acid with the recycle acid in the mixing tees helps in maintaining a uniform excess sulfuric acid concentration throughout
+     the attack system.
+
+     The agitation in the attack tank is also a very important factor. Good agitation must achieve the following objectives:
+                                                    Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                      Pre-Feasibility Study              Ma’aden Project N° :         QI950101
+                                                                        Document N°:                 MD-521-6000-EG-PR-PRD-0001
+Main Title:                          Process Description – WAS PAP
+                                                                        Revision:                    A03
+
+                     •    Minimises the high concentration of free sulfuric acid around the discharge of the mixing tees.
+                     •    Reduces localised supersaturation.
+                     •    Promotes good crystal growth by maintaining satisfactory contact between the existing crystals and
+                          the liquid phase.
+
+     Precipitation of gypsum from a solution containing excess calcium (low sulfates) yields small needle like crystals. The
+     crystals become smaller and thinner as the concentration of Ca2+ in solution is increased. Decreasing the Ca2+ and
+     increasing the SO42- concentration in the solution causes the crystals to grow in width and size. They are then easier to
+     filter.
+
+
+     3.1.7             Flash Cooler Temperature Drop
+
+     It is desirable to minimise the number of crystals per unit weight of gypsum precipitated, the fewer the crystals, the
+     larger their average size. Larger crystals are easier to filter.
+
+     Supersaturation with respect to impurities provides the proper conditions for extensive nucleation.
+
+     Impurity supersaturation can occur in the slurry when it is cooled by evaporation in the vacuum flash cooler. To minimise
+     impurity supersaturation (and consequent over-nucleation), the slurry temperature drop across the flash cooler should
+     be limited to below 5°C. A design of 2.5°C is usually selected.
+
+
+     3.2              Attack and Digestion Sections
+
+     This section is intended to produce phosphoric acid at a concentration of 28% P2O5
+
+     3.2.1             Attack Section
+
+     The attack section takes place in the attack reactor which consists of a monolithic concrete having multiple agitated
+     compartments. The large downwards pumping ensures good suspension of solids and prevents depositions on the tank
+     floor.
+
+     All compartments of the attack reactor are interconnected in the upper part (gas phase) which are connected to the gas
+     scrubbing system. This will help maintaining the reactor under a slight depression avoiding the escape of evolved gases
+     and assist to some extent in the cooling of the slurry.
+
+     The phosphate rock is fed to the reactor under the form of a 65% solids slurry (TBC). To maintain the capacity of the plant
+     constant, the solid flowrate must be monitored. This is performed using a flowmeter and a densimeter.
+
+     It is extremely important to have an accurate flow rate control of the phosphate rock feed and the sulfuric acid feed to
+     regulate the free sulfate concentration in the reaction slurry. The concentrated sulfuric acid feed, rather than the rock
+                                                   Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                     Pre-Feasibility Study             Ma’aden Project N° :              QI950101
+                                                                      Document N°:                      MD-521-6000-EG-PR-PRD-0001
+Main Title:                         Process Description – WAS PAP
+                                                                      Revision:                         A03
+
+     feed, is adjusted to maintain the desired conditions. The sulfuric acid control system is more easily adjusted and does
+     not change the plant capacity with respect to P2O5 production.
+
+     The sulfate concentration measured by manual sampling and analysis, is normally maintained between 25 and 30 g/l of
+     SO3. It can be adjusted by altering the ratio between the solid phosphate flow and the total sulfate ion being fed to the
+     Attack reactor. The total sulfate ions being fed can be calculated from manual SO3 analysis and flow measurement of the
+     recycle acid from the Recycle Acid Pumps together with the sulfuric acid being fed directly to the Attack reactor. The
+     total value is controlled by varying the total flow of sulfuric acid being fed to compartments.
+
+     The sulfuric acid, which is received from OSBL, is pre-mixed before entry into the Attack reactor with the recycled acid
+     from the two filters in Mixing Tees. The flow of recycled acid is controlled by adjusting the overflow of product acid to
+     the return acid and the density by the cake wash water flow.
+
+     Control of the recycled acid stream, and thus the P2O5, and solids level in the attack system is crucial. High P2O5 levels
+     could result in crystallisation and viscosity problems which will limit filtration rate. Low solids contents may could increase
+     foam formation and lead to supersaturation in the slurry. High solids contents increase slurry viscosity and cause mainly
+     mixing and pumping issues.
+
+     The chemical reactions occurring in the Attack Reactor are exothermic and along with the heat of dilution of the added
+     sulfuric acid it means that in order to maintain the reaction temperature at the desired value of 76 °C to ensure the
+     production of dihydrate crystals, the reaction slurry must be cooled. This cooling is achieved in the Low-Level Flash
+     Cooler.
+
+     This vessel is maintained under vacuum by the LLFC Vacuum Pump. The reaction slurry is circulated through the vessel
+     by the LLFC Circulation Pump, the return being by gravity to the head of the reaction system.
+
+     The evaporation of water from the slurry causes a cooling effect in the slurry and due to the very high recirculation rate,
+     the delta T is maintained below 3°C. Supersaturation and scaling are therefore reduced in the flash cooler and piping. A
+     delta T (between the inlet and the outlet legs) provides the evaporative load.
+
+     The high recirculation rate inside the reactor ensured by the LLFC Circulation Pump also provides acidity and sulfate
+     excess to the head of the reaction system where the phosphate rock is fed, essential for optimal dissolution and
+     crystallization.
+
+     The vapours released from the LLFC pass first through the Precondenser (where a part of the heat contained in the
+     vapours is recovered to heat the water bleed coming from the Fluorine Scrubber that will finally be used as gypsum cake
+     washing water onto the filters.
+                                                   Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                     Pre-Feasibility Study             Ma’aden Project N° :         QI950101
+                                                                      Document N°:                 MD-521-6000-EG-PR-PRD-0001
+Main Title:                         Process Description – WAS PAP
+                                                                      Revision:                    A03
+
+     The vapours then pass through the Flash Cooler Condenser where the condensation is completed by the use of pond
+     water. The water from these condensers is then re-used as reslurrying water for the gypsum cake exiting the filters in
+     gypsum cake hoppers.
+
+
+     3.2.2            Digestion Section
+
+     The slurry from the last compartment of the attack reactor overflows by gravity to the Digestion tank which comprises
+     three compartments.
+
+     The residence time inside the Digestion Tank ensures that crystallisation of the gypsum and fluosilicates is completed
+     before filtration. It provides additional time to finalise crystal growth and reduce super-saturation. The reduction of
+     super-saturation means that a maturated slurry is fed to the gypsum filter reducing the scaling effect downstream and
+     reducing the post-precipitation in the weak acid storage tank.
+
+     In addition, the attack and digestion configuration ensure the prevention of short-circuiting of unreacted rock from the
+     reaction system to the filtration.
+
+
+     3.3              Gas Scrubbing
+
+     A gas scrubber is installed for the reaction and filtration sections.
+
+     The scrubbing system consists of an empty – counter-current Gas Scrubbing Tower with a Gas Scrubber Fan sucking and
+     cleaning gases from the various emission points of the attack, digestion and filtration sections and discharging them to
+     the Gas Stack.
+
+     The gases go into the gas scrubbing tower through the bottom. They are washed two times with a circulating water
+     solution. The water solution circulates through the circulation pumps. Water make-ups are done with process water for
+     the second stage and pond water for the first stage.
+
+
+     3.4              Filtration
+
+     The gypsum slurry is fed to two Filtration trains in parallel, each fitted with a vacuum box and one external Filter
+     Separator.
+
+     Any acid droplets recovered by these separators are routed to the recycled acid pumps, The vapours from the Filter
+     Separator pass through a Filter Condenser where they are condensed using cooling water. The remaining gases are going
+     to the Filter Vacuum Pump. The water leaving the Filter Condensers in addition with the water coming from the Attack
+     Condenser are routed to the Gypsum Cake Hoppers and re-used for the gypsum cake re-slurrying.
+                                                  Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                    Pre-Feasibility Study            Ma’aden Project N° :             QI950101
+                                                                    Document N°:                     MD-521-6000-EG-PR-PRD-0001
+Main Title:                        Process Description – WAS PAP
+                                                                    Revision:                        A03
+
+     The product acid (equivalent to the production) is sent to the Weak Acid Distribution Box by the Weak Acid Pump whilst
+     the remaining amount of product acid required for the control of solids in the reactor is routed to the Recycled Acid Pump
+     via an overflow from the product acid line to the recycled acid line.
+
+     After separation of the mother liquor, the gypsum cake is counter-currently washed three times. The final (or third) cake
+     wash prior to gypsum discharge is fed with clean water coming from the gas scrubbing second stage.
+
+     The second cake wash is fed with hot pond water coming from the Filter Cake Wash Tank. This water is used before to
+     perform the cloth wash.
+
+     The flow of cake wash water is adjusted to regulate the product acid strength.
+
+     The resulting filtrate from the last two cake washes (clean water and pond water) drains from the distributor to the
+     suction of the Weak Acid Wash Pump which pumps this filtrate to the first cake washing. The filtrate from this wash
+     drains from the filter distributor to the Recycled Acid Pump. In order to rapidly recover from upsets in filtration causing
+     flooding of the filters, cake washing by-passes are foreseen to deviate a part of the water to the Recycled Acid Pump.
+
+     The gypsum cake after the washing is discharged into the Gypsum Cake Hopper and then re-slurryied with pond water
+     coming from attack condenser, cooling water coming from filtration condensers and process water coming from attack
+     and filtration vacuum pumps. The slurry is finally sent to the gypsum pond by gravity.
+
+     After cake discharge, the cloths are washed with hot water from Pre-condenser Seal tank. This water containing solids is
+     collected in the Filter Cake Wash Tank.
+
+
+     3.5             Weak Phosphoric Acid Concentration
+
+     Four trains of concentration under vacuum operate simultaneously in parallel to concentrate a total of 1615 TPD P2O5,
+     from 28% to 54% phosphoric acid. Weak acid 28% P2O5, which is stored in the Acid Storage Area after being clarified and
+     separated from the WPA sludge, is pumped by the Weak Acid Transfer Pump to Concentration section to the Evaporators
+     where the boiling temperature of the acid is controlled.
+
+     The vacuum circuit includes a Condenser that uses cooling water to condense water vapors. The hot water and
+     condensed vapors are returned by gravity to the cooling tower, while non-condensable gases are removed by a Vacuum
+     Pump.
+
+     Acid is recirculated by an axial-flow Circulation Pump through a Heat Exchanger and back to the Evaporator. The
+     circulation rate is controlled to maintain a low temperature difference (around 2.5°C), with inlet and outlet temperatures
+     typically at 85°C and 87.5°C, respectively. The Heat Exchanger features graphite tubes and a carbon steel shell, with the
+                                                  Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                    Pre-Feasibility Study            Ma’aden Project N° :              QI950101
+                                                                    Document N°:                      MD-521-6000-EG-PR-PRD-0001
+Main Title:                        Process Description – WAS PAP
+                                                                    Revision:                         A03
+
+     lower part in stainless steel. It is positioned below the liquid level in the evaporator to prevent boiling and minimize
+     scaling.
+
+     Steam flowrate is maintained constant through a flow control valve on the low-pressure steam line to the heat exchanger.
+     The pressure on the shell side increases during the operating cycle, along with scaling in the acid tubes. To prevent
+     superheating, circulating condensate is sprayed at the inlet of the Desuperheater, with excess condensate draining to
+     the Condensate Receiver. Steam pressure at the exchanger inlet indicates tube scaling, triggering a high-pressure alarm
+     when cleaning is needed.
+
+     Condensate is discharged by gravity through a self-draining line to the Condensate Receiver, which is equipped with a
+     level control that adjusts the Condensate Pump's discharge valve position.
+
+     In the concentration loop, the product acid, containing 54% P2O5, overflows through a standpipe that keeps a constant
+     level in the evaporator. The acid then flows to the suction of the product pump which sends the concentrated acid to the
+     Concentrated Acid Maturation Tank. Refer to sections 3.7.1 and 3.7.2.
+
+
+     3.6             Fluorine Absorption
+
+     In each concentration line, a system for fluorine absorption is provided. Vapors liberated from the acid contain principally
+     water, HF, SiF4. To protect the environment, most of the fluorine content must be recovered.
+
+     In order to ensure that the fluorosilicic acid produced is not contaminated with phosphoric acid, the vapours initially pass
+     through a high efficiency Droplet Separator where the small droplets of entrained phosphoric acid are separated and
+     returned to the concentration unit.
+
+     One of the principal reasons for low recovery of H2SiF6 in traditional systems is the entrainment of fine droplets of acid.
+     To prevent such an occurrence, a high efficiency Fluorosilicic Acid Droplets Separators similar to the ones after the
+     Evaporators outlet is provided. The recovered acid droplets drain to the Fluorine Scrubber Seal tanks.
+
+
+     3.7             Acid & FSA Storage
+
+     The sections below will give a description of the Weak and concentrated phosphoric acid storage as well as FSA.
+
+
+     3.7.1            Weak Phosphoric Acid Storage
+
+     The Weak Acid Distribution Box receives 28% P2O5 product acid from the Filter Acid Pumps allowing the distribution of
+     weak acid to the two Weak Acid Settling Tanks. These tanks are fitted with a rake and a central collecting cone to recycle
+     the weak acid sludge back to the reactor, with the Weak Acid Sludge. A small part of the sludge flow can also be recycled
+     to the Weak Acid Distribution Box in order to promote the crystallization and settling.
+                                                    Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                      Pre-Feasibility Study           Ma’aden Project N° :            QI950101
+                                                                     Document N°:                    MD-521-6000-EG-PR-PRD-0001
+Main Title:                          Process Description – WAS PAP
+                                                                     Revision:                       A03
+
+     The clear weak acid is then pumped into the Weak Acid Storage Tank also fitted with an agitator to avoid solid
+     accumulation at tank bottom. The weak acid 28% P2O5 is fed from the Weak Acid Storage Tank to the Concentration
+     Evaporators from the Weak Acid Transfer Pumps.
+
+
+     3.7.2             Concentrated Phosphoric Acid
+
+     The Concentrated Acid Maturation Tank fitted with an Agitator receives 54% P2O5 acid from the Product Acid Transfer
+     Pumps. This tank overflows into two Concentrated Acid Settlers fitted with rakes. The settled concentrated acid is then
+     sent to the storage area by the Concentrated Acid Transfer Pump.
+
+     Sludge from the Concentrated Acid Settler is recycled to the Weak Acid Settler via the Concentrated Acid Sludge Pump.
+     A small part of the sludge flow can also be directed to the Concentrated Acid Maturation Tank in order to promote the
+     crystallization and settling.
+
+
+     3.7.3             Fluorosilicic Acid (FSA)
+
+     The Fluorine Scrubbing Acid (FSA), which contains 18% H₂SiF₆ (hexafluorosilicic acid), is produced in the fluorine
+     recovery units during the process of capturing and neutralizing fluorine emissions. After the FSA is produced, it is
+     discharged from the fluorine recovery units and directed into the FSA Storage Tank. This tank is specifically designed to
+     hold the FSA safely until it is ready for further processing.
+
+     Once the FSA is stored, it is subsequently transferred to the FSA Neutralization/Recovery Section. In this section, the FSA
+     undergoes a neutralization process, where it is reacted with an appropriate neutralizing agent (such as lime or sodium
+     carbonate) to reduce its acidity and transform the hexafluorosilicic acid into a less hazardous form. This process may also
+     involve the recovery of valuable by-products such as calcium fluoride (CaF₂) or sodium fluoride (NaF), depending on the
+     specific process used.
+
+
+     3.8              Cooling Tower
+
+     A cooling tower provides cold water to the concentration and filter condensers. The water is circulating in a closed loop
+     on the concentration condensers.
+
+     To ensure a low fluorine content in the cooling water, a make-up of process water is required. This make-up is performed
+     feeding process water directly to the cooling tower and reusing process water coming from the liquid ring of the
+     concentration vacuum pumps.
+                                                     Ma’aden Phosphate 3 Phase II
+
+
+Project Phase :                     Pre-Feasibility Study            Ma’aden Project N° :             QI950101
+                                                                     Document N°:                     MD-521-6000-EG-PR-PRD-0001
+Main Title:                         Process Description – WAS PAP
+                                                                     Revision:                        A03
+
+     A bleed of cooling water is then required. This bleed is routed to the filter condensers. The water exiting the filter
+     condensers is not recirculated to the cooling tower. Instead, it is used for the gypsum re-slurrying and finally sent to the
+     gypsum pond.
+
+
+     3.9              Utilities
+
+     Utilities are provided from OSBL to be used in various sections of the plant; these utilities are the following:
+
+                  •   Process Water
+                  •   Cooling Water
+                  •   Pond Water
+                  •   Raw Water (Utility Stations)
+                  •   LP Steam (170°C & 5 barg)
+                  •   Instrument Air & Plant Air
+
