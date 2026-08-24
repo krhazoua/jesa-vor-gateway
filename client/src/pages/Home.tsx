@@ -55,7 +55,7 @@ export const advanceSimulation = <T extends { time: string }>(baseRequests: read
 const checks = ["EQUIPMENT_CHECK", "SIGNATURE_CHECK", "UNIT_CHECK", "DUPLICATE_CHECK", "TTL_CHECK", "RANGE_CHECK", "SIL_CHECK", "ROC_CHECK", "INTERLOCK_CHECK"];
 const nav = [
   { label: "Operations", icon: Activity, active: true, href: "/operations" }, { label: "Requests", icon: FileText, href: "/requests" },
-  { label: "Approvals", icon: ClipboardCheck, badge: "01", href: "/approvals" }, { label: "Validation", icon: ShieldCheck, href: "/validation" },
+  { label: "Approvals", icon: ClipboardCheck, href: "/approvals" }, { label: "Validation", icon: ShieldCheck, href: "/validation" },
   { label: "Audit trail", icon: Database, href: "/audit" }, { label: "System health", icon: Radar, href: "/system-health" }, { label: "Analytics", icon: Gauge, href: "/analytics" }, { label: "Configuration", icon: Settings2, href: "/configuration" },
 ];
 
@@ -73,6 +73,7 @@ export default function Home() {
   const auth = useAuth();
   const notificationsQuery = trpc.notifications.list.useQuery({ unreadOnly: true }, { enabled: Boolean(auth.user), refetchInterval: NOTIFICATION_POLL_INTERVAL_MS, retry: false });
   const requestQuery = trpc.requests.list.useQuery(undefined, { enabled: Boolean(auth.user), retry: false });
+  const catalogQuery = trpc.requests.catalog.useQuery(undefined, { enabled: Boolean(auth.user), retry: false });
   useEffect(() => { if (!auth.user) return; if (typeof EventSource === "undefined") { void refreshUnreadNotifications(false, notificationsQuery.refetch); return; } const stream = new EventSource("/api/notifications/stream"); const handle = (event: MessageEvent<string>) => { notificationsQuery.refetch(); try { const next = JSON.parse(event.data) as { title?: string; message?: string }; if (next.title) toast(`${next.title}: ${next.message || "Review required."}`); } catch { /* polling remains authoritative */ } }; stream.addEventListener("notification", handle); return () => { stream.removeEventListener("notification", handle); stream.close(); }; }, [auth.user?.id, notificationsQuery.refetch]);
   const previewAlerts = [{ id: -1, severity: "WARNING", title: "Approval required / preview", message: "Simulator alert preview — persisted alerts appear here when canonical rows exist.", createdAt: new Date() }];
   const visibleNotifications = notificationsQuery.data?.length ? notificationsQuery.data : previewAlerts;
@@ -98,7 +99,9 @@ export default function Home() {
     return () => cancelAnimationFrame(frame);
   }, [paused]);
   const simulation = useMemo(() => advanceSimulation(requests, simulationTick), [simulationTick]);
-  const canonicalRequests = useMemo(() => (requestQuery.data || []).map(row => ({ id: row.requestId, time: new Date(row.createdAt).toISOString().slice(11, 19), source: row.sourceUc, variable: row.sourceIdentity, tag: String(row.variableId), current: "—", requested: String(row.requestedSp), unit: "—", uc: row.sourceUc, status: row.status, sil: "—", delta: "—" })), [requestQuery.data]);
+  const equipmentById = useMemo(() => new Map((catalogQuery.data?.equipment || []).map(item => [item.id, item])), [catalogQuery.data]);
+  const variableById = useMemo(() => new Map((catalogQuery.data?.variables || []).map(item => [item.id, item])), [catalogQuery.data]);
+  const canonicalRequests = useMemo(() => (requestQuery.data || []).map(row => { const equipment = equipmentById.get(row.equipmentId); const variable = variableById.get(row.variableId); const deltaValue = Number(row.requestedSp) - Number(row.currentPv); return { id: row.requestId, time: new Date(row.createdAt).toISOString().slice(11, 19), source: row.sourceUc, variable: variable?.name || `Variable ${row.variableId}`, tag: variable?.tag || String(row.variableId), current: String(row.currentPv), requested: String(row.requestedSp), unit: variable?.unit || "—", uc: row.sourceUc, status: row.status, sil: variable?.silClass || "—", delta: Number.isFinite(deltaValue) ? `${deltaValue >= 0 ? "+" : ""}${deltaValue}` : "—", equipment: equipment?.tag || String(row.equipmentId) }; }), [equipmentById, variableById, requestQuery.data]);
   const operationalRequests = canonicalRequests.length ? canonicalRequests : simulation.requests;
   const operationalSource = canonicalRequests.length ? "CANONICAL DB / READ-ONLY" : "ISOLATED SIMULATOR BASELINE";
   const operationalStats = useMemo(() => {
@@ -115,7 +118,7 @@ export default function Home() {
       <aside className="sidebar">
         <div className="brand-block"><div className="brand-lockup"><img src="/manus-storage/jesa-wordmark_e357ca66.png" className="jesa-logo" alt="JESA" /></div><div className="brand-rule" /><div><div className="eyebrow">DIGITAL ENGINEERING</div><div className="brand-sub">VoR GATEWAY / PAP</div></div></div>
         <div className="plant-selector"><div className="eyebrow">ACTIVE SYSTEM</div><div className="plant-name">Attack Reactor <ChevronRight size={14} /></div><div className="plant-meta"><span className="amber-dot" />EDGE ADAPTER DISCONNECTED · READ-ONLY</div></div>
-        <nav className="nav-list">{nav.filter(item => item.href !== "/configuration" || auth.user?.role === "admin").map(item => <Link href={item.href} key={item.label} className={`nav-item ${item.active ? "active" : ""}`}><item.icon size={16} /><span>{item.label}</span>{item.badge && <b>{item.badge}</b>}</Link>)}</nav>
+        <nav className="nav-list">{nav.filter(item => item.href !== "/configuration" || auth.user?.role === "admin").map(item => <Link href={item.href} key={item.label} className={`nav-item ${item.active ? "active" : ""}`}><item.icon size={16} /><span>{item.label}</span></Link>)}</nav>
         <div className="sidebar-foot"><div className="zone-card"><div className="eyebrow">SECURITY ZONES</div><div className="zone-row"><span className="zone-dot blue" />MODULE 3 · psM+O <Check size={13} /></div><div className="zone-row"><span className="zone-dot amber" />MODULE 2 · DMZ <Check size={13} /></div><div className="zone-row"><span className="zone-dot green" />MODULE 1 · CPC <Check size={13} /></div></div><div className="user-row"><div className="avatar">OP</div><div><strong>{identityCopy.operatorDisplay}</strong><small>{identityCopy.operatorLabel}</small></div><button className="user-logout" onClick={() => auth.logout().then(() => navigate("/login"))} aria-label="Log out"><LockKeyhole size={14} /></button></div></div>
       </aside>
 

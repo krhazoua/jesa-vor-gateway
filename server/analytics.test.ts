@@ -37,7 +37,7 @@ describe("analytics aggregations", () => {
     expect(filtered.transitions).toEqual([{ label: "PENDING_OPERATOR → ACCEPTED", fromStatus: "PENDING_OPERATOR", toStatus: "ACCEPTED", count: 1 }]);
     expect(filtered.approvalTimes).toEqual([{ bucket: "2026-08-24", averageMinutes: 4, samples: 1 }]);
     const empty = buildAnalyticsPayload(transitions, approvals, { department: "ELECTRICAL" });
-    expect(empty).toMatchObject({ transitions: [], approvalTimes: [], statusDistribution: [], useCaseDistribution: [], priorityDistribution: [], silDistribution: [], throughput: [], approvalDecisions: [], validationFailures: [] });
+    expect(empty).toMatchObject({ transitions: [], approvalTimes: [], statusDistribution: [], useCaseDistribution: [], priorityDistribution: [], silDistribution: [], throughput: [], approvalDecisions: [], validationFailures: [], validationTimes: [], equipmentDistribution: [], variableDistribution: [], statusTrend: [], acceptanceRate: 0, rejectionRate: 0, sil1Count: 0, averageValidationMinutes: 0 });
     expect(empty.transitions).toHaveLength(0);
     expect(empty.approvalTimes).toHaveLength(0);
   });
@@ -48,13 +48,13 @@ describe("analytics aggregations", () => {
       [{ createdAt: new Date("2026-08-24T08:00:00Z"), decidedAt: new Date("2026-08-24T08:04:00Z"), decision: "APPROVED", department: "OPERATIONS" }],
       undefined,
       [
-        { createdAt: new Date("2026-08-24T08:00:00Z"), department: "OPERATIONS", status: "ACCEPTED", sourceUc: "UC1", priority: "HIGH", silClass: "SIL-1" },
-        { createdAt: new Date("2026-08-24T09:00:00Z"), department: "OPERATIONS", status: "REJECTED", sourceUc: "UC1", priority: "NORMAL", silClass: null },
+        { createdAt: new Date("2026-08-24T08:00:00Z"), department: "OPERATIONS", status: "ACCEPTED", sourceUc: "UC1", priority: "HIGH", silClass: "SIL-1", equipmentTag: "R-1001", variableTag: "TIC-1001" },
+        { createdAt: new Date("2026-08-24T09:00:00Z"), department: "OPERATIONS", status: "REJECTED", sourceUc: "UC1", priority: "NORMAL", silClass: null, equipmentTag: "R-1001", variableTag: "TIC-1001" },
       ],
       [
-        { createdAt: new Date("2026-08-24T08:00:00Z"), department: "OPERATIONS", checkType: "ROC_WITHIN_LIMIT", result: "FAIL" },
-        { createdAt: new Date("2026-08-24T08:01:00Z"), department: "OPERATIONS", checkType: "ROC_WITHIN_LIMIT", result: "FAIL" },
-        { createdAt: new Date("2026-08-24T08:02:00Z"), department: "OPERATIONS", checkType: "SIGNATURE_VALID", result: "PASS" },
+        { createdAt: new Date("2026-08-24T08:00:00Z"), requestCreatedAt: new Date("2026-08-24T07:58:00Z"), department: "OPERATIONS", checkType: "ROC_WITHIN_LIMIT", result: "FAIL" },
+        { createdAt: new Date("2026-08-24T08:01:00Z"), requestCreatedAt: new Date("2026-08-24T07:58:00Z"), department: "OPERATIONS", checkType: "ROC_WITHIN_LIMIT", result: "FAIL" },
+        { createdAt: new Date("2026-08-24T08:02:00Z"), requestCreatedAt: new Date("2026-08-24T07:58:00Z"), department: "OPERATIONS", checkType: "SIGNATURE_VALID", result: "PASS" },
       ],
     );
     expect(payload.statusDistribution).toEqual([{ label: "ACCEPTED", count: 1 }, { label: "REJECTED", count: 1 }]);
@@ -63,6 +63,14 @@ describe("analytics aggregations", () => {
     expect(payload.validationFailures).toEqual([{ checkType: "ROC_WITHIN_LIMIT", count: 2 }]);
     expect(payload.approvalDecisions).toEqual([{ label: "APPROVED", count: 1 }]);
     expect(payload.throughput).toEqual([{ bucket: "2026-08-24", count: 2 }]);
+    expect(payload.equipmentDistribution).toEqual([{ label: "R-1001", count: 2 }]);
+    expect(payload.variableDistribution).toEqual([{ label: "TIC-1001", count: 2 }]);
+    expect(payload.acceptanceRate).toBe(50);
+    expect(payload.rejectionRate).toBe(50);
+    expect(payload.sil1Count).toBe(1);
+    expect(payload.averageValidationMinutes).toBe(3);
+    expect(payload.validationTimes).toEqual([{ bucket: "2026-08-24", averageMinutes: 3, samples: 3 }]);
+    expect(payload.statusTrend).toEqual([{ bucket: "2026-08-24", accepted: 1, rejected: 1, pending: 0 }]);
   });
 
   it("averages decided approvals by creation day and excludes pending rows", () => {

@@ -1,25 +1,16 @@
-export type TransitionRecord = {
-  fromStatus: string | null;
-  toStatus: string;
-  createdAt: Date;
-};
-
-export type ApprovalRecord = {
-  createdAt: Date;
-  decidedAt: Date | null;
-  decision: string;
-};
-
+export type TransitionRecord = { fromStatus: string | null; toStatus: string; createdAt: Date };
+export type ApprovalRecord = { createdAt: Date; decidedAt: Date | null; decision: string };
 export type TransitionMetric = { label: string; fromStatus: string; toStatus: string; count: number };
 export type ApprovalTimeMetric = { bucket: string; averageMinutes: number; samples: number };
 export type CountMetric = { label: string; count: number };
 export type ThroughputMetric = { bucket: string; count: number };
 export type ValidationFailureMetric = { checkType: string; count: number };
+export type ValidationTimeMetric = { bucket: string; averageMinutes: number; samples: number };
 
 export type AnalyticsFilters = { from?: Date; to?: Date; department?: string };
 export type FilterableAnalyticsRecord = { createdAt: Date; department?: string };
-export type RequestAnalyticsRecord = FilterableAnalyticsRecord & { status: string; sourceUc: string; priority: string; silClass: string | null };
-export type ValidationAnalyticsRecord = FilterableAnalyticsRecord & { checkType: string; result: string };
+export type RequestAnalyticsRecord = FilterableAnalyticsRecord & { status: string; sourceUc: string; priority: string; silClass: string | null; equipmentTag: string; variableTag: string };
+export type ValidationAnalyticsRecord = FilterableAnalyticsRecord & { checkType: string; result: string; requestCreatedAt: Date };
 
 export function filterAnalyticsRecords<T extends FilterableAnalyticsRecord>(records: T[], filters?: AnalyticsFilters): T[] {
   return records.filter(record => {
@@ -41,6 +32,10 @@ export function buildAnalyticsPayload(
   const filteredApprovals = filterAnalyticsRecords(approvals, filters);
   const filteredRequests = filterAnalyticsRecords(requests, filters);
   const filteredValidation = filterAnalyticsRecords(validation, filters);
+  const decidedApprovals = filteredApprovals.filter(row => row.decision !== "PENDING");
+  const accepted = filteredRequests.filter(row => row.status === "ACCEPTED").length;
+  const rejected = filteredRequests.filter(row => row.status === "REJECTED").length;
+  const total = filteredRequests.length;
   return {
     transitions: aggregateTransitions(filteredTransitions),
     approvalTimes: aggregateApprovalTimes(filteredApprovals),
@@ -48,9 +43,19 @@ export function buildAnalyticsPayload(
     useCaseDistribution: aggregateCounts(filteredRequests.map(row => row.sourceUc)),
     priorityDistribution: aggregateCounts(filteredRequests.map(row => row.priority)),
     silDistribution: aggregateCounts(filteredRequests.map(row => row.silClass || "UNCLASSIFIED")),
+    equipmentDistribution: aggregateCounts(filteredRequests.map(row => row.equipmentTag)),
+    variableDistribution: aggregateCounts(filteredRequests.map(row => row.variableTag)),
     throughput: aggregateThroughput(filteredRequests),
-    approvalDecisions: aggregateCounts(filteredApprovals.filter(row => row.decision !== "PENDING").map(row => row.decision)),
+    statusTrend: aggregateStatusTrend(filteredRequests),
+    approvalDecisions: aggregateCounts(decidedApprovals.map(row => row.decision)),
     validationFailures: aggregateValidationFailures(filteredValidation),
+    validationTimes: aggregateValidationTimes(filteredValidation),
+    acceptanceRate: total ? Number(((accepted / total) * 100).toFixed(2)) : 0,
+    rejectionRate: total ? Number(((rejected / total) * 100).toFixed(2)) : 0,
+    averageValidationMinutes: averageValidationMinutes(filteredValidation),
+    sil1Count: filteredRequests.filter(row => row.silClass === "SIL-1").length,
+    expiredCount: filteredRequests.filter(row => row.status === "EXPIRED").length,
+    duplicatedCount: filteredRequests.filter(row => row.status === "DUPLICATED").length,
   };
 }
 
@@ -95,6 +100,37 @@ export function aggregateThroughput(records: FilterableAnalyticsRecord[]): Throu
   return Array.from(counts.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([bucket, count]) => ({ bucket, count }));
 }
 
+export function aggregateStatusTrend(records: RequestAnalyticsRecord[]): Array<{ bucket: string; accepted: number; rejected: number; pending: number }> {
+  const buckets = new Map<string, { accepted: number; rejected: number; pending: number }>();
+  for (const record of records) {
+    const bucket = record.createdAt.toISOString().slice(0, 10);
+    const current = buckets.get(bucket) || { accepted: 0, rejected: 0, pending: 0 };
+    if (record.status === "ACCEPTED") current.accepted += 1;
+    if (record.status === "REJECTED") current.rejected += 1;
+    if (record.status === "PENDING_OPERATOR") current.pending += 1;
+    buckets.set(bucket, current);
+  }
+  return Array.from(buckets.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([bucket, values]) => ({ bucket, ...values }));
+}
+
 export function aggregateValidationFailures(records: ValidationAnalyticsRecord[]): ValidationFailureMetric[] {
   return aggregateCounts(records.filter(record => record.result === "FAIL").map(record => record.checkType)).map(({ label, count }) => ({ checkType: label, count }));
+}
+
+export function aggregateValidationTimes(records: ValidationAnalyticsRecord[]): ValidationTimeMetric[] {
+  const buckets = new Map<string, { totalMinutes: number; samples: number }>();
+  for (const record of records) {
+    const elapsed = Math.max(0, record.createdAt.getTime() - record.requestCreatedAt.getTime()) / 60000;
+    const bucket = record.createdAt.toISOString().slice(0, 10);
+    const current = buckets.get(bucket) || { totalMinutes: 0, samples: 0 };
+    current.totalMinutes += elapsed;
+    current.samples += 1;
+    buckets.set(bucket, current);
+  }
+  return Array.from(buckets.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([bucket, value]) => ({ bucket, averageMinutes: Number((value.totalMinutes / value.samples).toFixed(2)), samples: value.samples }));
+}
+
+export function averageValidationMinutes(records: ValidationAnalyticsRecord[]): number {
+  const timed = records.map(record => Math.max(0, record.createdAt.getTime() - record.requestCreatedAt.getTime()) / 60000);
+  return timed.length ? Number((timed.reduce((sum, value) => sum + value, 0) / timed.length).toFixed(2)) : 0;
 }

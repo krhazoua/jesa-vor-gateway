@@ -59,3 +59,9 @@ The newly supplied premium rework specification was reviewed against the current
 The master repair prompt was audited against the running full-stack application. The implementation now covers the required protected routes, canonical request filters, engineering request-detail context, server-side validation and approval boundaries, persistent audit source, detailed analytics aggregation, JSON/CSV/PDF reporting, truthful simulator/read-only disclosures, and responsive route behavior. Remaining requirements are explicitly treated as integration boundaries rather than simulated features.
 
 The requested mapping, propagation, final mapping verification, OPC UA write, workbook import, and `/api/v1/*` REST surface are not presented as completed features. The current application deliberately remains behind a disconnected, read-only edge boundary and does not fabricate plant connectivity, workbook rows, DCS write success, or source data. These capabilities require an approved plant-integration contract, source dataset import decision, credential/certificate configuration, and controlled FAT/SAT validation before implementation.
+
+## Master repair follow-up
+
+The Operations surface now resolves canonical request rows against the engineering catalog when persisted rows are present, showing source use case, variable name/tag, PV, requested SP, unit, SIL class, and computed delta. The static approval-count badge was removed so navigation does not imply a database count that has not been queried.
+
+System Health now performs a protected database probe and reports database latency/reachability, derived zone readiness, validation engine availability, active-session authentication, audit-store reachability, and notification-stream readiness. The DCS/OPC UA edge remains explicitly disconnected and read-only; no plant status or write capability is inferred from the probe.

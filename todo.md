@@ -236,3 +236,11 @@
 - [x] Update repair documentation and save a final checkpoint for this master audit.
 - [x] Add canonical request-list filters for status, equipment, variable, source use case, priority, and date range with clamped pagination.
 - [x] Extend request detail with canonical equipment, variable tag/unit, PV/SP delta, SIL, priority, TTL, reason, and signature context.
+- [x] Add canonical analytics KPIs for acceptance/rejection rates, average validation time, SIL-1 volume, expired/duplicated counts, and equipment/variable distributions.
+- [x] Add a canonical acceptance/rejection trend series and include all new analytics dimensions in report exports.
+- [x] Verify request actions and audit filtering against the master prompt, adding only controls backed by existing protected contracts.
+- [x] Replace hardcoded System Health subsystem statuses with backend-derived database, validation, authentication, audit, and SSE health fields; keep OPC UA explicitly read-only/disconnected.
+- [x] Remove the remaining static approval-count badge from the Operations navigation so no fake pending count is displayed.
+- [x] Document backend-derived subsystem health and Operations canonical catalog enrichment in the master repair reconciliation and operations guide.
+- [x] Correct Analytics KPI grid layout so labels, values, and context text remain readable at desktop and mobile widths.
+- [x] Correct Audit filter-toolbar wrapping and export-control placement at the 1366px workstation target and mobile widths.

@@ -25,3 +25,9 @@ Startup and framework integration logs in `server/_core` are retained as operati
 The protected `analytics.summary` procedure now derives detailed measures from persisted request, request-history, approval, variable, and validation rows. Supported filtered series include current request status, source use-case, priority, SIL class, approval decision, validation-failure concentration, requests by creation day, state transitions, and approval latency. Date and department filters apply to the relevant canonical source timestamps and request department joins.
 
 The Analytics dashboard renders the series as decision-path and approval-latency charts plus data-driven insight cards. CSV, JSON, and PDF exports include the detailed distributions and active filter metadata. When no canonical rows match the authenticated scope, the dashboard reports an explicit no-data state and does not substitute simulator values; simulator telemetry remains confined to the Operations preview.
+
+## Master audit and health follow-up
+
+The Audit route supports independent request-ID, user-ID, role, event, state/result, free-text, and inclusive UTC date filters. Filters compose before typed sorting and clamped pagination; the active filtered result set is the same set used by CSV, JSON, and PDF export controls.
+
+The Operations route uses canonical equipment and variable catalog labels whenever persisted request rows are available. In simulator-only preview mode, request cards and telemetry are visibly labeled as isolated simulator content. System Health reports a protected database probe and derived application subsystem readiness; the DCS/OPC UA edge remains disconnected, read-only, and unavailable for plant writes until an approved integration contract is supplied.
