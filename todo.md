@@ -126,4 +126,15 @@
 - [x] Fix the System Health boundary-lineage strip so its nodes remain horizontal and readable.
 - [x] Perform mobile visual verification for the industrial UI refinement after the latest Operations/System Health styling changes.
 - [x] Save a new checkpoint after the industrial-ready UI refinement passes final verification.
-- [ ] Save the post-industrial-refinement checkpoint after final mobile review.
+- [x] Save the post-industrial-refinement checkpoint after final mobile review.
+
+- [x] Add a bounded client-side simulation clock for telemetry and request-flow updates.
+- [x] Animate telemetry values, stream indicators, timestamps, and pipeline activity without plant connectivity.
+- [x] Label simulated states explicitly and respect prefers-reduced-motion.
+- [x] Add tests and perform desktop/mobile visual verification for the simulation layer.
+- [ ] Save a checkpoint for the simulated real-time update experience.
+- [ ] Save the post-simulation checkpoint after deterministic model tests and desktop/mobile review.
+- [x] Implement a bounded client-side simulation state model for telemetry, request recency, and displayed timestamps.
+- [x] Extend paused-state behavior and simulation labels across the explicit simulation model.
+- [x] Add deterministic tests for simulated-state output, timestamp progression, and paused-state behavior.
+- [x] Correct the simulation tick normalization so the bounded 120-tick window wraps deterministically.

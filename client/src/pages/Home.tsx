@@ -20,6 +20,37 @@ const requests = [
   { id: "VOR-2026-0824-013", time: "08:18:21", source: "APC-ATTACK-01", variable: "Flash cooler circulation", tag: "FIC-5230", current: "18,040", requested: "18,120", unit: "m³/h", uc: "UC1", status: "EXPIRED", sil: "SIL-0", delta: "+80" },
 ];
 
+export const getSimulationControlLabel = (paused: boolean) => paused ? "RESUME STREAM" : "PAUSE STREAM";
+
+const formatSimulationClock = (totalSeconds: number) => {
+  const normalized = ((totalSeconds % 86400) + 86400) % 86400;
+  const hours = String(Math.floor(normalized / 3600)).padStart(2, "0");
+  const minutes = String(Math.floor((normalized % 3600) / 60)).padStart(2, "0");
+  const seconds = String(Math.floor(normalized % 60)).padStart(2, "0");
+  return `${hours}:${minutes}:${seconds}`;
+};
+
+const clockToSeconds = (clock: string) => {
+  const [hours, minutes, seconds] = clock.split(":").map(Number);
+  return (hours * 3600) + (minutes * 60) + seconds;
+};
+
+export const advanceSimulation = <T extends { time: string }>(baseRequests: readonly T[], tick: number) => {
+  const boundedTick = ((tick % 120) + 120) % 120;
+  const offsetSeconds = boundedTick * 3;
+  const telemetry = {
+    temperature: (75.8 + Math.sin(boundedTick / 2) * 0.2).toFixed(1),
+    sulfate: (27.1 + Math.cos(boundedTick / 3) * 0.15).toFixed(1),
+    p205: (28.2 + Math.sin(boundedTick / 4) * 0.1).toFixed(1),
+    solids: (31.2 + Math.cos(boundedTick / 5) * 0.12).toFixed(1),
+  };
+  return {
+    syncLabel: formatSimulationClock(clockToSeconds("08:42:22") + offsetSeconds),
+    telemetry,
+    requests: baseRequests.map(request => ({ ...request, time: formatSimulationClock(clockToSeconds(request.time) + offsetSeconds) })),
+  };
+};
+
 const checks = ["EQUIPMENT_CHECK", "SIGNATURE_CHECK", "UNIT_CHECK", "DUPLICATE_CHECK", "TTL_CHECK", "RANGE_CHECK", "SIL_CHECK", "ROC_CHECK", "INTERLOCK_CHECK"];
 const nav = [
   { label: "Operations", icon: Activity, active: true, href: "/operations" }, { label: "Requests", icon: FileText, href: "/requests" },
@@ -48,7 +79,24 @@ export default function Home() {
   const [drawer, setDrawer] = useState(false);
   const [query, setQuery] = useState("");
   const [paused, setPaused] = useState(false);
-  const filtered = useMemo(() => requests.filter(r => Object.values(r).join(" ").toLowerCase().includes(query.toLowerCase())), [query]);
+  const [simulationTick, setSimulationTick] = useState(0);
+  useEffect(() => {
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    if (paused || reducedMotion) return;
+    let frame = 0;
+    let last = performance.now();
+    const advance = (now: number) => {
+      if (now - last >= 2500) {
+        setSimulationTick(current => current >= 119 ? 0 : current + 1);
+        last = now;
+      }
+      frame = requestAnimationFrame(advance);
+    };
+    frame = requestAnimationFrame(advance);
+    return () => cancelAnimationFrame(frame);
+  }, [paused]);
+  const simulation = useMemo(() => advanceSimulation(requests, simulationTick), [simulationTick]);
+  const filtered = useMemo(() => simulation.requests.filter(r => Object.values(r).join(" ").toLowerCase().includes(query.toLowerCase())), [query, simulation.requests]);
   const selectRequest = (r: typeof requests[number]) => { setSelected(r); setDrawer(true); };
 
   return (
@@ -60,11 +108,11 @@ export default function Home() {
         <div className="sidebar-foot"><div className="zone-card"><div className="eyebrow">SECURITY ZONES</div><div className="zone-row"><span className="zone-dot blue" />MODULE 3 · psM+O <Check size={13} /></div><div className="zone-row"><span className="zone-dot amber" />MODULE 2 · DMZ <Check size={13} /></div><div className="zone-row"><span className="zone-dot green" />MODULE 1 · CPC <Check size={13} /></div></div><div className="user-row"><div className="avatar">OP</div><div><strong>Operator Shift A</strong><small>OPERATOR · Authenticated</small></div><button className="user-logout" onClick={() => auth.logout().then(() => navigate("/login"))} aria-label="Log out"><LockKeyhole size={14} /></button></div></div>
       </aside>
 
-      <main className="main-content">
+      <main className={`main-content ${paused ? "simulation-paused" : ""}`}>
         <header className="topbar"><div className="breadcrumb"><span>JESA / DIGITAL ENGINEERING</span><ChevronRight size={13} /><strong>OPERATIONS</strong></div><div className="top-actions"><div className="system-pulse"><span className="live-dot" /> GATEWAY ONLINE · EDGE DISCONNECTED</div><button className="icon-btn notification-trigger" aria-label="Notifications" onClick={() => toast(unreadCount ? `${unreadCount} unread operating alert${unreadCount === 1 ? "" : "s"}.` : "No unread operating alerts.")}><Bell size={17} />{Boolean(unreadCount) && <b>{unreadCount}</b>}<i /></button><button className="icon-btn" onClick={() => toast("Session is authenticated by the Manus OAuth gateway and active-user server context.")}><LockKeyhole size={16} /></button><button className="menu-btn"><Menu size={18} /></button></div></header>
         <div className="notification-tray"><div className="notification-tray-head"><span><span className="live-dot" /> {unreadCount} UNREAD OPERATING ALERT{unreadCount === 1 ? "" : "S"}</span><small>{notificationsQuery.data?.length ? "REAL-TIME CHANNEL" : "SIMULATOR PREVIEW / NO PERSISTED ALERTS"}</small></div>{visibleNotifications.slice(0, 3).map(notification => <button key={notification.id} className={`notification-item notification-${notification.severity.toLowerCase()}`} onClick={() => toast(notification.id === -1 ? "Preview alert only. Persisted alerts can be acknowledged from the notification tray." : `${notification.title} marked for review.`)}><strong>{notification.title}</strong><span>{notification.message}</span><small>{new Date(notification.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })} · CLICK TO ACKNOWLEDGE</small></button>)}</div>
         <div className="content-wrap">
-          <section className="page-heading"><div><div className="eyebrow cobalt">PAP ATTACK REACTOR / CONTROL SYSTEM</div><h1>Verification of Request <span className="muted">/</span> Operations</h1><p>Secure request governance between APC and the DCS adapter. Every write is verified, mapped, and traceable.</p><div className="lineage-strip"><span className="lineage-label">REQUEST LINEAGE</span><strong>APC</strong><ChevronRight size={12} /><strong className="lineage-active">MODULE 3 / psM+O</strong><ChevronRight size={12} /><strong className="lineage-active">MODULE 2 / DMZ</strong><ChevronRight size={12} /><strong>MODULE 1 / CPC</strong><ChevronRight size={12} /><strong>DCS ADAPTER</strong></div></div><div className="heading-meta"><div className="meta-label">LAST SYNCHRONIZED</div><div className="mono">08:42:22 UTC <RefreshCw size={13} /></div><div className="sim-label"><span className="amber-dot" /> ISOLATED SIMULATOR MODE</div></div></section>
+          <section className="page-heading"><div><div className="eyebrow cobalt">PAP ATTACK REACTOR / CONTROL SYSTEM</div><h1>Verification of Request <span className="muted">/</span> Operations</h1><p>Secure request governance between APC and the DCS adapter. Every write is verified, mapped, and traceable.</p><div className="lineage-strip"><span className="lineage-label">REQUEST LINEAGE</span><strong>APC</strong><ChevronRight size={12} /><strong className="lineage-active">MODULE 3 / psM+O</strong><ChevronRight size={12} /><strong className="lineage-active">MODULE 2 / DMZ</strong><ChevronRight size={12} /><strong>MODULE 1 / CPC</strong><ChevronRight size={12} /><strong>DCS ADAPTER</strong></div></div><div className="heading-meta"><div className="meta-label">LAST SYNCHRONIZED</div><div className="mono">{simulation.syncLabel} UTC <RefreshCw size={13} /></div><div className="sim-label"><span className="amber-dot" /> SIMULATION STREAM · PAUSABLE</div></div></section>
 
           <section className="kpi-strip">
             <div className="kpi"><div className="kpi-label">REQUESTS / 24H <span className="trend up"><ArrowUpRight size={13} /> 12%</span></div><strong>184</strong><small>processed through gateway</small></div>
@@ -73,11 +121,11 @@ export default function Home() {
             <div className="kpi"><div className="kpi-label">AVG RESPONSE TIME <span className="trend"><Clock3 size={12} /> LAST 24H</span></div><strong>412<span className="unit">ms</span></strong><small>ingest → decision</small></div>
           </section>
 
-          <div className="section-label"><span className="live-line-marker" /><span>LIVE REQUEST MONITOR</span><span className="section-line" /><button className={`pause-btn ${paused ? "paused" : ""}`} onClick={() => setPaused(!paused)}>{paused ? "RESUME STREAM" : "PAUSE STREAM"}</button></div>
+          <div className="section-label"><span className="live-line-marker" /><span>LIVE REQUEST MONITOR</span><span className="sim-stream-tag"><span className="live-dot" /> SIMULATED UPDATE STREAM</span><span className="section-line" /><button className={`pause-btn ${paused ? "paused" : ""}`} onClick={() => setPaused(!paused)}>{getSimulationControlLabel(paused)}</button></div>
           <section className="workbench">
-            <div className="requests-panel panel"><div className="panel-head"><div><h2>Recent requests</h2><span className="panel-caption">APC → DMZ → CPC / newest first</span></div><div className="panel-tools"><div className="search"><Search size={14} /><input placeholder="Filter requests" value={query} onChange={e => setQuery(e.target.value)} /></div><button className="filter-btn"><SlidersHorizontal size={14} /> Filter</button></div></div><div className="request-table"><div className="table-head"><span>REQUEST / TIME</span><span>SOURCE</span><span>VARIABLE / TAG</span><span>Δ REQUEST</span><span>DECISION</span></div>{filtered.map(r => <button className={`request-row ${selected.id === r.id ? "selected" : ""}`} key={r.id} onClick={() => selectRequest(r)}><div><strong className="mono">{r.id}</strong><small>{r.time} UTC</small></div><div className="mono source">{r.source}</div><div><strong>{r.variable}</strong><small className="mono">{r.tag} · {r.uc}</small></div><div className={`mono delta ${r.delta.startsWith("+") ? "positive" : ""}`}>{r.delta} {r.unit}</div><Status value={r.status} /></button>)}</div><div className="panel-foot"><span>Showing {filtered.length} of 184 requests</span><button onClick={() => toast("Request archive is ready in the full gateway build.")}>VIEW REQUEST ARCHIVE <ChevronRight size={13} /></button></div></div>
+            <div className="requests-panel panel"><div className="panel-head"><div><h2>Recent requests</h2><span className="panel-caption">APC → DMZ → CPC / newest first</span></div><div className="panel-tools"><div className="search"><Search size={14} /><input placeholder="Filter requests" value={query} onChange={e => setQuery(e.target.value)} /></div><button className="filter-btn"><SlidersHorizontal size={14} /> Filter</button></div></div><div className="request-table sim-request-stream"><div className="table-head"><span className="stream-scanline" /><span>REQUEST / TIME</span><span>SOURCE</span><span>VARIABLE / TAG</span><span>Δ REQUEST</span><span>DECISION</span></div>{filtered.map(r => <button className={`request-row ${selected.id === r.id ? "selected" : ""}`} key={r.id} onClick={() => selectRequest(r)}><div><strong className="mono">{r.id}</strong><small>{r.time} UTC</small></div><div className="mono source">{r.source}</div><div><strong>{r.variable}</strong><small className="mono">{r.tag} · {r.uc}</small></div><div className={`mono delta ${r.delta.startsWith("+") ? "positive" : ""}`}>{r.delta} {r.unit}</div><Status value={r.status} /></button>)}</div><div className="panel-foot"><span>Showing {filtered.length} of 184 requests</span><button onClick={() => toast("Request archive is ready in the full gateway build.")}>VIEW REQUEST ARCHIVE <ChevronRight size={13} /></button></div></div>
 
-            <aside className="decision-panel panel decision-rail"><div className="panel-head"><span className="rail-label">DECISION RAIL</span><div><h2>Gateway posture</h2><span className="panel-caption">LOCAL BASELINE · READ-ONLY</span></div><span className="signal-badge"><span className="live-dot" /> ONLINE</span></div><div className="posture-visual"><div className="ring"><div><strong>09</strong><span>CHECKS</span></div></div><div><div className="posture-title">Verification engine</div><div className="posture-copy">All mandatory checks available. No active interlocks.</div></div></div><div className="metric-list"><div><span>Reactor temperature</span><strong>75.8 <em>°C</em></strong></div><div><span>Free sulfate</span><strong>27.1 <em>g/L</em></strong></div><div><span>P<sub>2</sub>O<sub>5</sub></span><strong>28.2 <em>%</em></strong></div><div><span>Slurry solids</span><strong>31.2 <em>%</em></strong></div></div><div className="posture-note"><AlertTriangle size={14} /><span>01 request requires operator approval before propagation.</span></div><EdgeAdapterHealthCard compact /><button className="primary-btn" onClick={() => selectRequest(requests[1])}>OPEN APPROVAL QUEUE <ChevronRight size={15} /></button></aside>
+            <aside className="decision-panel panel decision-rail"><div className="panel-head"><span className="rail-label">DECISION RAIL</span><div><h2>Gateway posture</h2><span className="panel-caption">LOCAL BASELINE · READ-ONLY</span></div><span className="signal-badge"><span className="live-dot" /> ONLINE</span></div><div className="posture-visual"><div className="ring"><div><strong>09</strong><span>CHECKS</span></div></div><div><div className="posture-title">Verification engine</div><div className="posture-copy">All mandatory checks available. No active interlocks.</div></div></div><div className="metric-list telemetry-stream"><div><span>Reactor temperature</span><strong className="telemetry-value">{simulation.telemetry.temperature} <em>°C</em></strong></div><div><span>Free sulfate</span><strong className="telemetry-value">{simulation.telemetry.sulfate} <em>g/L</em></strong></div><div><span>P<sub>2</sub>O<sub>5</sub></span><strong className="telemetry-value">{simulation.telemetry.p205} <em>%</em></strong></div><div><span>Slurry solids</span><strong className="telemetry-value">{simulation.telemetry.solids} <em>%</em></strong></div></div><div className="posture-note"><AlertTriangle size={14} /><span>01 request requires operator approval before propagation.</span></div><EdgeAdapterHealthCard compact /><button className="primary-btn" onClick={() => selectRequest(requests[1])}>OPEN APPROVAL QUEUE <ChevronRight size={15} /></button></aside>
           </section>
 
           <div className="lower-grid"><section className="panel pipeline-panel"><div className="panel-head"><div><h2><span className="live-line-marker inline" />NE178-aligned processing pipeline</h2><span className="panel-caption">VOR-2026-0824-017 / LAST ACCEPTED REQUEST</span></div><span className="status status-green"><span className="status-dot" /> COMPLETE</span></div><div className="pipeline">{["AUTHENTICATE", "VERIFY", "MAP", "PROPAGATE", "ACCEPT", "VERIFY MAP"].map((s, i) => <div className="pipe-step" key={s}><div className="pipe-icon"><Check size={14} /></div><div><strong>0{i + 1}</strong><span>{s}</span></div>{i < 5 && <ChevronRight className="pipe-arrow" size={16} />}</div>)}</div></section><section className="panel audit-panel"><div className="panel-head"><div><h2>Audit activity</h2><span className="panel-caption">IMMUTABLE EVENT STREAM</span></div><button className="text-btn">OPEN LOG <ChevronRight size={13} /></button></div><div className="audit-list"><div><span className="audit-time">08:42:19</span><span className="audit-marker green" /><p><strong>Request accepted</strong><small>VOR-2026-0824-017 · Operator Shift A</small></p></div><div><span className="audit-time">08:39:48</span><span className="audit-marker amber" /><p><strong>Approval pending</strong><small>VOR-2026-0824-016 · SIL-1</small></p></div><div><span className="audit-time">08:31:06</span><span className="audit-marker red" /><p><strong>Range check failed</strong><small>VOR-2026-0824-015 · AIC-5218</small></p></div></div></section></div>
