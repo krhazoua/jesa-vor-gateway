@@ -49,3 +49,58 @@ body{font-variant-numeric:tabular-nums}.panel,.health-card,.module-panel,.analyt
 .analytics-filter-bar input,.analytics-filter-bar select{height:34px;background:#fff!important;color:#172033!important;border:1px solid #cfd8e2!important;color-scheme:light;padding:0 10px;font:10px 'IBM Plex Mono'}.analytics-filter-bar label span{color:#5e6b7a}.analytics-clear{height:34px;padding:0 12px;background:#003366;color:#fff;border:1px solid #003366;font:10px 'IBM Plex Mono';letter-spacing:.04em}.analytics-clear:hover:not(:disabled){background:#004b91}.analytics-clear:disabled{background:#e7ebef;color:#8994a1;border-color:#dde3ea}
 
 @media (min-width:701px) and (max-width:900px){.topbar{padding:0 14px}.breadcrumb{gap:6px;letter-spacing:.08em;white-space:nowrap}.breadcrumb>span{display:none}.top-actions{gap:8px}.system-pulse{font-size:8px;letter-spacing:.02em;white-space:nowrap}.system-pulse .live-dot{margin-right:-2px}}
+
+/* Report export controls: compact, explicit, and readable in operator workflows. */
+.report-export-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 4px 0 4px 10px;
+  color: var(--muted-foreground, #64748b);
+  font: 600 10px/1.2 var(--font-mono, ui-monospace, monospace);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.report-export-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid var(--border, #d7dee8);
+  background: var(--card, #fff);
+  color: var(--foreground, #17375e);
+  font: 700 10px/1 var(--font-mono, ui-monospace, monospace);
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.report-export-actions button:hover,
+.report-export-actions button:focus-visible {
+  border-color: #2f6fed;
+  background: #eef6ff;
+  color: #174f9e;
+  outline: none;
+}
+.report-export-actions button:active { transform: translateY(1px); }
+.analytics-source + .report-export-actions {
+  margin: 12px 0 0;
+  justify-content: flex-end;
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .module-toolbar .report-export-actions {
+    width: 100%;
+    margin-left: 0;
+    padding-left: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .analytics-source + .report-export-actions {
+    justify-content: flex-start;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .report-export-actions button { transition: none; }
+}

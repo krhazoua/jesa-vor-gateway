@@ -128,6 +128,15 @@
 - [x] Save a new checkpoint after the industrial-ready UI refinement passes final verification.
 - [x] Save the post-industrial-refinement checkpoint after final mobile review.
 
+- [x] Add reusable CSV export helpers for audit and filtered analytics data.
+- [x] Add PDF report export helpers with source, filters, timestamps, and report metadata.
+- [x] Integrate CSV/PDF export controls into Audit and Analytics views.
+- [x] Add export contract tests and verify desktop/tablet/mobile interactions.
+- [x] Resolve export report typing for canonical analytics metrics that omit simulator-only department and day fields.
+- [x] Narrow Analytics report rows to export-safe scalar values for the generic report contract.
+- [x] Save a checkpoint for audit and analytics exports.
+- [ ] Save the post-export checkpoint after CSV/PDF tests and responsive verification.
+
 - [x] Add a bounded client-side simulation clock for telemetry and request-flow updates.
 - [x] Animate telemetry values, stream indicators, timestamps, and pipeline activity without plant connectivity.
 - [x] Label simulated states explicitly and respect prefers-reduced-motion.
@@ -144,7 +153,7 @@
 - [x] Add or update tests and perform full desktop/tablet/mobile visual verification.
 - [x] Normalize analytics filter controls and role-matrix values to the light JESA palette and readable role labels.
 - [x] Remove the duplicated Configuration caption wording introduced during the routed-module cleanup.
-- [ ] Save a checkpoint for the light corporate industrial redesign.
+- [x] Save a checkpoint for the light corporate industrial redesign.
 - [x] Replace the remaining provider-specific auth wording in reconciliation documentation with neutral technical language.
 - [x] Add an executable redesign regression test for role-based identity and neutral sign-in copy.
 - [x] Correct the Operations session toast to interpolate the shared neutral security copy instead of showing a literal token.
