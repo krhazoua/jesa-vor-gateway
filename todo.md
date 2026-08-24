@@ -98,4 +98,12 @@
 - [x] Visually verify approvals, analytics, and configuration routed pages after the shared shell refinement.
 - [x] Save a final checkpoint after broader routed-page verification.
 
-- [ ] Save the post-refinement checkpoint after approvals, analytics, and configuration verification.
+- [x] Save the post-refinement checkpoint after approvals, analytics, and configuration verification.
+
+- [x] Define a disconnected read-only edge adapter contract and configuration model.
+- [x] Add explicit adapter health, stale-data, timeout, and configuration failure states without plant connectivity.
+- [x] Add contract tests for configuration validation, read-only snapshots, failure mapping, and no-write guarantees.
+- [x] Update system health and configuration UI to expose the disconnected adapter boundary honestly.
+- [x] Run tests, type check, production build, and save the adapter checkpoint.
+
+- [ ] Save the post-adapter checkpoint after the disconnected read-only verification.
