@@ -116,4 +116,14 @@
 - [x] Add EdgeAdapterHealthCard tests for loading, disconnected, healthy, configuration, and error presentation states.
 - [x] Save a new checkpoint after the edge-adapter dashboard component changes and verification are complete.
 
-- [ ] Save the post-component checkpoint after expanded tests and responsive verification.
+- [x] Save the post-component checkpoint after expanded tests and responsive verification.
+
+- [x] Tighten the operations shell around current plant context, alarm priority, and control-room data hierarchy.
+- [x] Refine status, request, audit, and adapter surfaces for industrial readability and actionable states.
+- [x] Standardize routed modules and responsive behavior while preserving explicit prototype/readiness boundaries.
+- [x] Add or update tests and perform desktop/mobile visual verification for the industrial refinement.
+- [x] Save a checkpoint for the industrial-ready UI refinement.
+- [x] Fix the System Health boundary-lineage strip so its nodes remain horizontal and readable.
+- [x] Perform mobile visual verification for the industrial UI refinement after the latest Operations/System Health styling changes.
+- [x] Save a new checkpoint after the industrial-ready UI refinement passes final verification.
+- [ ] Save the post-industrial-refinement checkpoint after final mobile review.
