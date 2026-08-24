@@ -53,6 +53,10 @@ describe("read-only edge adapter contract", () => {
       status: "DISCONNECTED",
       readOnly: true,
       endpointConfigured: false,
+      securityPolicy: "DISABLED",
+      maxSnapshotAgeMs: 30_000,
+      tagAllowlistCount: 0,
+      writeEnabled: false,
       lastSnapshotAt: null,
       failure: "DISCONNECTED",
     });

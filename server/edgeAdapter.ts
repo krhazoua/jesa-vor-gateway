@@ -80,6 +80,10 @@ export function getEdgeAdapterHealth() {
     status: adapter.getHealth(),
     readOnly: !adapter.config.writeEnabled,
     endpointConfigured: Boolean(adapter.config.endpoint),
+    securityPolicy: adapter.config.securityPolicy,
+    maxSnapshotAgeMs: adapter.config.maxSnapshotAgeMs,
+    tagAllowlistCount: adapter.config.tagAllowlist.length,
+    writeEnabled: adapter.config.writeEnabled,
     lastSnapshotAt: null as Date | null,
     failure: "DISCONNECTED" as const,
   };

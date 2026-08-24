@@ -106,4 +106,14 @@
 - [x] Update system health and configuration UI to expose the disconnected adapter boundary honestly.
 - [x] Run tests, type check, production build, and save the adapter checkpoint.
 
-- [ ] Save the post-adapter checkpoint after the disconnected read-only verification.
+- [x] Save the post-adapter checkpoint after the disconnected read-only verification.
+
+- [x] Create a reusable edge-adapter health and configuration dashboard component.
+- [x] Integrate the component into Operations and System Health views with loading and failure states.
+- [x] Add component contract tests and responsive visual verification.
+- [x] Save a checkpoint for the edge-adapter dashboard component.
+
+- [x] Add EdgeAdapterHealthCard tests for loading, disconnected, healthy, configuration, and error presentation states.
+- [x] Save a new checkpoint after the edge-adapter dashboard component changes and verification are complete.
+
+- [ ] Save the post-component checkpoint after expanded tests and responsive verification.
