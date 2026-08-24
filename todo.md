@@ -253,3 +253,11 @@
 - [x] Run complete automated, build, route, responsive, and repository verification and save a new checkpoint.
 - [x] Add a dedicated NE178 Compliance route with a clickable six-step matrix linked to implemented modules and evidence states.
 - [x] Style the NE178 Compliance matrix as a readable industrial table with responsive horizontal handling and visible evidence hierarchy.
+
+# Configuration-backed NE178 Evidence
+
+- [x] Define a protected configuration-backed compliance evidence contract without introducing plant-write claims.
+- [x] Replace route-level compliance links with persisted/derived evidence records and clear gated states.
+- [x] Add regression coverage and responsive visual verification for the compliance matrix.
+- [x] Update reconciliation/operations documentation and save a checkpoint.
+- [x] Improve configuration-backed compliance metadata spacing and source/evidence hierarchy so values do not run together in the matrix.
