@@ -6,8 +6,8 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { approvals, auditEvents, requestHistory, validationChecks, vorRequests } from "../drizzle/schema";
 import { and, desc, eq } from "drizzle-orm";
-import { getAnalyticsSeries, getDb, getRequestByRequestId, listAuditEvents, listPendingApprovals, listRequests, transitionRequest } from "./db";
-import { assertFourEyes, assertRole, assertTransition, type Role, type VorStatus } from "./vor";
+import { getAnalyticsSeries, getDb, getRequestByRequestId, listAuditEvents, listPendingApprovals, listRequests, recordAudit, transitionRequest } from "./db";
+import { assertFourEyes, assertRole, assertTransition, createDcsAcknowledgment, type Role, type VorStatus } from "./vor";
 
 const roleProcedure = (allowed: readonly Role[]) => protectedProcedure.use(async ({ ctx, next }) => { assertRole(ctx.user.role, allowed); return next({ ctx }); });
 const supervisorProcedure = roleProcedure(["supervisor", "engineer", "admin"]);
@@ -35,6 +35,7 @@ export const appRouter = router({
   audit: router({ list: engineerProcedure.query(() => listAuditEvents()) }),
   systemHealth: router({ summary: protectedProcedure.query(() => ({ zones: [{ module: "psM+O", status: "ONLINE" }, { module: "DMZ", status: "ONLINE" }, { module: "CPC", status: "ONLINE" }], dcs: { mode: "SIMULATOR", status: "ONLINE" }, generatedAt: new Date() })) }),
   analytics: router({ summary: engineerProcedure.input(analyticsFilterInput).query(async ({ input }) => { const rows = await listRequests(input); const series = await getAnalyticsSeries(input); const total = rows.length; return { total, accepted: rows.filter(row => row.status === "ACCEPTED").length, rejected: rows.filter(row => row.status === "REJECTED").length, pending: rows.filter(row => row.status === "PENDING_OPERATOR").length, duplicated: rows.filter(row => row.status === "DUPLICATED").length, expired: rows.filter(row => row.status === "EXPIRED").length, ...series }; }) }),
+  dcs: router({ acknowledge: supervisorProcedure.input(z.object({ requestId: z.string() })).mutation(async ({ input, ctx }) => { const db = await getDb(); if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" }); const request = await getRequestByRequestId(input.requestId); if (!request) throw new TRPCError({ code: "NOT_FOUND", message: "Request not found" }); const checks = await db.select().from(validationChecks).where(eq(validationChecks.requestId, request.id)); const acknowledgment = createDcsAcknowledgment(request.requestId, request.status as VorStatus, checks.map(check => ({ checkType: check.checkType, result: check.result, ruleId: check.ruleId, actualValue: check.actualValue || "", expectedValue: check.expectedValue || "", explanation: check.explanation || "" }))); await recordAudit({ requestId: request.id, actorId: ctx.user.id, actorRole: ctx.user.role, action: "DCS_ACKNOWLEDGED", previousState: request.status, newState: request.status, result: "ACKNOWLEDGED", reason: "DCS adapter acknowledgment committed", module: "DCS", sourceIp: ctx.req.ip }); return acknowledgment; }) }),
   configuration: router({ policy: adminProcedure.query(() => ({ statuses: ["ACCEPTED", "REJECTED", "PENDING_OPERATOR", "DUPLICATED", "EXPIRED"], checks: ["EQUIPMENT_CHECK", "SIGNATURE_CHECK", "UNIT_CHECK", "DUPLICATE_CHECK", "TTL_CHECK", "RANGE_CHECK", "SIL_CHECK", "ROC_CHECK", "INTERLOCK_CHECK"], roles: ["operator", "supervisor", "engineer", "admin"] })) }),
 });
 

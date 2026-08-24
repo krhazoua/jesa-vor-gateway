@@ -30,6 +30,18 @@ export function assertFourEyes(requesterId: number, approverId: number) {
 export type ValidationInput = { equipmentExists: boolean; signatureValid: boolean; unitValid: boolean; duplicate: boolean; expiresAt: number; now: number; requestedValue: number; hardLow: number | null; hardHigh: number | null; silClass: string; requiresApproval: boolean; rocWithinLimit: boolean; interlockActive: boolean };
 export type ValidationResult = { checkType: typeof CHECKS[number]; result: "PASS" | "FAIL" | "WARNING" | "NOT_EXECUTED" | "REQUIRES_APPROVAL"; ruleId: string; actualValue: string; expectedValue: string; explanation: string }[];
 
+export function assertPropagationAllowed(status: VorStatus, validation: ValidationResult) {
+  if (status !== "ACCEPTED") throw new TRPCError({ code: "FORBIDDEN", message: "Propagation blocked until the request is accepted" });
+  if (!validation.length || validation.some(check => ["FAIL", "NOT_EXECUTED", "REQUIRES_APPROVAL"].includes(check.result))) throw new TRPCError({ code: "FORBIDDEN", message: "Propagation blocked by validation evidence" });
+  return true;
+}
+
+export type DcsAcknowledgment = { requestId: string; adapter: "DCS_SIMULATOR"; status: "ACKNOWLEDGED"; acknowledgedAt: Date };
+export function createDcsAcknowledgment(requestId: string, status: VorStatus, validation: ValidationResult, acknowledgedAt = new Date()): DcsAcknowledgment {
+  assertPropagationAllowed(status, validation);
+  return { requestId, adapter: "DCS_SIMULATOR", status: "ACKNOWLEDGED", acknowledgedAt };
+}
+
 export function validateRequest(input: ValidationInput): ValidationResult {
   const result: ValidationResult = [];
   const add = (checkType: typeof CHECKS[number], ok: boolean, actualValue: string, expectedValue: string, explanation: string, warning = false) => { result.push({ checkType, result: ok ? (warning ? "WARNING" : "PASS") : "FAIL", ruleId: `VOR.RULE.${String(result.length + 1).padStart(2, "0")}`, actualValue, expectedValue, explanation }); return ok; };

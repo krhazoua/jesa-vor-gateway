@@ -37,3 +37,13 @@
 - [x] Save and deliver the analytics filter enhancement checkpoint.
 
 - [x] Add router- or DB-helper-level tests proving filtered analytics payloads change for date and department filters, including empty-result behavior.
+
+- [x] Add integration fixtures for authenticated login and server authorization context.
+- [x] Add integration coverage for all five VoR statuses and legal lifecycle transitions.
+- [x] Add integration coverage for validation short-circuiting and propagation blocking.
+- [x] Add a DCS acknowledgment contract and integration coverage for accepted, rejected, and blocked propagation.
+- [x] Run the full integration test suite, type check, and production build.
+- [ ] Save and deliver the integration-test checkpoint.
+
+- [x] Assert every legal transition from PENDING_OPERATOR succeeds: ACCEPTED, REJECTED, DUPLICATED, and EXPIRED.
+- [x] Exercise the protected dcs.acknowledge procedure with success, non-accepted blocking, and failed-evidence blocking fixtures.
