@@ -85,3 +85,17 @@
 - [x] Save a new checkpoint after the notification changes.
 
 - [x] Add a direct notificationReadResult test covering successful ownership and cross-recipient/zero-row rejection.
+
+- [x] Remove the secondary logo mark beside the JESA wordmark.
+- [x] Refine the overall dashboard composition, typography, spacing, surfaces, and status treatments so the interface feels intentionally authored and less generative.
+- [x] Re-run tests, production build, and desktop/mobile visual verification for the design refinement.
+- [x] Save a checkpoint for the refined dashboard.
+
+- [x] Remove any remaining secondary gate-mark logo from routed module shells.
+- [x] Apply and verify the refined authored visual treatment consistently across module pages.
+- [x] Save a new post-refinement checkpoint after all remaining gaps are closed.
+
+- [x] Visually verify approvals, analytics, and configuration routed pages after the shared shell refinement.
+- [x] Save a final checkpoint after broader routed-page verification.
+
+- [ ] Save the post-refinement checkpoint after approvals, analytics, and configuration verification.
