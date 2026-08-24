@@ -10,6 +10,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { sdk } from "./sdk";
 import { registerNotificationStream } from "../notifications";
+import { applySecurityHeaders } from "../security";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -36,6 +37,8 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  app.disable("x-powered-by");
+  app.use(applySecurityHeaders);
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   await registerNotificationStream(app, req => sdk.authenticateRequest(req));

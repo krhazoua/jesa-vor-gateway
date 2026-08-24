@@ -294,3 +294,12 @@
 - [x] Apply the smallest safe fix and preserve protected session, notification, and Operations query behavior.
 - [x] Add regression coverage for the failure path and verify the authenticated Operations route at desktop and mobile widths.
 - [x] Run full tests, TypeScript check, production build, document the repair, and save a checkpoint.
+
+
+# Supplied Industrial Requirements Audit — 2026-08-24
+
+- [x] Audit all supplied routes, protected procedures, data counts, health probes, security boundaries, and interactive controls against the new reference.
+- [x] Reconcile requirements that are already implemented, intentionally disconnected/read-only, or incompatible with the existing OAuth architecture without fabricating capabilities.
+- [x] Implement applicable corrections discovered during the audit in the existing project without restarting the application.
+- [x] Add regression coverage and execute route, security, workflow, data-integrity, and responsive QA for changed behavior.
+- [x] Update the audit documentation, run final checks, and save a verified checkpoint.
