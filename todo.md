@@ -202,3 +202,17 @@
 - [x] Extend paused-state behavior and simulation labels across the explicit simulation model.
 - [x] Add deterministic tests for simulated-state output, timestamp progression, and paused-state behavior.
 - [x] Correct the simulation tick normalization so the bounded 120-tick window wraps deterministically.
+
+# Premium Rework Specification — 2026-08-24
+
+- [x] Inspect the complete premium rework specification and reconcile every applicable requirement with the current full-stack implementation.
+- [x] Verify the Operations KPIs, request monitor filters, request detail, approval, validation, audit, health, analytics, and configuration behaviors against the new specification.
+- [x] Verify authentication, role enforcement, simulator/read-only disclosures, and no-personal-name constraints against the new specification.
+- [x] Implement newly identified functional gaps without replacing the existing protected tRPC/database contracts.
+- [x] Run applicable automated, browser, responsive, and repository verification for the new specification.
+- [x] Update reconciliation and QA documentation with the new specification findings and save an updated checkpoint.
+- [x] Remove non-canonical fallback rows from routed Requests, Audit, Analytics, and Request Detail pages; show honest empty/loading/error states instead.
+- [x] Replace the static approval card with canonical pending-approval rows and real detail links while preserving four-eyes mutation enforcement.
+- [x] Add request selection and engineer-authorized validation rerun through the backend validation engine.
+- [x] Add JSON audit export and expose additional canonical audit metadata where available.
+- [x] Reconcile the new prompt’s propagation/mapping and workbook-import requirements against the explicit disconnected read-only boundary without fabricating plant connectivity or source data.

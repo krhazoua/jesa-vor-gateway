@@ -43,6 +43,14 @@ export function downloadCsvReport(report: ReportDefinition) {
   downloadBlob(buildCsvReport(report), report.filename.endsWith(".csv") ? report.filename : `${report.filename}.csv`, "text/csv;charset=utf-8");
 }
 
+export function buildJsonReport(report: ReportDefinition) {
+  return `${JSON.stringify({ title: report.title, metadata: report.metadata, sections: report.sections }, null, 2)}\n`;
+}
+
+export function downloadJsonReport(report: ReportDefinition) {
+  downloadBlob(buildJsonReport(report), report.filename.endsWith(".json") ? report.filename : `${report.filename}.json`, "application/json;charset=utf-8");
+}
+
 export function buildPdfReport(report: Omit<ReportDefinition, "filename">) {
   const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
   const pageWidth = doc.internal.pageSize.getWidth();

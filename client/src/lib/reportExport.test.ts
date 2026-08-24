@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildCsvReport, buildPdfReport, escapeCsvCell } from "./reportExport";
+import { buildCsvReport, buildJsonReport, buildPdfReport, escapeCsvCell } from "./reportExport";
 
 describe("report exports", () => {
   const report = {
@@ -19,6 +19,12 @@ describe("report exports", () => {
     expect(csv).toContain("Source,Canonical DB / read-only");
     expect(csv).toContain("# Audit events");
     expect(csv).toContain("VOR-002,\"Operator, reviewed\"");
+  });
+
+  it("serializes metadata and sections as structured JSON", () => {
+    const json = JSON.parse(buildJsonReport({ ...report, filename: "audit" }));
+    expect(json.metadata.Source).toBe("Canonical DB / read-only");
+    expect(json.sections[0].rows[1][0]).toBe("VOR-002");
   });
 
   it("generates a non-empty PDF report from the same definition", () => {

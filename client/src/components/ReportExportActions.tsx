@@ -1,7 +1,7 @@
 import { Download, FileText, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { downloadCsvReport, downloadPdfReportWithProgress, ReportDefinition } from "@/lib/reportExport";
+import { downloadCsvReport, downloadJsonReport, downloadPdfReportWithProgress, ReportDefinition } from "@/lib/reportExport";
 
 type Props = {
   report: ReportDefinition;
@@ -30,6 +30,11 @@ export default function ReportExportActions({ report, label = "EXPORT REPORT" }:
     toast.success(`${label} CSV downloaded.`);
   };
 
+  const exportJson = () => {
+    downloadJsonReport(report);
+    toast.success(`${label} JSON downloaded.`);
+  };
+
   const exportPdf = async () => {
     if (pdfState.status === "generating") return;
     setPdfState({ status: "generating", progress: 8, step: "Preparing report data" });
@@ -49,6 +54,9 @@ export default function ReportExportActions({ report, label = "EXPORT REPORT" }:
     <span>{label}</span>
     <button type="button" onClick={exportCsv} aria-label={`Download ${label} as CSV`}>
       <Download size={13} /> CSV
+    </button>
+    <button type="button" onClick={exportJson} aria-label={`Download ${label} as JSON`}>
+      <FileText size={13} /> JSON
     </button>
     <button type="button" onClick={exportPdf} disabled={presentation.busy} aria-label={presentation.busy ? `Generating ${label} PDF` : `Download ${label} as PDF`}>
       {presentation.busy ? <Loader2 size={13} className="export-spinner" aria-hidden="true" /> : <FileText size={13} />}
