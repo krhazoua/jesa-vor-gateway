@@ -132,8 +132,25 @@
 - [x] Animate telemetry values, stream indicators, timestamps, and pipeline activity without plant connectivity.
 - [x] Label simulated states explicitly and respect prefers-reduced-motion.
 - [x] Add tests and perform desktop/mobile visual verification for the simulation layer.
-- [ ] Save a checkpoint for the simulated real-time update experience.
-- [ ] Save the post-simulation checkpoint after deterministic model tests and desktop/mobile review.
+- [x] Save a checkpoint for the simulated real-time update experience.
+- [x] Save the post-simulation checkpoint after deterministic model tests and desktop/mobile review.
+
+- [x] Replace the predominantly dark visual system with a premium light JESA corporate industrial theme.
+- [x] Redesign the shared header, sidebar, status hierarchy, typography, and surfaces without changing routing or backend flows.
+- [x] Refine Operations, request detail, approvals, validation, audit, system health, analytics, configuration, and login for enterprise industrial usability.
+- [x] Preserve explicit simulated/disconnected boundaries, semantic status colors, authentication, and NE178 workflow visibility.
+- [x] Remove personal names, development traces, and misleading production claims found during the redesign audit.
+- [x] Replace remaining fictional operator identity and external auth-provider labels in user-facing UI/documentation with role-based or generic security language.
+- [x] Add or update tests and perform full desktop/tablet/mobile visual verification.
+- [x] Normalize analytics filter controls and role-matrix values to the light JESA palette and readable role labels.
+- [x] Remove the duplicated Configuration caption wording introduced during the routed-module cleanup.
+- [ ] Save a checkpoint for the light corporate industrial redesign.
+- [x] Replace the remaining provider-specific auth wording in reconciliation documentation with neutral technical language.
+- [x] Add an executable redesign regression test for role-based identity and neutral sign-in copy.
+- [x] Correct the Operations session toast to interpolate the shared neutral security copy instead of showing a literal token.
+- [x] Capture and verify a tablet-width screenshot for the redesigned routes.
+- [x] Prevent tablet header breadcrumb and gateway-status crowding in the shared shell.
+- [x] Capture tablet-width screenshots for Requests, Approvals, Validation, Audit, and Configuration and verify shared-shell consistency.
 - [x] Implement a bounded client-side simulation state model for telemetry, request recency, and displayed timestamps.
 - [x] Extend paused-state behavior and simulation labels across the explicit simulation model.
 - [x] Add deterministic tests for simulated-state output, timestamp progression, and paused-state behavior.

@@ -12,7 +12,7 @@ The dashboard now starts at `/login` and protects operational routes through a s
 
 All requested navigation surfaces now resolve to working routes: `/operations`, `/requests`, `/requests/:id`, `/approvals`, `/validation`, `/audit`, `/system-health`, `/analytics`, and `/configuration`. The modules share the same request statuses, UC1 terminology, engineering tags, units, NE178 check names, security-zone vocabulary, and simulator disclaimer. Request detail exposes all nine validation checks and traceability values. Approvals present the four-eyes warning and explicit approve/reject confirmation messaging. Audit, system health, analytics, and configuration surfaces use consistent industrial tables and status semantics.
 
-The previous personal identity display was removed from the frontend and replaced with functional identities such as `Operator Shift A` and the `OPERATOR` role. The JESA wordmark remains the only corporate branding, paired with the VoR gate mark. No production credential, private key, or external company logo is included.
+The previous personal identity display was removed from the frontend and replaced with role-based identities such as `Operator`, `Supervisor`, `Process Engineer`, and `VoR Administrator`. The JESA wordmark remains the only corporate branding. No production credential, private key, or external company logo is included.
 
 ## Remaining backend boundary
 
@@ -24,7 +24,7 @@ The frontend TypeScript check and production build pass. The development server 
 
 ## Full-stack upgrade status
 
-The project now uses the full-stack template with Manus OAuth-backed signed session cookies, typed tRPC procedures, Drizzle persistence, server-side role middleware, an expanded role enum, and a canonical schema for requests, validation checks, approvals, audit events, request history, equipment, variables, and process snapshots. Approval decisions require an independent authenticated actor and commit the approval, request status, history, and audit event in one database transaction. Illegal terminal-state transitions are rejected server-side.
+The project now uses the full-stack template with signed server-authenticated session cookies, typed tRPC procedures, Drizzle persistence, server-side role middleware, an expanded role enum, and a canonical schema for requests, validation checks, approvals, audit events, request history, equipment, variables, and process snapshots. Approval decisions require an independent authenticated actor and commit the approval, request status, history, and audit event in one database transaction. Illegal terminal-state transitions are rejected server-side.
 
 Audit and request-history writes are append-only at the application contract: no update or delete procedures are exposed, and all decision/transition writes create a new audit event. The connected TiDB environment does not support MySQL triggers, so database-level trigger enforcement could not be applied; a production hardening step should use database permissions or a database engine with append-only trigger support if adversarial direct SQL access is in scope.
 
@@ -32,7 +32,7 @@ The database migration was generated, reviewed, applied successfully, and verifi
 
 ## Authentication claim boundary
 
-The application does not issue a second custom JWT. The full-stack template validates the Manus OAuth session on the server and exposes the authenticated user through the request context; protected tRPC procedures then enforce active-session status and role allowlists on every call. The UI labels this as a server-authenticated JWT session because it is bound to the template's signed session mechanism, but token issuance and cryptographic validation remain owned by the Manus authentication layer.
+The application does not issue a second custom JWT. The server validates the configured authenticated session and exposes the active user through the request context; protected tRPC procedures then enforce active-session status and role allowlists on every call. The UI labels this as a server-authenticated session; token issuance and cryptographic validation remain owned by the configured authentication layer.
 
 ## Real-time notification enhancement
 
