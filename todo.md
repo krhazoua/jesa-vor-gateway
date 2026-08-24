@@ -141,8 +141,20 @@
 - [x] Add the typed async PDF progress helper consumed by the export action group.
 - [x] Keep CSV export available while PDF generation is active and preserve accessible status messaging.
 - [x] Add deterministic tests for PDF progress state transitions and verify responsive presentation.
-- [ ] Save a checkpoint for the PDF progress-feedback enhancement.
-- [ ] Save the post-progress checkpoint after PDF state tests and responsive review.
+- [x] Save a checkpoint for the PDF progress-feedback enhancement.
+- [x] Save the post-progress checkpoint after PDF state tests and responsive review.
+
+- [x] Add typed audit-table sorting with accessible column controls.
+- [x] Add paginated audit navigation with page-size and result-count context.
+- [x] Preserve full filtered audit exports while making on-screen pagination clear.
+- [x] Add sorting/pagination contract tests and verify desktop/tablet/mobile layouts.
+- [x] Correct the malformed aria-sort JSX expression in the audit table header.
+- [x] Rename the derived audit page model to avoid shadowing the numeric page state.
+- [x] Replace all remaining derived audit page property references after the rename.
+- [x] Save a checkpoint for the audit table navigation enhancement.
+- [x] Save the post-audit-navigation checkpoint after filtering, sorting, pagination, and tablet verification.
+- [x] Implement actual Audit filtering and export the filtered full dataset independently of pagination.
+- [x] Capture and verify a tablet-width screenshot of the updated sortable/paginated Audit table.
 
 - [x] Add a bounded client-side simulation clock for telemetry and request-flow updates.
 - [x] Animate telemetry values, stream indicators, timestamps, and pipeline activity without plant connectivity.

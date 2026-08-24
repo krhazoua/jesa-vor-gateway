@@ -104,3 +104,56 @@ body{font-variant-numeric:tabular-nums}.panel,.health-card,.module-panel,.analyt
 @media (prefers-reduced-motion: reduce) {
   .report-export-actions button { transition: none; }
 }
+
+/* Audit table navigation: tactile, keyboard-visible controls with a compact ledger rhythm. */
+.audit-sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+.audit-sort-button:hover,
+.audit-sort-button:focus-visible { color: #174f9e; }
+.audit-sort-button:focus-visible { outline: 2px solid #2f6fed; outline-offset: 3px; }
+.audit-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border, #d7dee8);
+  color: var(--muted-foreground, #64748b);
+  font: 600 10px/1.2 var(--font-mono, ui-monospace, monospace);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.audit-page-controls { display: inline-flex; align-items: center; gap: 8px; }
+.audit-page-controls button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--border, #d7dee8);
+  background: var(--card, #fff);
+  color: var(--foreground, #17375e);
+  font: inherit;
+  cursor: pointer;
+}
+.audit-page-controls button:hover:not(:disabled),
+.audit-page-controls button:focus-visible { border-color: #2f6fed; background: #eef6ff; color: #174f9e; }
+.audit-page-controls button:focus-visible { outline: 2px solid #2f6fed; outline-offset: 2px; }
+.audit-page-controls button:disabled { cursor: not-allowed; opacity: .42; }
+@media (max-width: 640px) {
+  .audit-pagination { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .audit-page-controls { width: 100%; justify-content: space-between; }
+  .audit-page-summary { font-size: 9px; }
+}
