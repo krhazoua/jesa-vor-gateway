@@ -128,6 +128,22 @@ export const processSnapshots = mysqlTable("processSnapshots", {
   capturedAt: timestamp("capturedAt").defaultNow().notNull(),
 });
 
+export const catalogImports = mysqlTable("catalogImports", {
+  id: int("id").autoincrement().primaryKey(),
+  actorId: int("actorId").notNull(),
+  recordType: mysqlEnum("recordType", ["EQUIPMENT", "VARIABLE"]).notNull(),
+  filename: varchar("filename", { length: 255 }).notNull(),
+  storageKey: varchar("storageKey", { length: 512 }).notNull(),
+  storageUrl: varchar("storageUrl", { length: 600 }).notNull(),
+  rowCount: int("rowCount").notNull(),
+  createdCount: int("createdCount").default(0).notNull(),
+  updatedCount: int("updatedCount").default(0).notNull(),
+  rejectedCount: int("rejectedCount").default(0).notNull(),
+  status: mysqlEnum("status", ["COMPLETED", "REJECTED", "PARTIAL"]).notNull(),
+  errorSummary: text("errorSummary"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, table => ({ actorIdx: index("catalogImports_actor_idx").on(table.actorId), createdIdx: index("catalogImports_created_idx").on(table.createdAt) }));
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type VorRequest = typeof vorRequests.$inferSelect;

@@ -303,3 +303,14 @@
 - [x] Implement applicable corrections discovered during the audit in the existing project without restarting the application.
 - [x] Add regression coverage and execute route, security, workflow, data-integrity, and responsive QA for changed behavior.
 - [x] Update the audit documentation, run final checks, and save a verified checkpoint.
+
+
+# Protected CSV Catalog Import — 2026-08-24
+
+- [x] Add persisted import-run metadata with source-file reference, actor, counts, status, and audit linkage.
+- [x] Add strict equipment/variable CSV parsing, validation, duplicate handling, bounded file size, and atomic row persistence.
+- [x] Store uploaded CSV source files through the configured server-side object storage boundary.
+- [x] Add protected RBAC procedures for upload, preview/import, and import history without exposing arbitrary DCS addresses.
+- [x] Add an operator-facing Configuration/catalog import workflow with template guidance, preview, errors, progress, and responsive feedback.
+- [x] Add regression coverage for parsing, validation, authorization, atomicity, auditability, and catalog/request integration.
+- [x] Generate/apply the migration, run full QA, update documentation, and save a verified checkpoint.

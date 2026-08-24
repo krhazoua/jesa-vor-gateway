@@ -12,6 +12,9 @@ import { assertFourEyes, assertRole, assertTransition, createDcsAcknowledgment, 
 import { getEdgeAdapterHealth } from "./edgeAdapter";
 import { buildSimulationTrace, createSimulationRequestId, SIMULATION_EQUIPMENT_TAG, SIMULATION_OPERATOR_OPEN_ID, SIMULATION_SOURCE_IDENTITY, SIMULATION_VARIABLE_TAG } from "./workflowSimulation";
 import { publishNotifications, type NotificationEvent } from "./notifications";
+import { storagePut } from "./storage";
+import { parseCatalogCsv, csvTemplate, MAX_CSV_BYTES, type CatalogRecordType } from "./catalogImport";
+import { listCatalogImports, persistCatalogImport } from "./db";
 
 const roleProcedure = (allowed: readonly Role[]) => protectedProcedure.use(async ({ ctx, next }) => { assertRole(ctx.user.role, allowed); return next({ ctx }); });
 const operatorProcedure = roleProcedure(["operator", "supervisor", "engineer", "admin"]);
@@ -33,6 +36,12 @@ export const appRouter = router({
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => { const cookieOptions = getSessionCookieOptions(ctx.req); ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 }); return { success: true } as const; }),
+  }),
+  catalog: router({
+    template: operatorProcedure.input(z.object({ recordType: z.enum(["EQUIPMENT", "VARIABLE"]) })).query(({ input }) => ({ recordType: input.recordType, csv: csvTemplate(input.recordType) })),
+    preview: operatorProcedure.input(z.object({ recordType: z.enum(["EQUIPMENT", "VARIABLE"]), source: z.string().max(MAX_CSV_BYTES, "CSV exceeds the 1 MB limit") })).mutation(({ input }) => { const parsed = parseCatalogCsv(input.recordType as CatalogRecordType, input.source); return { ...parsed, valid: parsed.errors.length === 0 && parsed.rows.length > 0 }; }),
+    import: operatorProcedure.input(z.object({ recordType: z.enum(["EQUIPMENT", "VARIABLE"]), filename: z.string().trim().min(1).max(255), source: z.string().max(MAX_CSV_BYTES, "CSV exceeds the 1 MB limit") })).mutation(async ({ input, ctx }) => { const parsed = parseCatalogCsv(input.recordType as CatalogRecordType, input.source); const safeFilename = input.filename.replace(/[^a-zA-Z0-9._-]/g, "_"); const stored = await storagePut(`catalog-imports/${ctx.user.id}/${safeFilename}`, Buffer.from(input.source, "utf8"), "text/csv"); return persistCatalogImport({ actorId: ctx.user.id, actorRole: ctx.user.role, sourceIp: ctx.req.ip, filename: safeFilename, storageKey: stored.key, storageUrl: stored.url, parsed }); }),
+    history: operatorProcedure.query(() => listCatalogImports()),
   }),
   requests: router({
     catalog: operatorProcedure.query(async () => { const db = await getDb(); if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" }); return { equipment: await db.select().from(equipment), variables: await db.select().from(variables) }; }),
