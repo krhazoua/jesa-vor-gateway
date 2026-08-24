@@ -286,3 +286,11 @@
 - [x] Add an explicitly isolated seeded end-to-end workflow simulation for Submit → Validate → Approve → Audit without seeding production records by default.
 - [x] Add integration/unit coverage for acknowledgement ownership, idempotency, workflow state transitions, audit linkage, and cleanup/reset behavior.
 - [x] Run migrations if required, full tests, TypeScript check, production build, responsive route QA, documentation updates, and save a checkpoint.
+
+
+# Operations Failed-Fetch Repair — 2026-08-24
+
+- [x] Trace the authenticated `/operations` Failed to fetch request through browser console, network log, and server runtime logs.
+- [x] Apply the smallest safe fix and preserve protected session, notification, and Operations query behavior.
+- [x] Add regression coverage for the failure path and verify the authenticated Operations route at desktop and mobile widths.
+- [x] Run full tests, TypeScript check, production build, document the repair, and save a checkpoint.

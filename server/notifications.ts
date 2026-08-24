@@ -40,6 +40,7 @@ export function notificationReadResult(recipientId: number, notificationRecipien
   return { updated: affectedRows === 1 && isNotificationOwner(recipientId, notificationRecipientId) };
 }
 
+
 export async function persistNotificationRows(insert: (rows: ReturnType<typeof buildNotificationRows>) => Promise<unknown>, recipients: Array<{ id: number }>, event: Omit<NotificationEvent, "recipientId">) {
   const rows = buildNotificationRows(recipients, event);
   if (rows.length) await insert(rows);

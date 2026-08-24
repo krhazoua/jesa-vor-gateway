@@ -12,6 +12,7 @@ import { trpc } from "@/lib/trpc";
 import { NOTIFICATION_POLL_INTERVAL_MS, refreshUnreadNotifications } from "@/lib/notificationTransport";
 import EdgeAdapterHealthCard from "@/components/EdgeAdapterHealthCard";
 import { identityCopy } from "@/lib/identityCopy";
+import { getUnreadNotifications } from "@/lib/notificationState";
 
 const requests = [
   { id: "VOR-2026-0824-017", time: "08:42:19", source: "APC-ATTACK-01", variable: "Reactor temperature", tag: "TIC-5210", current: "75.8", requested: "76.4", unit: "°C", uc: "UC1", status: "ACCEPTED", sil: "SIL-0", delta: "+0.6" },
@@ -71,17 +72,16 @@ function Status({ value }: { value: string }) {
 export default function Home() {
   const [, navigate] = useLocation();
   const auth = useAuth();
-  const notificationsQuery = trpc.notifications.list.useQuery({ unreadOnly: true }, { enabled: Boolean(auth.user), refetchInterval: NOTIFICATION_POLL_INTERVAL_MS, retry: false });
-  const recentNotificationsQuery = trpc.notifications.list.useQuery({ unreadOnly: false }, { enabled: Boolean(auth.user), refetchInterval: NOTIFICATION_POLL_INTERVAL_MS, retry: false });
-  const refreshNotifications = () => { void notificationsQuery.refetch(); void recentNotificationsQuery.refetch(); };
+  const notificationsQuery = trpc.notifications.list.useQuery({ unreadOnly: false }, { enabled: Boolean(auth.user), refetchInterval: NOTIFICATION_POLL_INTERVAL_MS, retry: false });
+  const refreshNotifications = () => { void notificationsQuery.refetch(); };
+  const unreadNotifications = getUnreadNotifications(notificationsQuery.data ?? []);
   const markNotificationRead = trpc.notifications.markRead.useMutation({ onSuccess: result => { refreshNotifications(); if (result.updated) toast.success("Alert acknowledged and cleared from the unread queue."); else toast.error("Alert is no longer available to acknowledge."); }, onError: error => toast.error(error.message) });
   const markAllNotificationsRead = trpc.notifications.markAllRead.useMutation({ onSuccess: result => { refreshNotifications(); toast.success(result.updated ? `${result.updated} alert${result.updated === 1 ? "" : "s"} acknowledged.` : "No persisted alerts required acknowledgement."); }, onError: error => toast.error(error.message) });
   const requestQuery = trpc.requests.list.useQuery(undefined, { enabled: Boolean(auth.user), retry: false });
   const catalogQuery = trpc.requests.catalog.useQuery(undefined, { enabled: Boolean(auth.user), retry: false });
   useEffect(() => { if (!auth.user) return; if (typeof EventSource === "undefined") { void refreshUnreadNotifications(false, notificationsQuery.refetch); return; } const stream = new EventSource("/api/notifications/stream"); const handle = (event: MessageEvent<string>) => { refreshNotifications(); try { const next = JSON.parse(event.data) as { title?: string; message?: string }; if (next.title) toast(`${next.title}: ${next.message || "Review required."}`); } catch { /* polling remains authoritative */ } }; stream.addEventListener("notification", handle); return () => { stream.removeEventListener("notification", handle); stream.close(); }; }, [auth.user?.id, notificationsQuery.refetch]);
   const previewAlerts = [{ id: -1, severity: "WARNING", title: "Approval required / preview", message: "Simulator alert preview — persisted alerts appear here when canonical rows exist.", createdAt: new Date() }];
-  const hasPersistedNotifications = Boolean(recentNotificationsQuery.data?.length);
-  const visibleNotifications = notificationsQuery.data?.length ? notificationsQuery.data : hasPersistedNotifications ? [] : previewAlerts;
+  const visibleNotifications = unreadNotifications.length ? unreadNotifications : notificationsQuery.data?.length ? [] : previewAlerts;
   const unreadCount = visibleNotifications.length;
   const [selected, setSelected] = useState(requests[1]);
   const [drawer, setDrawer] = useState(false);
