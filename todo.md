@@ -224,3 +224,15 @@
 - [x] Add dashboard visualizations for status, use-case, validation-failure, SIL, throughput, and approval-latency insights.
 - [x] Extend analytics report exports and add aggregation/presentation regression tests.
 - [x] Run tests, type check, production build, responsive visual QA, and save a checkpoint.
+
+# Master Repair Specification Audit — 2026-08-24
+
+- [x] Complete the master prompt audit across routes, backend contracts, authentication, authorization, database, simulator, SSE, edge adapter, documentation, and tests.
+- [x] Reconcile the master prompt’s required request filters, engineering detail fields, KPI semantics, and validation evidence with the existing canonical schema.
+- [x] Identify and implement applicable defects without fabricating plant data, DCS writes, workbook rows, or unsupported REST contracts.
+- [x] Verify real-data/empty/error behavior and remove any remaining fake counters, fake charts, fake approvals, or dead controls.
+- [x] Verify authentication and RBAC boundaries, including direct URL access and administrator-only configuration.
+- [x] Run the full automated, route, API, desktop/mobile, and repository verification suite.
+- [x] Update repair documentation and save a final checkpoint for this master audit.
+- [x] Add canonical request-list filters for status, equipment, variable, source use case, priority, and date range with clamped pagination.
+- [x] Extend request detail with canonical equipment, variable tag/unit, PV/SP delta, SIL, priority, TTL, reason, and signature context.
