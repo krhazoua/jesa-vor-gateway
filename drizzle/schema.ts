@@ -185,10 +185,33 @@ export const reconciliationSignoffs = mysqlTable("reconciliationSignoffs", {
   referenceId: varchar("referenceId", { length: 180 }).notNull(),
   referenceStorageKey: varchar("referenceStorageKey", { length: 512 }).notNull(),
   referenceStorageUrl: varchar("referenceStorageUrl", { length: 600 }).notNull(),
+  chainStatus: mysqlEnum("chainStatus", ["VALID", "INVALID", "TRUST_STORE_MISSING"]).default("TRUST_STORE_MISSING").notNull(),
   decision: mysqlEnum("decision", ["APPROVED", "REJECTED"]).notNull(),
   comment: text("comment"),
   signedAt: timestamp("signedAt").defaultNow().notNull(),
 }, table => ({ runIdx: index("reconciliationSignoffs_run_idx").on(table.reconciliationRunId), actorIdx: index("reconciliationSignoffs_actor_idx").on(table.actorId) }));
+
+export const certificateTrustAnchors = mysqlTable("certificateTrustAnchors", {
+  id: int("id").autoincrement().primaryKey(),
+  subject: varchar("subject", { length: 255 }).notNull(),
+  fingerprint: varchar("fingerprint", { length: 128 }).notNull(),
+  storageKey: varchar("storageKey", { length: 512 }).notNull(),
+  storageUrl: varchar("storageUrl", { length: 600 }).notNull(),
+  registeredBy: int("registeredBy").notNull(),
+  status: mysqlEnum("status", ["ACTIVE", "REVOKED"]).notNull(),
+  registeredAt: timestamp("registeredAt").defaultNow().notNull(),
+}, table => ({ fingerprintIdx: index("certificateTrustAnchors_fingerprint_idx").on(table.fingerprint), statusIdx: index("certificateTrustAnchors_status_idx").on(table.status) }));
+
+export const adapterActivationRuns = mysqlTable("adapterActivationRuns", {
+  id: int("id").autoincrement().primaryKey(),
+  gateId: int("gateId").notNull(),
+  actorId: int("actorId").notNull(),
+  fatSatReference: varchar("fatSatReference", { length: 180 }).notNull(),
+  checklist: text("checklist").notNull(),
+  status: mysqlEnum("status", ["READY_READ_ONLY", "EXECUTED_READ_ONLY", "BLOCKED"]).notNull(),
+  plantWriteEnabled: int("plantWriteEnabled").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, table => ({ gateIdx: index("adapterActivationRuns_gate_idx").on(table.gateId), createdIdx: index("adapterActivationRuns_created_idx").on(table.createdAt) }));
 
 export const authoritativeMasterGates = mysqlTable("authoritativeMasterGates", {
   id: int("id").autoincrement().primaryKey(),

@@ -334,3 +334,13 @@
 - [x] Add protected responsive UI for sign-off capture, diff pagination, report download, and integration-gate status.
 - [x] Add regression coverage for certificate validation, role enforcement, report pagination, no-write behavior, and gate activation.
 - [x] Run migration if required, full QA, documentation, and save a verified checkpoint.
+
+
+# Dual Sign-off, Trust Store, and Controlled Activation — 2026-08-24
+
+- [x] Add persisted dual independent external sign-off evidence and enforce distinct actors before FAT/SAT arm authorization.
+- [x] Add approved trust-store configuration and certificate-chain validation for uploaded certificate evidence.
+- [x] Add a documented and protected post-FAT/SAT controlled adapter activation procedure with explicit readiness checks and no implicit plant writes.
+- [x] Add responsive UI for sign-off quorum, certificate validation results, and activation procedure status.
+- [x] Add regression coverage for sign-off distinctness, certificate validation, gate activation, and no-write safeguards.
+- [x] Run migration if required, full QA, documentation, and save a verified checkpoint.
