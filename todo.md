@@ -277,3 +277,12 @@
 - [x] Fix any non-functional, misleading, inaccessible, or unhandled interactive controls discovered during the verification.
 - [x] Add regression coverage for repaired controls and verify desktop/mobile behavior through the existing protected workflow contracts, full automated suite, and responsive route captures.
 - [x] Document verified controls and save a checkpoint.
+
+
+# Persisted Notification Acknowledgement and Seeded Workflow Simulation — 2026-08-24
+
+- [x] Add persisted notification acknowledgement/read-state behavior with protected ownership enforcement and unread-count semantics.
+- [x] Add operator-facing acknowledgement controls, clear feedback, loading/error states, and responsive presentation.
+- [x] Add an explicitly isolated seeded end-to-end workflow simulation for Submit → Validate → Approve → Audit without seeding production records by default.
+- [x] Add integration/unit coverage for acknowledgement ownership, idempotency, workflow state transitions, audit linkage, and cleanup/reset behavior.
+- [x] Run migrations if required, full tests, TypeScript check, production build, responsive route QA, documentation updates, and save a checkpoint.

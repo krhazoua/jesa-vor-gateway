@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
-import { createAndPublishNotifications, getDb, getRequestByRequestId, markNotificationRead, transitionRequest } from "./db";
+import { createAndPublishNotifications, getDb, getRequestByRequestId, markAllNotificationsRead, markNotificationRead, transitionRequest } from "./db";
 import type { TrpcContext } from "./_core/context";
 
 vi.mock("./db", () => ({
@@ -13,6 +13,7 @@ vi.mock("./db", () => ({
   listPendingApprovals: vi.fn(),
   listRequests: vi.fn(),
   markNotificationRead: vi.fn(),
+  markAllNotificationsRead: vi.fn(),
   recordAudit: vi.fn(),
   transitionRequest: vi.fn(),
 }));
@@ -32,6 +33,7 @@ describe("notification event integration", () => {
     vi.mocked(createAndPublishNotifications).mockResolvedValue([]);
     vi.mocked(transitionRequest).mockResolvedValue([{ ...request, status: "ACCEPTED" }] as never);
     vi.mocked(markNotificationRead).mockResolvedValue({ updated: true });
+    vi.mocked(markAllNotificationsRead).mockResolvedValue({ updated: 2 });
   });
 
   it("emits a state-change notification from the protected transition procedure", async () => {
@@ -59,5 +61,12 @@ describe("notification event integration", () => {
     const result = await caller.notifications.markRead({ notificationId: 999 });
     expect(result).toEqual({ updated: false });
     expect(markNotificationRead).toHaveBeenCalledWith(7, 999);
+  });
+
+  it("acknowledges all unread notifications for the authenticated recipient", async () => {
+    const caller = appRouter.createCaller(contextFor("operator"));
+    const result = await caller.notifications.markAllRead();
+    expect(result).toEqual({ updated: 2 });
+    expect(markAllNotificationsRead).toHaveBeenCalledWith(7);
   });
 });

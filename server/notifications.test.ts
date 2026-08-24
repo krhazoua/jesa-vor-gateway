@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { getAffectedRowCount } from "./db";
 import { buildNotificationRows, isNotificationOwner, notificationReadResult, persistNotificationRows, publishNotification, publishNotifications, registerNotificationStream, subscribeToNotifications, type NotificationEvent } from "./notifications";
 
 const event: NotificationEvent = { recipientId: 11, type: "APPROVAL_REQUIRED", severity: "WARNING", title: "Approval required", message: "VOR-TEST requires review.", requestId: 42 };
@@ -39,6 +40,13 @@ describe("real-time notification bus", () => {
     expect(notificationReadResult(11, 11, 1)).toEqual({ updated: true });
     expect(notificationReadResult(11, 12, 1)).toEqual({ updated: false });
     expect(notificationReadResult(11, 11, 0)).toEqual({ updated: false });
+  });
+
+  it("normalizes MySQL update results returned as a result-header tuple", () => {
+    expect(getAffectedRowCount([{ affectedRows: 1 }, []])).toBe(1);
+    expect(getAffectedRowCount([{ affectedRows: 0 }, []])).toBe(0);
+    expect(getAffectedRowCount({ affectedRows: 2 })).toBe(2);
+    expect(getAffectedRowCount([])).toBeNull();
   });
 
   it("stops delivery after unsubscribe and fans out batches", () => {

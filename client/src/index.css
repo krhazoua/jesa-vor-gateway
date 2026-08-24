@@ -222,3 +222,29 @@ body{font-variant-numeric:tabular-nums}.panel,.health-card,.module-panel,.analyt
   .sidebar.mobile-open { display: flex; position: fixed; inset: 0 auto 0 0; width: min(280px, 86vw); z-index: 40; box-shadow: 12px 0 30px rgba(23, 32, 51, .18); }
   .sidebar.mobile-open + .main-content { filter: saturate(.94); }
 }
+
+.notification-tray-head > div { display: flex; align-items: center; gap: 12px; justify-content: flex-end; }
+.notification-clear-btn { border: 1px solid #b9c9da; background: #fff; color: #003366; padding: 5px 8px; font: 9px 'IBM Plex Mono'; letter-spacing: .06em; cursor: pointer; }
+.notification-clear-btn:hover { border-color: #00a3e0; color: #0079a8; }
+.notification-clear-btn:disabled { cursor: wait; opacity: .65; }
+.notification-item:disabled { cursor: wait; opacity: .7; }
+@media(max-width:800px){.notification-tray-head > div{width:100%;justify-content:space-between;gap:8px}.notification-clear-btn{font-size:8px}}
+
+.workflow-simulation-panel { margin-top: 16px; padding: 20px; }
+.workflow-simulation-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.workflow-simulation-head h2 { margin: 6px 0; color: #003366; font-size: 18px; }
+.workflow-simulation-head p { max-width: 720px; margin: 0; }
+.simulation-run-btn { flex: 0 0 auto; white-space: nowrap; }
+.workflow-simulation-result { margin-top: 18px; border-top: 1px solid #dde3ea; padding-top: 16px; }
+.simulation-result-meta { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 10px; }
+.simulation-result-meta span { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.simulation-result-meta strong { color: #003366; font: 13px 'IBM Plex Mono'; overflow-wrap: anywhere; }
+.simulation-result-meta small { color: #5e6b7a; font: 9px 'IBM Plex Mono'; letter-spacing: .06em; }
+.simulation-stage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0 12px; }
+.simulation-stage { display: grid; grid-template-columns: auto 1fr; gap: 3px 7px; align-items: center; border: 1px solid #cfd8e2; background: #f8fafc; padding: 10px; color: #168a52; }
+.simulation-stage span { color: #172033; font: 10px 'IBM Plex Mono'; letter-spacing: .05em; }
+.simulation-stage strong { grid-column: 2; color: #168a52; font: 9px 'IBM Plex Mono'; }
+@media(max-width:700px){.workflow-simulation-head{display:block}.simulation-run-btn{width:100%;margin-top:14px}.simulation-result-meta{grid-template-columns:1fr 1fr}.simulation-stage-grid{grid-template-columns:1fr 1fr}}
+
+.workflow-simulation-head .simulation-run-btn { flex: 0 0 220px; width: 220px; max-width: 100%; align-self: flex-start; }
+@media(max-width:700px){.workflow-simulation-head .simulation-run-btn{width:100%;flex-basis:100%}}
