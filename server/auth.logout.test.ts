@@ -15,9 +15,9 @@ function createAuthContext(): { ctx: TrpcContext; clearedCookies: CookieCall[] }
 
   const user: AuthenticatedUser = {
     id: 1,
-    openId: "sample-user",
-    email: "sample@example.com",
-    name: "Sample User",
+    openId: "operator-role",
+    email: "operator-role@example.invalid",
+    name: "Operator Role",
     loginMethod: "manus",
     role: "operator",
     active: 1,

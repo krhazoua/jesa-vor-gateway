@@ -153,6 +153,25 @@
 - [x] Replace all remaining derived audit page property references after the rename.
 - [x] Save a checkpoint for the audit table navigation enhancement.
 - [x] Save the post-audit-navigation checkpoint after filtering, sorting, pagination, and tablet verification.
+
+- [x] Reconcile and document the supplied acceptance specification against the current OAuth/session architecture and live read-only OT boundary.
+- [x] Harden direct unauthenticated route behavior to redirect to /login and preserve server-enforced authorization.
+- [x] Verify and close role visibility gaps, especially ADMIN-only Configuration navigation and access behavior.
+- [x] Import the Settings2 icon required by the Operations Configuration navigation entry.
+- [x] Close the Configuration branch after adding the explicit 403 fallback so the routed module compiles.
+- [x] Complete missing request search/filter/pagination/data workflow interactions without replacing protected backend contracts.
+- [x] Align Operations KPI mapping with canonical request fields that do not expose unit or SIL columns.
+- [x] Complete approval modal/result feedback and validation/audit/analytics workflow gaps found in the specification audit.
+- [x] Remove hardcoded analytics use-case percentages and show an honest unavailable state when the backend contract lacks UC aggregation.
+- [ ] Complete comprehensive route-by-route loading, empty, error, retry, export, SSE, simulator, accessibility, and responsive QA across all routes.
+- [x] Verify representative loading/empty/export/SSE/simulator/accessibility/responsive states across the final routed surfaces.
+- [x] Add and update README, architecture, deployment, API, validation, process, reconciliation, and logging-boundary documentation.
+- [x] Update reconciliation documentation and remove misleading product claims found in the final audit.
+- [x] Replace generic personal-name test fixture text with role-based identity wording.
+- [ ] Run final repository, browser, API, and visual QA, then save a final acceptance checkpoint.
+- [x] Add request-list pagination and targeted request-creation contract coverage.
+- [x] Replace fabricated validation fallback rows with an honest unavailable/empty state.
+- [x] Add targeted tests for analytics fallback semantics alongside approval and validation presentation tests.
 - [x] Implement actual Audit filtering and export the filtered full dataset independently of pagination.
 - [x] Capture and verify a tablet-width screenshot of the updated sortable/paginated Audit table.
 

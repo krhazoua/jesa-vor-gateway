@@ -24,6 +24,16 @@ describe("audit table navigation", () => {
     expect(page.rows).toEqual([rows[2]]);
   });
 
+  it("supports request-list pagination with the same clamped contract", () => {
+    const requestRows = Array.from({ length: 21 }, (_, index) => [`VOR-${String(index + 1).padStart(3, "0")}`, "08:00:00", "UC1", "Attack Reactor", "AIC-5214", "28.0", "PENDING_OPERATOR"]);
+    const page = paginateAuditRows(requestRows, 99, 10);
+    expect(page.page).toBe(3);
+    expect(page.pageCount).toBe(3);
+    expect(page.start).toBe(21);
+    expect(page.end).toBe(21);
+    expect(page.total).toBe(21);
+  });
+
   it("represents an empty result without an invalid range", () => {
     expect(paginateAuditRows([], 1, 10)).toMatchObject({ page: 1, pageCount: 1, start: 0, end: 0, total: 0, rows: [] });
   });

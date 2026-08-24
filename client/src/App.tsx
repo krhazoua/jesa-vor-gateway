@@ -12,8 +12,12 @@ import ModulePage from "./pages/ModulePage";
 
 function Protected({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
+  const [, navigate] = useLocation();
+  useEffect(() => {
+    if (!auth.loading && !auth.isAuthenticated) navigate("/login");
+  }, [auth.loading, auth.isAuthenticated, navigate]);
   if (auth.loading) return <div className="auth-loading"><span className="live-dot" /> AUTHENTICATING SERVER SESSION…</div>;
-  if (!auth.isAuthenticated) return <Login />;
+  if (!auth.isAuthenticated) return <div className="auth-loading"><span className="live-dot" /> REDIRECTING TO SECURE SIGN-IN…</div>;
   return <>{children}</>;
 }
 
@@ -30,7 +34,7 @@ function LoginRoute() {
 }
 
 export default function App() {
-  return <ErrorBoundary><ThemeProvider defaultTheme="dark"><TooltipProvider><Toaster theme="dark" /><Switch>
+  return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster theme="light" /><Switch>
     <Route path="/login" component={LoginRoute} />
     <Route path="/"><Protected><Home /></Protected></Route>
     <Route path="/operations"><Protected><Home /></Protected></Route>

@@ -38,6 +38,8 @@ describe("analytics aggregations", () => {
     expect(filtered.approvalTimes).toEqual([{ bucket: "2026-08-24", averageMinutes: 4, samples: 1 }]);
     const empty = buildAnalyticsPayload(transitions, approvals, { department: "ELECTRICAL" });
     expect(empty).toEqual({ transitions: [], approvalTimes: [] });
+    expect(empty.transitions).toHaveLength(0);
+    expect(empty.approvalTimes).toHaveLength(0);
   });
 
   it("averages decided approvals by creation day and excludes pending rows", () => {

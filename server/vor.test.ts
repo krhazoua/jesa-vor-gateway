@@ -45,6 +45,7 @@ describe("protected tRPC procedures", () => {
       res: {} as never,
     });
     await expect(caller.requests.list()).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+    await expect(caller.requests.create({ sourceUc: "UC1", department: "OPERATIONS", equipmentId: 1, variableId: 1, currentPv: 1, requestedSp: 1, priority: "NORMAL", ttlSeconds: 900, certificateSubject: "CN=APC-GATEWAY", sourceIdentity: "APC_GATEWAY" })).rejects.toMatchObject({ code: "UNAUTHORIZED" });
     await expect(caller.approvals.decide({ approvalId: 1, decision: "APPROVED", comment: "Independent review" })).rejects.toMatchObject({ code: "UNAUTHORIZED" });
   });
 });
