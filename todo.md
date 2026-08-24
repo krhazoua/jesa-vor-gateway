@@ -24,4 +24,9 @@
 - [x] Add database-supported or application-enforced append-only audit protection with explicit test coverage.
 - [x] Wire validation, system health, analytics, configuration, and request detail to protected tRPC procedures.
 - [x] Add direct approval mutation tests and audit immutability tests.
-- [ ] Save a new post-upgrade checkpoint after all gaps are closed.
+- [x] Save a new post-upgrade checkpoint after all gaps are closed.
+
+- [x] Add protected analytics aggregations for request state transitions and average approval times.
+- [x] Build visual transition and approval-time charts in the Analytics module with honest empty-state fallbacks.
+- [x] Add tests for analytics aggregation output and run the full verification suite.
+- [ ] Save and deliver the analytics enhancement checkpoint.
