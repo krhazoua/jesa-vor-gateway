@@ -29,4 +29,11 @@
 - [x] Add protected analytics aggregations for request state transitions and average approval times.
 - [x] Build visual transition and approval-time charts in the Analytics module with honest empty-state fallbacks.
 - [x] Add tests for analytics aggregation output and run the full verification suite.
-- [ ] Save and deliver the analytics enhancement checkpoint.
+- [x] Save and deliver the analytics enhancement checkpoint.
+
+- [x] Add protected analytics inputs for date range and department, with server-side filtering.
+- [x] Add date-range and department controls to the Analytics dashboard and preserve selected filter state.
+- [x] Add tests for date filtering, department filtering, and filtered chart payloads.
+- [x] Save and deliver the analytics filter enhancement checkpoint.
+
+- [x] Add router- or DB-helper-level tests proving filtered analytics payloads change for date and department filters, including empty-result behavior.

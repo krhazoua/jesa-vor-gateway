@@ -43,6 +43,7 @@ export const vorRequests = mysqlTable("vorRequests", {
   requestId: varchar("requestId", { length: 64 }).notNull().unique(),
   sourceUc: varchar("sourceUc", { length: 16 }).notNull(),
   sourceIdentity: varchar("sourceIdentity", { length: 160 }).notNull(),
+  department: varchar("department", { length: 64 }).default("OPERATIONS").notNull(),
   equipmentId: int("equipmentId").notNull(),
   variableId: int("variableId").notNull(),
   requesterId: int("requesterId").notNull(),

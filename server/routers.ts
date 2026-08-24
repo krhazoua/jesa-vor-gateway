@@ -13,6 +13,7 @@ const roleProcedure = (allowed: readonly Role[]) => protectedProcedure.use(async
 const supervisorProcedure = roleProcedure(["supervisor", "engineer", "admin"]);
 const engineerProcedure = roleProcedure(["engineer", "admin"]);
 const adminProcedure = roleProcedure(["admin"]);
+const analyticsFilterInput = z.object({ from: z.coerce.date().optional(), to: z.coerce.date().optional(), department: z.enum(["ALL", "OPERATIONS", "MAINTENANCE", "PROCESS_CONTROL", "INSTRUMENTATION", "ELECTRICAL", "IT_OT_SECURITY"]).optional() }).optional();
 
 export const appRouter = router({
   system: systemRouter,
@@ -33,7 +34,7 @@ export const appRouter = router({
   }),
   audit: router({ list: engineerProcedure.query(() => listAuditEvents()) }),
   systemHealth: router({ summary: protectedProcedure.query(() => ({ zones: [{ module: "psM+O", status: "ONLINE" }, { module: "DMZ", status: "ONLINE" }, { module: "CPC", status: "ONLINE" }], dcs: { mode: "SIMULATOR", status: "ONLINE" }, generatedAt: new Date() })) }),
-  analytics: router({ summary: engineerProcedure.query(async () => { const rows = await listRequests(); const series = await getAnalyticsSeries(); const total = rows.length; return { total, accepted: rows.filter(row => row.status === "ACCEPTED").length, rejected: rows.filter(row => row.status === "REJECTED").length, pending: rows.filter(row => row.status === "PENDING_OPERATOR").length, duplicated: rows.filter(row => row.status === "DUPLICATED").length, expired: rows.filter(row => row.status === "EXPIRED").length, ...series }; }) }),
+  analytics: router({ summary: engineerProcedure.input(analyticsFilterInput).query(async ({ input }) => { const rows = await listRequests(input); const series = await getAnalyticsSeries(input); const total = rows.length; return { total, accepted: rows.filter(row => row.status === "ACCEPTED").length, rejected: rows.filter(row => row.status === "REJECTED").length, pending: rows.filter(row => row.status === "PENDING_OPERATOR").length, duplicated: rows.filter(row => row.status === "DUPLICATED").length, expired: rows.filter(row => row.status === "EXPIRED").length, ...series }; }) }),
   configuration: router({ policy: adminProcedure.query(() => ({ statuses: ["ACCEPTED", "REJECTED", "PENDING_OPERATOR", "DUPLICATED", "EXPIRED"], checks: ["EQUIPMENT_CHECK", "SIGNATURE_CHECK", "UNIT_CHECK", "DUPLICATE_CHECK", "TTL_CHECK", "RANGE_CHECK", "SIL_CHECK", "ROC_CHECK", "INTERLOCK_CHECK"], roles: ["operator", "supervisor", "engineer", "admin"] })) }),
 });
 

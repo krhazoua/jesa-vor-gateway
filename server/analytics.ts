@@ -23,6 +23,33 @@ export type ApprovalTimeMetric = {
   samples: number;
 };
 
+export type AnalyticsFilters = {
+  from?: Date;
+  to?: Date;
+  department?: string;
+};
+
+export type FilterableAnalyticsRecord = {
+  createdAt: Date;
+  department?: string;
+};
+
+export function filterAnalyticsRecords<T extends FilterableAnalyticsRecord>(records: T[], filters?: AnalyticsFilters): T[] {
+  return records.filter(record => {
+    if (filters?.from && record.createdAt < filters.from) return false;
+    if (filters?.to && record.createdAt > filters.to) return false;
+    if (filters?.department && filters.department !== "ALL" && record.department !== filters.department) return false;
+    return true;
+  });
+}
+
+export function buildAnalyticsPayload(transitions: (TransitionRecord & FilterableAnalyticsRecord)[], approvals: (ApprovalRecord & FilterableAnalyticsRecord)[], filters?: AnalyticsFilters) {
+  return {
+    transitions: aggregateTransitions(filterAnalyticsRecords(transitions, filters)),
+    approvalTimes: aggregateApprovalTimes(filterAnalyticsRecords(approvals, filters)),
+  };
+}
+
 export function aggregateTransitions(records: TransitionRecord[]): TransitionMetric[] {
   const counts = new Map<string, TransitionMetric>();
   for (const record of records) {

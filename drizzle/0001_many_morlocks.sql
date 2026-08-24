@@ -1,0 +1,1 @@
+ALTER TABLE `vorRequests` ADD `department` varchar(64) DEFAULT 'OPERATIONS' NOT NULL;
