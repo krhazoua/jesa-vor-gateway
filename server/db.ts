@@ -1,6 +1,6 @@
 import { and, desc, eq, gte, inArray, isNull, lte, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { approvals, auditEvents, catalogImports, equipment, InsertUser, notifications, requestHistory, users, validationChecks, variables, vorRequests } from "../drizzle/schema";
+import { approvals, auditEvents, catalogImports, equipment, InsertUser, notifications, reconciliationRuns, requestHistory, users, validationChecks, variables, vorRequests } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 import { assertAppendOnlyAuditAction, type VorStatus } from "./vor";
 import { buildAnalyticsPayload, type AnalyticsFilters } from "./analytics";
@@ -29,6 +29,16 @@ export async function createAndPublishNotifications(event: Omit<NotificationEven
 export async function listAuditEvents() { const db = await getDb(); if (!db) throw new Error("Database unavailable"); return db.select().from(auditEvents).orderBy(desc(auditEvents.createdAt)).limit(200); }
 export async function getEngineeringCatalog() { const db = await getDb(); if (!db) throw new Error("Database unavailable"); return { equipment: await db.select().from(equipment), variables: await db.select().from(variables) }; }
 export async function listCatalogImports() { const db = await getDb(); if (!db) throw new Error("Database unavailable"); return db.select().from(catalogImports).orderBy(desc(catalogImports.createdAt)).limit(50); }
+export async function getCatalogImportById(id: number) { const db = await getDb(); if (!db) throw new Error("Database unavailable"); const [row] = await db.select().from(catalogImports).where(eq(catalogImports.id, id)).limit(1); return row; }
+export async function listReconciliationRuns() { const db = await getDb(); if (!db) throw new Error("Database unavailable"); return db.select().from(reconciliationRuns).orderBy(desc(reconciliationRuns.createdAt)).limit(50); }
+export async function persistReconciliationRun(args: { actorId: number; actorRole: string; sourceIp?: string; recordType: "EQUIPMENT" | "VARIABLE"; authoritySourceRef: string; filename: string; storageKey: string; storageUrl: string; rowCount: number; diff: { status: "MATCHED" | "MISMATCH" | "BLOCKED"; fatSatGate: "BLOCKED" | "PENDING_EXTERNAL_SIGNOFF"; matchedCount: number; addedCount: number; changedCount: number; removedCount: number; differences: Array<{ tag: string; kind: string; details: string }> }; }) {
+  const db = await getDb(); if (!db) throw new Error("Database unavailable");
+  return db.transaction(async tx => {
+    const [run] = await tx.insert(reconciliationRuns).values({ actorId: args.actorId, recordType: args.recordType, authoritySourceRef: args.authoritySourceRef, filename: args.filename, storageKey: args.storageKey, storageUrl: args.storageUrl, rowCount: args.rowCount, matchedCount: args.diff.matchedCount, addedCount: args.diff.addedCount, changedCount: args.diff.changedCount, removedCount: args.diff.removedCount, status: args.diff.status, fatSatGate: args.diff.fatSatGate, diffSummary: args.diff.differences.length ? args.diff.differences.slice(0, 100).map(diff => `${diff.kind} ${diff.tag}: ${diff.details}`).join("; ") : "No differences found against the canonical catalog." }).$returningId();
+    await tx.insert(auditEvents).values({ actorId: args.actorId, actorRole: args.actorRole, action: "CATALOG_RECONCILIATION", result: args.diff.status, reason: `${args.recordType} reconciliation against authority ${args.authoritySourceRef}; run ${run.id}; FAT/SAT gate ${args.diff.fatSatGate}. No canonical catalog rows or plant systems were modified.`, module: "CONFIGURATION", certificateSubject: null, sourceIp: args.sourceIp });
+    return { reconciliationRunId: run.id, ...args.diff, recordType: args.recordType, authoritySourceRef: args.authoritySourceRef, filename: args.filename, rowCount: args.rowCount };
+  });
+}
 export async function persistCatalogImport(args: { actorId: number; actorRole: string; sourceIp?: string; filename: string; storageKey: string; storageUrl: string; parsed: CatalogImportParseResult; }) {
   const db = await getDb(); if (!db) throw new Error("Database unavailable");
   const { parsed } = args;

@@ -144,6 +144,25 @@ export const catalogImports = mysqlTable("catalogImports", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, table => ({ actorIdx: index("catalogImports_actor_idx").on(table.actorId), createdIdx: index("catalogImports_created_idx").on(table.createdAt) }));
 
+export const reconciliationRuns = mysqlTable("reconciliationRuns", {
+  id: int("id").autoincrement().primaryKey(),
+  actorId: int("actorId").notNull(),
+  recordType: mysqlEnum("recordType", ["EQUIPMENT", "VARIABLE"]).notNull(),
+  authoritySourceRef: varchar("authoritySourceRef", { length: 160 }).notNull(),
+  filename: varchar("filename", { length: 255 }).notNull(),
+  storageKey: varchar("storageKey", { length: 512 }).notNull(),
+  storageUrl: varchar("storageUrl", { length: 600 }).notNull(),
+  rowCount: int("rowCount").notNull(),
+  matchedCount: int("matchedCount").default(0).notNull(),
+  addedCount: int("addedCount").default(0).notNull(),
+  changedCount: int("changedCount").default(0).notNull(),
+  removedCount: int("removedCount").default(0).notNull(),
+  status: mysqlEnum("status", ["MATCHED", "MISMATCH", "BLOCKED"]).notNull(),
+  fatSatGate: mysqlEnum("fatSatGate", ["BLOCKED", "PENDING_EXTERNAL_SIGNOFF"]).notNull(),
+  diffSummary: text("diffSummary"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, table => ({ actorIdx: index("reconciliationRuns_actor_idx").on(table.actorId), createdIdx: index("reconciliationRuns_created_idx").on(table.createdAt) }));
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type VorRequest = typeof vorRequests.$inferSelect;

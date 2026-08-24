@@ -26,6 +26,11 @@ function RequestDetailRoute() {
   return <Protected><ModulePage type={`detail:${params?.id || "VOR-2026-0824-017"}`} /></Protected>;
 }
 
+function CatalogImportDetailRoute() {
+  const [, params] = useRoute<{ id: string }>("/catalog-imports/:id");
+  return <Protected><ModulePage type={`import-detail:${params?.id || "0"}`} /></Protected>;
+}
+
 function LoginRoute() {
   const [, navigate] = useLocation();
   const auth = useAuth();
@@ -41,6 +46,7 @@ export default function App() {
     <Route path="/dashboard"><Protected><Home /></Protected></Route>
     <Route path="/requests"><Protected><ModulePage type="requests" /></Protected></Route>
     <Route path="/requests/:id" component={RequestDetailRoute} />
+    <Route path="/catalog-imports/:id" component={CatalogImportDetailRoute} />
     <Route path="/approvals"><Protected><ModulePage type="approvals" /></Protected></Route>
     <Route path="/validation"><Protected><ModulePage type="validation" /></Protected></Route>
     <Route path="/audit"><Protected><ModulePage type="audit" /></Protected></Route>

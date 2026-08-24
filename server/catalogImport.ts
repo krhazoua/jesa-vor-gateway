@@ -6,6 +6,33 @@ export type EquipmentImportRow = { tag: string; name: string; processArea: strin
 export type VariableImportRow = { tag: string; name: string; variableType: "PV" | "SP" | "MV" | "CV" | "DV"; unit: string; hardLow: string | null; hardHigh: string | null; warningLow: string | null; warningHigh: string | null; criticalLow: string | null; criticalHigh: string | null; silClass: "SIL-0" | "SIL-1" | "SIL-2" | "SIL-3"; dcsMapping: string; sourceRef: string };
 export type CatalogImportRow = EquipmentImportRow | VariableImportRow;
 export type CatalogImportParseResult = { recordType: CatalogRecordType; headers: string[]; rows: CatalogImportRow[]; errors: Array<{ row: number; message: string }>; rowCount: number };
+export type CatalogDiff = { status: "MATCHED" | "MISMATCH" | "BLOCKED"; fatSatGate: "BLOCKED" | "PENDING_EXTERNAL_SIGNOFF"; matchedCount: number; addedCount: number; changedCount: number; removedCount: number; differences: Array<{ tag: string; kind: "ADDED" | "CHANGED" | "REMOVED" | "SOURCE_MISMATCH"; details: string }> };
+
+function comparableRow(row: CatalogImportRow) {
+  const fields = ["tag", "name", "processArea", "variableType", "unit", "hardLow", "hardHigh", "warningLow", "warningHigh", "criticalLow", "criticalHigh", "silClass", "dcsMapping", "sourceRef"];
+  return JSON.stringify(Object.fromEntries(fields.filter(field => field in row).map(field => [field, (row as Record<string, unknown>)[field]])));
+}
+
+export function diffCatalogRows(recordType: CatalogRecordType, incomingRows: CatalogImportRow[], existingRows: CatalogImportRow[], authoritySourceRef: string): CatalogDiff {
+  const differences: CatalogDiff["differences"] = [];
+  if (incomingRows.some(row => row.sourceRef !== authoritySourceRef)) differences.push({ tag: "SOURCE", kind: "SOURCE_MISMATCH", details: "Every imported row must declare the selected authoritative source reference." });
+  const incoming = new Map(incomingRows.map(row => [row.tag.toUpperCase(), row]));
+  const existing = new Map(existingRows.map(row => [row.tag.toUpperCase(), row]));
+  let matchedCount = 0;
+  incoming.forEach((row, key) => {
+    const current = existing.get(key);
+    if (!current) differences.push({ tag: row.tag, kind: "ADDED", details: `${recordType} tag is present in the authority file but absent from the canonical catalog.` });
+    else if (comparableRow(row) === comparableRow(current)) matchedCount += 1;
+    else differences.push({ tag: row.tag, kind: "CHANGED", details: `${recordType} canonical values differ from the authority file.` });
+  });
+  existing.forEach((row, key) => { if (!incoming.has(key)) differences.push({ tag: row.tag, kind: "REMOVED", details: `${recordType} tag is present in the canonical catalog but absent from the authority file.` }); });
+  const addedCount = differences.filter(diff => diff.kind === "ADDED").length;
+  const changedCount = differences.filter(diff => diff.kind === "CHANGED").length;
+  const removedCount = differences.filter(diff => diff.kind === "REMOVED").length;
+  const blocked = differences.some(diff => diff.kind === "SOURCE_MISMATCH");
+  const status = blocked ? "BLOCKED" : differences.length ? "MISMATCH" : "MATCHED";
+  return { status, fatSatGate: status === "MATCHED" ? "PENDING_EXTERNAL_SIGNOFF" : "BLOCKED", matchedCount, addedCount, changedCount, removedCount, differences: differences.slice(0, 100) };
+}
 
 const EQUIPMENT_HEADERS = ["tag", "name", "processArea", "sourceRef"] as const;
 const VARIABLE_HEADERS = ["tag", "name", "variableType", "unit", "hardLow", "hardHigh", "warningLow", "warningHigh", "criticalLow", "criticalHigh", "silClass", "dcsMapping", "sourceRef"] as const;

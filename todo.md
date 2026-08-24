@@ -314,3 +314,13 @@
 - [x] Add an operator-facing Configuration/catalog import workflow with template guidance, preview, errors, progress, and responsive feedback.
 - [x] Add regression coverage for parsing, validation, authorization, atomicity, auditability, and catalog/request integration.
 - [x] Generate/apply the migration, run full QA, update documentation, and save a verified checkpoint.
+
+
+# Import History, Dry-Run Diff, and FAT/SAT Reconciliation — 2026-08-24
+
+- [x] Add protected import-history detail and source-download contracts with ownership-safe access.
+- [x] Add dry-run catalog diff reporting that never mutates canonical rows or plant systems.
+- [x] Add authoritative equipment/variable reconciliation evidence and an explicit FAT/SAT readiness gate.
+- [x] Add responsive UI flows for history detail, source download, dry-run diffs, and reconciliation status.
+- [x] Add regression coverage for authorization, source references, diff semantics, reconciliation gating, and no-write guarantees.
+- [x] Run migration if required, full QA, documentation, and save a verified checkpoint.
