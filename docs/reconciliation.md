@@ -21,3 +21,15 @@ A production deployment still requires a full-stack upgrade and implementation o
 ## Validation performed
 
 The frontend TypeScript check and production build pass. The development server was restarted cleanly and the `/login` screen was visually verified. The final repository should be upgraded to the full-stack template before treating authentication, auditability, or DCS propagation as production controls.
+
+## Full-stack upgrade status
+
+The project now uses the full-stack template with Manus OAuth-backed signed session cookies, typed tRPC procedures, Drizzle persistence, server-side role middleware, an expanded role enum, and a canonical schema for requests, validation checks, approvals, audit events, request history, equipment, variables, and process snapshots. Approval decisions require an independent authenticated actor and commit the approval, request status, history, and audit event in one database transaction. Illegal terminal-state transitions are rejected server-side.
+
+Audit and request-history writes are append-only at the application contract: no update or delete procedures are exposed, and all decision/transition writes create a new audit event. The connected TiDB environment does not support MySQL triggers, so database-level trigger enforcement could not be applied; a production hardening step should use database permissions or a database engine with append-only trigger support if adversarial direct SQL access is in scope.
+
+The database migration was generated, reviewed, applied successfully, and verified with nine canonical tables. Vitest now covers logout cookie clearing, legal/illegal transitions, independent approver enforcement, role allowlists, validation short-circuiting, and SIL-1 approval marking. The development server restarted cleanly after the dependency upgrade, and the routed dashboard screens were visually verified.
+
+## Authentication claim boundary
+
+The application does not issue a second custom JWT. The full-stack template validates the Manus OAuth session on the server and exposes the authenticated user through the request context; protected tRPC procedures then enforce active-session status and role allowlists on every call. The UI labels this as a server-authenticated JWT session because it is bound to the template's signed session mechanism, but token issuance and cryptographic validation remain owned by the Manus authentication layer.

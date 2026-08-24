@@ -1,19 +1,19 @@
-/* Control Room Ledger: route access is gated by a session boundary before any operational content renders. */
+/* Control Room Ledger: protected routes read server-authenticated JWT-backed context. */
 import { useEffect } from "react";
 import { Route, Switch, useLocation, useRoute } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { useAuth } from "./_core/hooks/useAuth";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ModulePage from "./pages/ModulePage";
 
 function Protected({ children }: { children: React.ReactNode }) {
-  const [location, navigate] = useLocation();
-  const authenticated = Boolean(sessionStorage.getItem("vor-session"));
-  useEffect(() => { if (!authenticated && location !== "/login") navigate("/login"); }, [authenticated, location, navigate]);
-  if (!authenticated) return null;
+  const auth = useAuth();
+  if (auth.loading) return <div className="auth-loading"><span className="live-dot" /> AUTHENTICATING SERVER SESSION…</div>;
+  if (!auth.isAuthenticated) return <Login />;
   return <>{children}</>;
 }
 
@@ -24,7 +24,8 @@ function RequestDetailRoute() {
 
 function LoginRoute() {
   const [, navigate] = useLocation();
-  if (sessionStorage.getItem("vor-session")) { navigate("/operations"); return null; }
+  const auth = useAuth();
+  useEffect(() => { if (!auth.loading && auth.isAuthenticated) navigate("/operations"); }, [auth.loading, auth.isAuthenticated, navigate]);
   return <Login />;
 }
 

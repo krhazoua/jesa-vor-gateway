@@ -6,7 +6,8 @@ import {
   RefreshCw, Search, ShieldCheck, SlidersHorizontal, UserRound, X, Zap
 } from "lucide-react";
 import { toast } from "sonner";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 const requests = [
   { id: "VOR-2026-0824-017", time: "08:42:19", source: "APC-ATTACK-01", variable: "Reactor temperature", tag: "TIC-5210", current: "75.8", requested: "76.4", unit: "°C", uc: "UC1", status: "ACCEPTED", sil: "SIL-0", delta: "+0.6" },
@@ -33,6 +34,8 @@ function Status({ value }: { value: string }) {
 }
 
 export default function Home() {
+  const [, navigate] = useLocation();
+  const auth = useAuth();
   const [selected, setSelected] = useState(requests[1]);
   const [drawer, setDrawer] = useState(false);
   const [query, setQuery] = useState("");
@@ -46,11 +49,11 @@ export default function Home() {
         <div className="brand-block"><div className="brand-lockup"><img src="/manus-storage/jesa-wordmark_e357ca66.png" className="jesa-logo" /><div className="gate-mark"><span /><span /><i /></div></div><div className="brand-rule" /><div><div className="eyebrow">DIGITAL ENGINEERING</div><div className="brand-sub">VoR GATEWAY / PAP</div></div></div>
         <div className="plant-selector"><div className="eyebrow">ACTIVE SYSTEM</div><div className="plant-name">Attack Reactor <ChevronRight size={14} /></div><div className="plant-meta"><span className="live-dot" />SIMULATOR CONNECTED</div></div>
         <nav className="nav-list">{nav.map(item => <Link href={item.href} key={item.label} className={`nav-item ${item.active ? "active" : ""}`}><item.icon size={16} /><span>{item.label}</span>{item.badge && <b>{item.badge}</b>}</Link>)}</nav>
-        <div className="sidebar-foot"><div className="zone-card"><div className="eyebrow">SECURITY ZONES</div><div className="zone-row"><span className="zone-dot blue" />MODULE 3 · psM+O <Check size={13} /></div><div className="zone-row"><span className="zone-dot amber" />MODULE 2 · DMZ <Check size={13} /></div><div className="zone-row"><span className="zone-dot green" />MODULE 1 · CPC <Check size={13} /></div></div><div className="user-row"><div className="avatar">OP</div><div><strong>Operator Shift A</strong><small>OPERATOR · Authenticated</small></div><button className="user-logout" onClick={() => { sessionStorage.removeItem("vor-session"); window.location.href = "/login"; }} aria-label="Log out"><LockKeyhole size={14} /></button></div></div>
+        <div className="sidebar-foot"><div className="zone-card"><div className="eyebrow">SECURITY ZONES</div><div className="zone-row"><span className="zone-dot blue" />MODULE 3 · psM+O <Check size={13} /></div><div className="zone-row"><span className="zone-dot amber" />MODULE 2 · DMZ <Check size={13} /></div><div className="zone-row"><span className="zone-dot green" />MODULE 1 · CPC <Check size={13} /></div></div><div className="user-row"><div className="avatar">OP</div><div><strong>Operator Shift A</strong><small>OPERATOR · Authenticated</small></div><button className="user-logout" onClick={() => auth.logout().then(() => navigate("/login"))} aria-label="Log out"><LockKeyhole size={14} /></button></div></div>
       </aside>
 
       <main className="main-content">
-        <header className="topbar"><div className="breadcrumb"><span>JESA / DIGITAL ENGINEERING</span><ChevronRight size={13} /><strong>OPERATIONS</strong></div><div className="top-actions"><div className="system-pulse"><span className="live-dot" /> ALL SYSTEMS NOMINAL</div><button className="icon-btn" aria-label="Notifications"><Bell size={17} /><i /></button><button className="icon-btn" onClick={() => toast("Session is authenticated with JWT and certificate binding.")}><LockKeyhole size={16} /></button><button className="menu-btn"><Menu size={18} /></button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>JESA / DIGITAL ENGINEERING</span><ChevronRight size={13} /><strong>OPERATIONS</strong></div><div className="top-actions"><div className="system-pulse"><span className="live-dot" /> ALL SYSTEMS NOMINAL</div><button className="icon-btn" aria-label="Notifications"><Bell size={17} /><i /></button><button className="icon-btn" onClick={() => toast("Session is authenticated by the Manus OAuth gateway and active-user server context.")}><LockKeyhole size={16} /></button><button className="menu-btn"><Menu size={18} /></button></div></header>
         <div className="content-wrap">
           <section className="page-heading"><div><div className="eyebrow cobalt">PAP ATTACK REACTOR / CONTROL SYSTEM</div><h1>Verification of Request <span className="muted">/</span> Operations</h1><p>Secure request governance between APC and the DCS adapter. Every write is verified, mapped, and traceable.</p><div className="lineage-strip"><span className="lineage-label">REQUEST LINEAGE</span><strong>APC</strong><ChevronRight size={12} /><strong className="lineage-active">MODULE 3 / psM+O</strong><ChevronRight size={12} /><strong className="lineage-active">MODULE 2 / DMZ</strong><ChevronRight size={12} /><strong>MODULE 1 / CPC</strong><ChevronRight size={12} /><strong>DCS ADAPTER</strong></div></div><div className="heading-meta"><div className="meta-label">LAST SYNCHRONIZED</div><div className="mono">08:42:22 UTC <RefreshCw size={13} /></div><div className="sim-label"><span className="amber-dot" /> ISOLATED SIMULATOR MODE</div></div></section>
 
