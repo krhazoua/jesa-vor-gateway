@@ -163,6 +163,42 @@ export const reconciliationRuns = mysqlTable("reconciliationRuns", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, table => ({ actorIdx: index("reconciliationRuns_actor_idx").on(table.actorId), createdIdx: index("reconciliationRuns_created_idx").on(table.createdAt) }));
 
+export const reconciliationDiffs = mysqlTable("reconciliationDiffs", {
+  id: int("id").autoincrement().primaryKey(),
+  reconciliationRunId: int("reconciliationRunId").notNull(),
+  sequence: int("sequence").notNull(),
+  tag: varchar("tag", { length: 160 }).notNull(),
+  kind: varchar("kind", { length: 32 }).notNull(),
+  details: text("details").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, table => ({ runIdx: index("reconciliationDiffs_run_idx").on(table.reconciliationRunId, table.sequence) }));
+
+export const reconciliationSignoffs = mysqlTable("reconciliationSignoffs", {
+  id: int("id").autoincrement().primaryKey(),
+  reconciliationRunId: int("reconciliationRunId").notNull(),
+  actorId: int("actorId").notNull(),
+  actorRole: varchar("actorRole", { length: 32 }).notNull(),
+  certificateSubject: varchar("certificateSubject", { length: 255 }).notNull(),
+  certificateFingerprint: varchar("certificateFingerprint", { length: 128 }).notNull(),
+  certificateStorageKey: varchar("certificateStorageKey", { length: 512 }).notNull(),
+  certificateStorageUrl: varchar("certificateStorageUrl", { length: 600 }).notNull(),
+  referenceId: varchar("referenceId", { length: 180 }).notNull(),
+  referenceStorageKey: varchar("referenceStorageKey", { length: 512 }).notNull(),
+  referenceStorageUrl: varchar("referenceStorageUrl", { length: 600 }).notNull(),
+  decision: mysqlEnum("decision", ["APPROVED", "REJECTED"]).notNull(),
+  comment: text("comment"),
+  signedAt: timestamp("signedAt").defaultNow().notNull(),
+}, table => ({ runIdx: index("reconciliationSignoffs_run_idx").on(table.reconciliationRunId), actorIdx: index("reconciliationSignoffs_actor_idx").on(table.actorId) }));
+
+export const authoritativeMasterGates = mysqlTable("authoritativeMasterGates", {
+  id: int("id").autoincrement().primaryKey(),
+  reconciliationRunId: int("reconciliationRunId").notNull(),
+  activatedBy: int("activatedBy").notNull(),
+  authoritySourceRef: varchar("authoritySourceRef", { length: 160 }).notNull(),
+  status: mysqlEnum("status", ["DISABLED", "ARMED_FOR_FAT_SAT"]).notNull(),
+  activatedAt: timestamp("activatedAt").defaultNow().notNull(),
+}, table => ({ statusIdx: index("authoritativeMasterGates_status_idx").on(table.status), createdIdx: index("authoritativeMasterGates_created_idx").on(table.activatedAt) }));
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type VorRequest = typeof vorRequests.$inferSelect;

@@ -324,3 +324,13 @@
 - [x] Add responsive UI flows for history detail, source download, dry-run diffs, and reconciliation status.
 - [x] Add regression coverage for authorization, source references, diff semantics, reconciliation gating, and no-write guarantees.
 - [x] Run migration if required, full QA, documentation, and save a verified checkpoint.
+
+
+# External Sign-off, Reconciliation Reports, and Master Gate — 2026-08-24
+
+- [x] Add persisted external sign-off evidence with certificate/reference source metadata and immutable audit linkage.
+- [x] Add paginated reconciliation difference retrieval and downloadable CSV/PDF reconciliation reports.
+- [x] Add a controlled authoritative engineering-master integration gate that cannot activate before valid FAT/SAT sign-off.
+- [x] Add protected responsive UI for sign-off capture, diff pagination, report download, and integration-gate status.
+- [x] Add regression coverage for certificate validation, role enforcement, report pagination, no-write behavior, and gate activation.
+- [x] Run migration if required, full QA, documentation, and save a verified checkpoint.

@@ -36,6 +36,13 @@
       "when": 1787589274802,
       "tag": "0004_big_the_hand",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1787589918414,
+      "tag": "0005_fearless_firebird",
+      "breakpoints": true
     }
   ]
 }

@@ -31,7 +31,7 @@ export function diffCatalogRows(recordType: CatalogRecordType, incomingRows: Cat
   const removedCount = differences.filter(diff => diff.kind === "REMOVED").length;
   const blocked = differences.some(diff => diff.kind === "SOURCE_MISMATCH");
   const status = blocked ? "BLOCKED" : differences.length ? "MISMATCH" : "MATCHED";
-  return { status, fatSatGate: status === "MATCHED" ? "PENDING_EXTERNAL_SIGNOFF" : "BLOCKED", matchedCount, addedCount, changedCount, removedCount, differences: differences.slice(0, 100) };
+  return { status, fatSatGate: status === "MATCHED" ? "PENDING_EXTERNAL_SIGNOFF" : "BLOCKED", matchedCount, addedCount, changedCount, removedCount, differences };
 }
 
 const EQUIPMENT_HEADERS = ["tag", "name", "processArea", "sourceRef"] as const;
