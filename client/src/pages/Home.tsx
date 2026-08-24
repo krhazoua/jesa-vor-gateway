@@ -56,7 +56,7 @@ const checks = ["EQUIPMENT_CHECK", "SIGNATURE_CHECK", "UNIT_CHECK", "DUPLICATE_C
 const nav = [
   { label: "Operations", icon: Activity, active: true, href: "/operations" }, { label: "Requests", icon: FileText, href: "/requests" },
   { label: "Approvals", icon: ClipboardCheck, href: "/approvals" }, { label: "Validation", icon: ShieldCheck, href: "/validation" },
-  { label: "Audit trail", icon: Database, href: "/audit" }, { label: "System health", icon: Radar, href: "/system-health" }, { label: "Analytics", icon: Gauge, href: "/analytics" }, { label: "Configuration", icon: Settings2, href: "/configuration" },
+  { label: "Audit trail", icon: Database, href: "/audit" }, { label: "System health", icon: Radar, href: "/system-health" }, { label: "Analytics", icon: Gauge, href: "/analytics" }, { label: "NE178 compliance", icon: ShieldCheck, href: "/compliance" }, { label: "Configuration", icon: Settings2, href: "/configuration" },
 ];
 
 function Status({ value }: { value: string }) {

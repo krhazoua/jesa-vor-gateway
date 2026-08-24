@@ -244,3 +244,12 @@
 - [x] Document backend-derived subsystem health and Operations canonical catalog enrichment in the master repair reconciliation and operations guide.
 - [x] Correct Analytics KPI grid layout so labels, values, and context text remain readable at desktop and mobile widths.
 - [x] Correct Audit filter-toolbar wrapping and export-control placement at the 1366px workstation target and mobile widths.
+
+# Supplied Specification Follow-up — 2026-08-24
+
+- [x] Finish reading and reconcile the supplied specification against the synced repository and reference-file boundaries.
+- [x] Add only applicable remaining fields and behaviors for request detail, validation, audit correlation, system health, and role permissions.
+- [x] Verify login and direct-route behavior without embedding production credentials or pretending a certificate upload is connected when the OAuth boundary owns authentication.
+- [x] Run complete automated, build, route, responsive, and repository verification and save a new checkpoint.
+- [x] Add a dedicated NE178 Compliance route with a clickable six-step matrix linked to implemented modules and evidence states.
+- [x] Style the NE178 Compliance matrix as a readable industrial table with responsive horizontal handling and visible evidence hierarchy.

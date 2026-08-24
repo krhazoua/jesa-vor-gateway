@@ -65,3 +65,10 @@ The requested mapping, propagation, final mapping verification, OPC UA write, wo
 The Operations surface now resolves canonical request rows against the engineering catalog when persisted rows are present, showing source use case, variable name/tag, PV, requested SP, unit, SIL class, and computed delta. The static approval-count badge was removed so navigation does not imply a database count that has not been queried.
 
 System Health now performs a protected database probe and reports database latency/reachability, derived zone readiness, validation engine availability, active-session authentication, audit-store reachability, and notification-stream readiness. The DCS/OPC UA edge remains explicitly disconnected and read-only; no plant status or write capability is inferred from the probe.
+
+
+## Supplied specification follow-up
+
+The supplied specification requested a dedicated NE178 Compliance surface. The application now exposes `/compliance` behind the protected route gate and navigation. Its six-row matrix links Authentication & Authorization, Verification, Mapping, Propagation, Acceptance, and Mapping Verification to the corresponding evidence route. Propagation and Mapping Verification are visibly marked as gated because the read-only edge adapter has no configured plant write path.
+
+The login boundary remains the configured server-authenticated session/OAuth layer rather than a second custom username/password or certificate issuer. The UI does not collect or persist private credentials or certificate material. This is intentional: production credential issuance, X.509 chain validation, PostgreSQL migration/seed parity, and OPC UA integration require approved deployment contracts and are not simulated.

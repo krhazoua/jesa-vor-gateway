@@ -195,3 +195,18 @@ body{font-variant-numeric:tabular-nums}.panel,.health-card,.module-panel,.analyt
 .audit-filter-toolbar .report-export-actions { grid-column: 1 / -1; justify-content: flex-start; margin-top: 2px; }
 @media (max-width: 1120px) { .audit-filter-toolbar { grid-template-columns: repeat(4, minmax(0, 1fr)); } .audit-filter-toolbar .report-export-actions { grid-column: 1 / -1; } }
 @media (max-width: 640px) { .audit-filter-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); } .audit-filter-toolbar > input:first-child, .audit-filter-toolbar .report-export-actions { grid-column: 1 / -1; } .audit-filter-toolbar .compact-date-filter { display: grid; } .audit-filter-toolbar > button { width: 100%; } }
+
+.compliance-panel { overflow: hidden; }
+.compliance-panel > h2 { margin: 6px 0 4px; }
+.compliance-table { margin-top: 18px; overflow-x: auto; border: 1px solid var(--border); background: var(--white); }
+.compliance-row { min-width: 900px; width: 100%; display: grid; grid-template-columns: 64px minmax(220px, 1.2fr) minmax(170px, .9fr) 130px minmax(280px, 1.4fr); gap: 12px; align-items: center; padding: 13px 14px; border: 0; border-bottom: 1px solid var(--border); text-align: left; font: inherit; color: var(--text); background: var(--white); }
+.compliance-row:last-child { border-bottom: 0; }
+.compliance-row:not(.compliance-head) { cursor: pointer; transition: background 160ms ease, box-shadow 160ms ease; }
+.compliance-row:not(.compliance-head):hover, .compliance-row.selected { background: #f0f7fc; box-shadow: inset 3px 0 0 var(--secondary); }
+.compliance-head { background: #f7f9fc; color: var(--muted); font-size: 10px; letter-spacing: .1em; font-weight: 700; }
+.compliance-row strong { font-size: 13px; }
+.compliance-row > span:last-child { color: var(--muted); font-size: 12px; }
+.compliance-evidence { display: flex; justify-content: space-between; gap: 20px; align-items: center; margin-top: 16px; padding: 15px; border-left: 3px solid var(--secondary); background: #f7f9fc; }
+.compliance-evidence h3 { margin: 4px 0; font-size: 16px; }
+.compliance-evidence p { margin: 0; color: var(--muted); font-size: 13px; }
+@media (max-width: 640px) { .compliance-panel { padding: 14px; } .compliance-table { margin-left: -14px; margin-right: -14px; } .compliance-evidence { align-items: flex-start; flex-direction: column; } }

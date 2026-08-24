@@ -45,6 +45,7 @@ export default function App() {
     <Route path="/audit"><Protected><ModulePage type="audit" /></Protected></Route>
     <Route path="/system-health"><Protected><ModulePage type="system-health" /></Protected></Route>
     <Route path="/analytics"><Protected><ModulePage type="analytics" /></Protected></Route>
+    <Route path="/compliance"><Protected><ModulePage type="compliance" /></Protected></Route>
     <Route path="/configuration"><Protected><ModulePage type="configuration" /></Protected></Route>
     <Route><LoginRoute /></Route>
   </Switch></TooltipProvider></ThemeProvider></ErrorBoundary>;
