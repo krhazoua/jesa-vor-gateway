@@ -261,3 +261,12 @@
 - [x] Add regression coverage and responsive visual verification for the compliance matrix.
 - [x] Update reconciliation/operations documentation and save a checkpoint.
 - [x] Improve configuration-backed compliance metadata spacing and source/evidence hierarchy so values do not run together in the matrix.
+- [x] Add protected `/dashboard` and `/history` aliases to the existing Operations and Audit modules so all specified URLs are covered without duplicating workflow code.
+
+# Supplied Master Repair Acceptance Audit — 2026-08-24
+
+- [x] Audit the existing VoR Gateway against the complete supplied acceptance specification without creating a new project or deleting working functionality.
+- [x] Verify all required protected route aliases, authentication boundaries, role permissions, workflow states, backend procedures, and logout behavior.
+- [x] Verify real-data, empty, error, simulator, export, traceability, and configuration-backed compliance behavior without fabricated operational data.
+- [x] Implement applicable remaining fixes, run the application and test workflows, correct all discovered errors, and save a working checkpoint.
+- [x] Add canonical validation-result and request-reason context to pending approvals so the confirmation modal shows the required evidence.

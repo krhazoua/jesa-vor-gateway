@@ -31,3 +31,7 @@ The Analytics dashboard renders the series as decision-path and approval-latency
 The Audit route supports independent request-ID, user-ID, role, event, state/result, free-text, and inclusive UTC date filters. Filters compose before typed sorting and clamped pagination; the active filtered result set is the same set used by CSV, JSON, and PDF export controls.
 
 The Operations route uses canonical equipment and variable catalog labels whenever persisted request rows are available. In simulator-only preview mode, request cards and telemetry are visibly labeled as isolated simulator content. System Health reports a protected database probe and derived application subsystem readiness; the DCS/OPC UA edge remains disconnected, read-only, and unavailable for plant writes until an approved integration contract is supplied.
+
+## Acceptance-surface follow-up
+
+The protected application also resolves `/dashboard` to Operations and `/history` to the append-only Audit surface so both specification aliases retain the same session and role gates as their canonical routes. Pending approval records include joined equipment and variable context, persisted validation outcomes, and the request-creation reason; the confirmation dialog displays these values before a four-eyes decision is submitted. No approval row is synthesized in the client when the protected query is empty.

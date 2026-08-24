@@ -38,11 +38,13 @@ export default function App() {
     <Route path="/login" component={LoginRoute} />
     <Route path="/"><Protected><Home /></Protected></Route>
     <Route path="/operations"><Protected><Home /></Protected></Route>
+    <Route path="/dashboard"><Protected><Home /></Protected></Route>
     <Route path="/requests"><Protected><ModulePage type="requests" /></Protected></Route>
     <Route path="/requests/:id" component={RequestDetailRoute} />
     <Route path="/approvals"><Protected><ModulePage type="approvals" /></Protected></Route>
     <Route path="/validation"><Protected><ModulePage type="validation" /></Protected></Route>
     <Route path="/audit"><Protected><ModulePage type="audit" /></Protected></Route>
+    <Route path="/history"><Protected><ModulePage type="audit" /></Protected></Route>
     <Route path="/system-health"><Protected><ModulePage type="system-health" /></Protected></Route>
     <Route path="/analytics"><Protected><ModulePage type="analytics" /></Protected></Route>
     <Route path="/compliance"><Protected><ModulePage type="compliance" /></Protected></Route>
