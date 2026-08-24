@@ -43,7 +43,45 @@
 - [x] Add integration coverage for validation short-circuiting and propagation blocking.
 - [x] Add a DCS acknowledgment contract and integration coverage for accepted, rejected, and blocked propagation.
 - [x] Run the full integration test suite, type check, and production build.
-- [ ] Save and deliver the integration-test checkpoint.
+- [x] Save and deliver the integration-test checkpoint.
 
 - [x] Assert every legal transition from PENDING_OPERATOR succeeds: ACCEPTED, REJECTED, DUPLICATED, and EXPIRED.
 - [x] Exercise the protected dcs.acknowledge procedure with success, non-accepted blocking, and failed-evidence blocking fixtures.
+
+- [x] Inspect the current request-state and approval mutation seams for notification event creation.
+- [x] Add persisted notifications and recipient/read-state schema with migration.
+- [x] Emit notifications for request state changes and approval-required events.
+- [x] Add protected notification queries, read-state mutations, and realtime delivery with a fallback polling path.
+- [x] Add operator and supervisor notification UI with unread counts and read controls.
+- [x] Add tests for recipient filtering, event creation, read-state changes, and realtime/polling behavior.
+- [x] Run migration, integration tests, build, and visual verification.
+- [x] Save and deliver the notification-system checkpoint.
+
+- [x] Add integration tests proving transition and approval mutations create the correct persisted notification events.
+- [x] Add read-state ownership tests and transport/fallback coverage for notification delivery.
+- [x] Capture desktop and mobile screenshots showing the notification tray and unread alert controls.
+
+- [x] Add persistence-level notification row assertions for transition and approval-required event creation.
+- [x] Add notification read ownership and SSE/polling fallback integration tests.
+- [x] Add a deterministic preview-only unread alert state for visual verification without seeding production data.
+- [x] Capture desktop and mobile screenshots with the unread alert tray visible.
+
+- [x] Assert notification insert rows contain recipient ids, event types, severity, and request linkage.
+- [x] Assert read-state updates cannot cross recipient ownership boundaries.
+- [x] Test the protected SSE stream handshake and event delivery.
+- [x] Test polling fallback refresh behavior when the realtime stream is unavailable.
+
+- [x] Assert notification insert rows contain recipient ids, event types, severity, and request linkage.
+- [x] Assert read-state updates cannot cross recipient ownership boundaries with affected-row behavior.
+- [x] Test the protected SSE stream handshake and event delivery directly.
+- [x] Test the polling fallback contract used when EventSource is unavailable.
+
+- [x] Test notifications.markRead against another recipient’s notification and assert updated=false through the actual protected procedure.
+- [x] Add a client notification refresh helper and test polling refetch when EventSource is unavailable.
+
+- [x] Ensure Vitest discovers the client notification fallback test and rerun it.
+- [x] Wire the notification fallback helper into the SSE/polling UI flow.
+- [x] Add a direct notificationReadResult affected-row ownership test.
+- [x] Save a new checkpoint after the notification changes.
+
+- [x] Add a direct notificationReadResult test covering successful ownership and cross-recipient/zero-row rejection.

@@ -81,6 +81,18 @@ export const approvals = mysqlTable("approvals", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, table => ({ approvalRequestIdx: index("approvals_request_idx").on(table.requestId), approvalDecisionIdx: index("approvals_decision_idx").on(table.decision) }));
 
+export const notifications = mysqlTable("notifications", {
+  id: int("id").autoincrement().primaryKey(),
+  recipientId: int("recipientId").notNull(),
+  requestId: int("requestId"),
+  type: mysqlEnum("type", ["STATE_CHANGED", "APPROVAL_REQUIRED"]).notNull(),
+  severity: mysqlEnum("severity", ["INFO", "WARNING", "CRITICAL"]).default("INFO").notNull(),
+  title: varchar("title", { length: 180 }).notNull(),
+  message: text("message").notNull(),
+  readAt: timestamp("readAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, table => ({ recipientIdx: index("notifications_recipient_idx").on(table.recipientId, table.createdAt), unreadIdx: index("notifications_unread_idx").on(table.recipientId, table.readAt) }));
+
 export const auditEvents = mysqlTable("auditEvents", {
   id: int("id").autoincrement().primaryKey(),
   requestId: int("requestId"),
@@ -120,3 +132,5 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type VorRequest = typeof vorRequests.$inferSelect;
 export type ValidationCheck = typeof validationChecks.$inferSelect;
+export type Notification = typeof notifications.$inferSelect;
+export type InsertNotification = typeof notifications.$inferInsert;

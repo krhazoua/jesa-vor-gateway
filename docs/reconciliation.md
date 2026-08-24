@@ -33,3 +33,9 @@ The database migration was generated, reviewed, applied successfully, and verifi
 ## Authentication claim boundary
 
 The application does not issue a second custom JWT. The full-stack template validates the Manus OAuth session on the server and exposes the authenticated user through the request context; protected tRPC procedures then enforce active-session status and role allowlists on every call. The UI labels this as a server-authenticated JWT session because it is bound to the template's signed session mechanism, but token issuance and cryptographic validation remain owned by the Manus authentication layer.
+
+## Real-time notification enhancement
+
+The notification system persists recipient-scoped alerts in the `notifications` table for active operators and supervisors. Request transitions and approval decisions emit `STATE_CHANGED` events; the approval-raise procedure emits `APPROVAL_REQUIRED`. The UI reads unread alerts through protected tRPC procedures, marks them read with an ownership-checked mutation, and refreshes immediately through the protected SSE stream with a 15-second polling fallback.
+
+The current event fan-out is process-local and deliberately best-effort: persisted rows remain the source of truth, while the in-process bus and SSE stream provide low-latency updates to connected sessions on the same runtime instance. For multi-instance or always-on production delivery, use Reserved Hosting or an external durable pub/sub broker so events are not limited to a single process.

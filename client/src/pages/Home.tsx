@@ -1,5 +1,5 @@
 /* Control Room Ledger: compact industrial density, semantic signal colors, visible traceability. */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Activity, AlertTriangle, ArrowDownRight, ArrowUpRight, Bell, Check, ChevronRight, Circle,
   ClipboardCheck, Clock3, Database, FileText, Gauge, LockKeyhole, Menu, Network, Radar,
@@ -8,6 +8,8 @@ import {
 import { toast } from "sonner";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
+import { NOTIFICATION_POLL_INTERVAL_MS, refreshUnreadNotifications } from "@/lib/notificationTransport";
 
 const requests = [
   { id: "VOR-2026-0824-017", time: "08:42:19", source: "APC-ATTACK-01", variable: "Reactor temperature", tag: "TIC-5210", current: "75.8", requested: "76.4", unit: "°C", uc: "UC1", status: "ACCEPTED", sil: "SIL-0", delta: "+0.6" },
@@ -36,6 +38,11 @@ function Status({ value }: { value: string }) {
 export default function Home() {
   const [, navigate] = useLocation();
   const auth = useAuth();
+  const notificationsQuery = trpc.notifications.list.useQuery({ unreadOnly: true }, { enabled: Boolean(auth.user), refetchInterval: NOTIFICATION_POLL_INTERVAL_MS, retry: false });
+  useEffect(() => { if (!auth.user) return; if (typeof EventSource === "undefined") { void refreshUnreadNotifications(false, notificationsQuery.refetch); return; } const stream = new EventSource("/api/notifications/stream"); const handle = (event: MessageEvent<string>) => { notificationsQuery.refetch(); try { const next = JSON.parse(event.data) as { title?: string; message?: string }; if (next.title) toast(`${next.title}: ${next.message || "Review required."}`); } catch { /* polling remains authoritative */ } }; stream.addEventListener("notification", handle); return () => { stream.removeEventListener("notification", handle); stream.close(); }; }, [auth.user?.id, notificationsQuery.refetch]);
+  const previewAlerts = [{ id: -1, severity: "WARNING", title: "Approval required / preview", message: "Simulator alert preview — persisted alerts appear here when canonical rows exist.", createdAt: new Date() }];
+  const visibleNotifications = notificationsQuery.data?.length ? notificationsQuery.data : previewAlerts;
+  const unreadCount = visibleNotifications.length;
   const [selected, setSelected] = useState(requests[1]);
   const [drawer, setDrawer] = useState(false);
   const [query, setQuery] = useState("");
@@ -53,7 +60,8 @@ export default function Home() {
       </aside>
 
       <main className="main-content">
-        <header className="topbar"><div className="breadcrumb"><span>JESA / DIGITAL ENGINEERING</span><ChevronRight size={13} /><strong>OPERATIONS</strong></div><div className="top-actions"><div className="system-pulse"><span className="live-dot" /> ALL SYSTEMS NOMINAL</div><button className="icon-btn" aria-label="Notifications"><Bell size={17} /><i /></button><button className="icon-btn" onClick={() => toast("Session is authenticated by the Manus OAuth gateway and active-user server context.")}><LockKeyhole size={16} /></button><button className="menu-btn"><Menu size={18} /></button></div></header>
+        <header className="topbar"><div className="breadcrumb"><span>JESA / DIGITAL ENGINEERING</span><ChevronRight size={13} /><strong>OPERATIONS</strong></div><div className="top-actions"><div className="system-pulse"><span className="live-dot" /> ALL SYSTEMS NOMINAL</div><button className="icon-btn notification-trigger" aria-label="Notifications" onClick={() => toast(unreadCount ? `${unreadCount} unread operating alert${unreadCount === 1 ? "" : "s"}.` : "No unread operating alerts.")}><Bell size={17} />{Boolean(unreadCount) && <b>{unreadCount}</b>}<i /></button><button className="icon-btn" onClick={() => toast("Session is authenticated by the Manus OAuth gateway and active-user server context.")}><LockKeyhole size={16} /></button><button className="menu-btn"><Menu size={18} /></button></div></header>
+        <div className="notification-tray"><div className="notification-tray-head"><span><span className="live-dot" /> {unreadCount} UNREAD OPERATING ALERT{unreadCount === 1 ? "" : "S"}</span><small>{notificationsQuery.data?.length ? "REAL-TIME CHANNEL" : "SIMULATOR PREVIEW / NO PERSISTED ALERTS"}</small></div>{visibleNotifications.slice(0, 3).map(notification => <button key={notification.id} className={`notification-item notification-${notification.severity.toLowerCase()}`} onClick={() => toast(notification.id === -1 ? "Preview alert only. Persisted alerts can be acknowledged from the notification tray." : `${notification.title} marked for review.`)}><strong>{notification.title}</strong><span>{notification.message}</span><small>{new Date(notification.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })} · CLICK TO ACKNOWLEDGE</small></button>)}</div>
         <div className="content-wrap">
           <section className="page-heading"><div><div className="eyebrow cobalt">PAP ATTACK REACTOR / CONTROL SYSTEM</div><h1>Verification of Request <span className="muted">/</span> Operations</h1><p>Secure request governance between APC and the DCS adapter. Every write is verified, mapped, and traceable.</p><div className="lineage-strip"><span className="lineage-label">REQUEST LINEAGE</span><strong>APC</strong><ChevronRight size={12} /><strong className="lineage-active">MODULE 3 / psM+O</strong><ChevronRight size={12} /><strong className="lineage-active">MODULE 2 / DMZ</strong><ChevronRight size={12} /><strong>MODULE 1 / CPC</strong><ChevronRight size={12} /><strong>DCS ADAPTER</strong></div></div><div className="heading-meta"><div className="meta-label">LAST SYNCHRONIZED</div><div className="mono">08:42:22 UTC <RefreshCw size={13} /></div><div className="sim-label"><span className="amber-dot" /> ISOLATED SIMULATOR MODE</div></div></section>
 
