@@ -48,7 +48,7 @@ Approval actions now require an explicit confirmation dialog. Approval may proce
 
 The OT edge remains disconnected and read-only by design. No plant write or live OPC UA connection is claimed by the application. Simulator baselines are visibly labeled, canonical database rows are preferred when available, and exports include source, filter, timestamp, and boundary metadata.
 
-The final automated suite contains 70 passing tests, including request-creation router coverage for successful and validation-rejected paths, request pagination behavior, approval presentation semantics, validation evidence fallback semantics, authentication, RBAC, state transitions, DCS acknowledgment, notifications, CSV/JSON/PDF exports, edge adapter behavior, validation rerun coverage, and simulation controls.
+The final automated suite contains 71 passing tests, including request-creation router coverage for successful and validation-rejected paths, request pagination behavior, approval presentation semantics, validation evidence fallback semantics, detailed analytics aggregation semantics, authentication, RBAC, state transitions, DCS acknowledgment, notifications, CSV/JSON/PDF exports, edge adapter behavior, validation rerun coverage, and simulation controls.
 
 ## Premium rework specification reconciliation
 

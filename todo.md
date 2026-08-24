@@ -216,3 +216,11 @@
 - [x] Add request selection and engineer-authorized validation rerun through the backend validation engine.
 - [x] Add JSON audit export and expose additional canonical audit metadata where available.
 - [x] Reconcile the new prompt’s propagation/mapping and workbook-import requirements against the explicit disconnected read-only boundary without fabricating plant connectivity or source data.
+
+# Canonical Analytics Expansion
+
+- [x] Define detailed canonical analytics measures and series from persisted request, history, approval, and validation rows.
+- [x] Extend the protected analytics procedure with typed filtered aggregations and truthful no-data behavior.
+- [x] Add dashboard visualizations for status, use-case, validation-failure, SIL, throughput, and approval-latency insights.
+- [x] Extend analytics report exports and add aggregation/presentation regression tests.
+- [x] Run tests, type check, production build, responsive visual QA, and save a checkpoint.
