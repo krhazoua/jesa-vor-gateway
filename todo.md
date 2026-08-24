@@ -270,3 +270,10 @@
 - [x] Verify real-data, empty, error, simulator, export, traceability, and configuration-backed compliance behavior without fabricated operational data.
 - [x] Implement applicable remaining fixes, run the application and test workflows, correct all discovered errors, and save a working checkpoint.
 - [x] Add canonical validation-result and request-reason context to pending approvals so the confirmation modal shows the required evidence.
+
+# Interactive Control Verification — 2026-08-24
+
+- [x] Inventory and exercise navigation, authentication, logout, filters, pagination, exports, dialogs, mutations, simulator controls, and retry actions across all protected routes.
+- [x] Fix any non-functional, misleading, inaccessible, or unhandled interactive controls discovered during the verification.
+- [x] Add regression coverage for repaired controls and verify desktop/mobile behavior through the existing protected workflow contracts, full automated suite, and responsive route captures.
+- [x] Document verified controls and save a checkpoint.
