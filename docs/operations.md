@@ -105,3 +105,7 @@ The routed module header reports only the authenticated server-session state; it
 ## System Health refresh cadence
 
 The edge-adapter health card uses the protected System Health summary with a 30-second refresh interval, explicit loading and error states, and a read-only write-path guard. Simulator labeling is derived from the adapter mode returned by the backend and is never inferred from client-side process data.
+
+## Deferred ExcelJS module boundary
+
+The workbook implementation now lives in a dedicated `excelReport` module that is itself loaded dynamically by `createExcelWorkbook`. The initial application bundles contain no ExcelJS reference. ExcelJS is fetched only when an XLSX export is explicitly requested; CSV, JSON, PDF, navigation, and ordinary route rendering do not load the workbook dependency. The generated workbook format and JESA branding remain unchanged.

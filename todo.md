@@ -579,3 +579,10 @@
 - [x] Reproduce the reported `/configuration` `Failed to fetch` error and trace the client request, server procedure, and response.
 - [x] Fix the confirmed root cause while preserving authentication, admin RBAC, canonical data, and read-only plant boundary behavior.
 - [x] Add or update focused regression tests and verify the configuration route in the browser and API probes.
+
+# ExcelJS bundle optimization — 2026-08-25
+
+- [x] Inspect current ExcelJS imports, export call paths, and production bundle baseline.
+- [x] Lazy-load ExcelJS only when an XLSX export is requested while preserving workbook values, branding, and error handling.
+- [x] Add or update regression coverage for deferred loading and run tests, type checking, build, and bundle-size verification.
+- [x] Document the optimization and save a verified checkpoint.
