@@ -482,3 +482,11 @@
 - [x] Unify all CSV downloads under a professional JESA-branded format while preserving machine-readable sections, headers, and values.
 - [x] Add regression coverage for every export path and verify logo inclusion, file structure, and responsive download controls.
 - [x] Update export documentation, run full QA, and save a verified checkpoint.
+
+# CSV organization and branding correction — 2026-08-25
+
+- [x] Inspect current CSV output and all CSV download call sites.
+- [x] Reformat CSV files with a clean JESA report-control section, explicit data-section marker, stable metadata columns, and consistent section spacing.
+- [x] Add an honest JESA wordmark reference that survives CSV limitations while keeping the file valid and machine-readable.
+- [x] Add regression tests for CSV organization, branding metadata, section boundaries, and preserved values; verify downloads.
+- [x] Document the CSV format correction, run full QA, and save a verified checkpoint.

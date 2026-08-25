@@ -57,3 +57,7 @@ The report export controls now include an XLSX option for audit, analytics, and 
 ## Site-wide export standard
 
 All audit, analytics, and reconciliation report downloads now use the shared JESA export helper. CSV files use a UTF-8 BOM, a consistent JESA Digital Engineering metadata preamble, report title and UTC generation context, a managed wordmark reference, and unchanged section headers and row values. Excel downloads use a two-sheet structure: a branded `Report control` cover sheet with the JESA logo, document-control metadata, and a link to `JESA Report`, followed by the detailed data sheet with the embedded JESA logo, styled report bands, filterable tables, frozen headers, controlled widths, alternating rows, and confidential pagination. This standard prevents individual pages from producing visually inconsistent report files.
+
+## CSV organization correction
+
+CSV exports now begin with a clearly labeled JESA report-control block, followed by a separate report-metadata block and a data-section index. Each data section includes its title, column count, row count, original column headers, and original data rows with a blank separator before the next section. The JESA wordmark is represented by both visible JESA control text and the managed logo asset reference URL. A CSV file cannot carry a rendered bitmap image; the embedded JESA logo remains available in the XLSX and PDF formats, while the CSV provides a durable, clickable brand-asset reference without corrupting the text format or hiding the data.

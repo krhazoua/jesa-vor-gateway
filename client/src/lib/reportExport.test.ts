@@ -1,6 +1,6 @@
 import ExcelJS from "exceljs";
 import { describe, expect, it } from "vitest";
-import { buildCsvReport, buildJsonReport, buildPdfReport, createExcelWorkbook, escapeCsvCell } from "./reportExport";
+import { buildCsvReport, buildJsonReport, buildPdfReport, createExcelWorkbook, escapeCsvCell, JESA_LOGO_URL } from "./reportExport";
 
 describe("report exports", () => {
   const report = {
@@ -20,7 +20,13 @@ describe("report exports", () => {
     expect(csv).toContain("# JESA S.A.");
     expect(csv).toContain("# Brand asset: JESA wordmark / /manus-storage/jesa-wordmark_e357ca66.png");
     expect(csv).toContain("# JESA VoR Gateway — Audit trail");
+    expect(csv).toContain("# JESA REPORT CONTROL");
+    expect(csv).toContain("CONTROL FIELD,CONTROL VALUE,JESA BRAND ASSET,DATA BOUNDARY");
+    expect(csv).toContain(`FUNCTION,Digital Engineering / VoR Gateway,${JESA_LOGO_URL},Read-only / no plant write`);
+    expect(csv).toContain("# REPORT METADATA");
     expect(csv).toContain("Source,Canonical DB / read-only");
+    expect(csv).toContain("# DATA SECTIONS");
+    expect(csv).toContain("SECTION,Audit events,2,2");
     expect(csv).toContain("# Audit events");
     expect(csv).toContain("VOR-002,\"Operator, reviewed\"");
   });

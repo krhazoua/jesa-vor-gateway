@@ -29,14 +29,26 @@ export function buildCsvReport(report: Omit<ReportDefinition, "filename" | "titl
     `# ${report.title}`,
     `# Generated at (UTC): ${generatedAt}`,
     `# Brand asset: JESA wordmark / ${JESA_LOGO_URL}`,
-    "# Data remains unchanged; comment rows are report metadata and section headers.",
+    "# Data remains unchanged; report-control rows are separated from machine-readable section data.",
+    "",
+    "# JESA REPORT CONTROL",
+    ["CONTROL FIELD", "CONTROL VALUE", "JESA BRAND ASSET", "DATA BOUNDARY"].map(escapeCsvCell).join(","),
+    ["ORGANIZATION", "JESA S.A.", "JESA wordmark", "Canonical report data"].map(escapeCsvCell).join(","),
+    ["FUNCTION", "Digital Engineering / VoR Gateway", JESA_LOGO_URL, "Read-only / no plant write"].map(escapeCsvCell).join(","),
+    ["REPORT", report.title, "", "Values preserved from protected report contract"].map(escapeCsvCell).join(","),
+    ["GENERATED AT (UTC)", generatedAt, "", "Export timestamp"].map(escapeCsvCell).join(","),
+    "",
+    "# REPORT METADATA",
+    ["METADATA FIELD", "METADATA VALUE"].map(escapeCsvCell).join(","),
   ];
-  Object.entries(report.metadata).forEach(([key, value]) => lines.push(`${escapeCsvCell(key)},${escapeCsvCell(value)}`));
+  Object.entries(report.metadata).forEach(([key, value]) => lines.push([key, value].map(escapeCsvCell).join(",")));
+  lines.push("", "# DATA SECTIONS", ["SECTION TYPE", "SECTION TITLE", "COLUMN COUNT", "ROW COUNT"].map(escapeCsvCell).join(","));
   report.sections.forEach(section => {
-    lines.push("");
+    lines.push(["SECTION", section.title, section.columns.length, section.rows.length].map(escapeCsvCell).join(","));
     lines.push(`# ${section.title}`);
     lines.push(section.columns.map(escapeCsvCell).join(","));
     section.rows.forEach(row => lines.push(row.map(escapeCsvCell).join(",")));
+    lines.push("");
   });
   return `\uFEFF${lines.join("\n")}\n`;
 }
