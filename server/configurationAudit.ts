@@ -1,0 +1,14 @@
+export const CONFIGURATION_GOVERNANCE_ACTIONS = [
+  "TRUST_ANCHOR_REGISTERED",
+  "TRUST_ANCHOR_ROTATED",
+  "TRUST_ANCHOR_RETIRED",
+  "CERTIFICATE_EXPIRY_POLICY_UPDATED",
+  "AUTHORITATIVE_MASTER_ARMED",
+  "ADAPTER_ACTIVATION_READY",
+  "CATALOG_RECONCILIATION",
+  "RECONCILIATION_SIGNOFF",
+] as const;
+
+export function isConfigurationGovernanceAuditAction(action: string) {
+  return (CONFIGURATION_GOVERNANCE_ACTIONS as readonly string[]).includes(action);
+}

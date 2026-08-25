@@ -378,3 +378,10 @@
 - [x] Preserve armed-gate fields and Configuration UI behavior for existing gates.
 - [x] Add regression coverage for empty and armed masterGate responses.
 - [x] Run full QA, verify /configuration, and save a repair checkpoint.
+
+# Configuration governance audit log — 2026-08-25
+
+- [x] Add a protected configuration audit query for trust-anchor, gate, and activation authorization events.
+- [x] Display rotation, retirement, gate-arm, and activation-readiness history with actor, result, reference, timestamp, and boundary context.
+- [x] Add loading, empty, error, and responsive states without exposing personal-name data.
+- [x] Add regression coverage, run full QA, verify /configuration, and save a checkpoint.
