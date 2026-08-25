@@ -1,7 +1,6 @@
 import ExcelJS from "exceljs";
-import JSZip from "jszip";
 import { describe, expect, it } from "vitest";
-import { buildCsvReport, buildJsonReport, buildPdfReport, createCsvLogoPackage, createExcelWorkbook, escapeCsvCell, JESA_LOGO_URL } from "./reportExport";
+import { buildCsvReport, buildJsonReport, buildPdfReport, createExcelWorkbook, escapeCsvCell } from "./reportExport";
 
 describe("report exports", () => {
   const report = {
@@ -19,28 +18,18 @@ describe("report exports", () => {
     const csv = buildCsvReport(report);
     expect(csv.charCodeAt(0)).toBe(0xfeff);
     expect(csv).toContain("# JESA S.A.");
-    expect(csv).toContain("# Brand asset: JESA wordmark / /manus-storage/jesa-wordmark_e357ca66.png");
+    expect(csv).not.toContain("Brand asset:");
+    expect(csv).not.toContain("JESA-wordmark.png");
     expect(csv).toContain("# JESA VoR Gateway — Audit trail");
     expect(csv).toContain("# JESA REPORT CONTROL");
-    expect(csv).toContain("CONTROL FIELD,CONTROL VALUE,JESA BRAND ASSET,DATA BOUNDARY");
-    expect(csv).toContain(`FUNCTION,Digital Engineering / VoR Gateway,${JESA_LOGO_URL},Read-only / no plant write`);
+    expect(csv).toContain("CONTROL FIELD,CONTROL VALUE,DATA BOUNDARY");
+    expect(csv).toContain("FUNCTION,Digital Engineering / VoR Gateway,Read-only / no plant write");
     expect(csv).toContain("# REPORT METADATA");
     expect(csv).toContain("Source,Canonical DB / read-only");
     expect(csv).toContain("# DATA SECTIONS");
     expect(csv).toContain("SECTION,Audit events,2,2");
     expect(csv).toContain("# Audit events");
     expect(csv).toContain("VOR-002,\"Operator, reviewed\"");
-  });
-
-  it("packages the organized CSV with the actual JESA wordmark and a manifest", async () => {
-    const logoBytes = new Uint8Array([137, 80, 78, 71]).buffer;
-    const packageBlob = await createCsvLogoPackage({ ...report, filename: "audit-report.csv" }, logoBytes);
-    const zip = await JSZip.loadAsync(await packageBlob.arrayBuffer());
-    expect(zip.file("audit-report.csv")).toBeDefined();
-    expect(zip.file("JESA-wordmark.png")).toBeDefined();
-    expect(zip.file("README.txt")).toBeDefined();
-    expect(await zip.file("JESA-wordmark.png")?.async("uint8array")).toEqual(new Uint8Array([137, 80, 78, 71]));
-    expect(await zip.file("README.txt")?.async("string")).toContain("CSV itself remains a text format");
   });
 
   it("creates a branded Excel workbook with embedded logo media and usable table controls", async () => {

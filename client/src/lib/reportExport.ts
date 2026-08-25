@@ -28,13 +28,12 @@ export function buildCsvReport(report: Omit<ReportDefinition, "filename" | "titl
     `# Report: ${report.title}`,
     `# ${report.title}`,
     `# Generated at (UTC): ${generatedAt}`,
-    `# Brand asset: JESA wordmark / ${JESA_LOGO_URL}`,
     "# Data remains unchanged; report-control rows are separated from machine-readable section data.",
     "",
     "# JESA REPORT CONTROL",
-    ["CONTROL FIELD", "CONTROL VALUE", "JESA BRAND ASSET", "DATA BOUNDARY"].map(escapeCsvCell).join(","),
-    ["ORGANIZATION", "JESA S.A.", "JESA wordmark", "Canonical report data"].map(escapeCsvCell).join(","),
-    ["FUNCTION", "Digital Engineering / VoR Gateway", JESA_LOGO_URL, "Read-only / no plant write"].map(escapeCsvCell).join(","),
+    ["CONTROL FIELD", "CONTROL VALUE", "DATA BOUNDARY"].map(escapeCsvCell).join(","),
+    ["ORGANIZATION", "JESA S.A.", "Canonical report data"].map(escapeCsvCell).join(","),
+    ["FUNCTION", "Digital Engineering / VoR Gateway", "Read-only / no plant write"].map(escapeCsvCell).join(","),
     ["REPORT", report.title, "", "Values preserved from protected report contract"].map(escapeCsvCell).join(","),
     ["GENERATED AT (UTC)", generatedAt, "", "Export timestamp"].map(escapeCsvCell).join(","),
     "",
@@ -64,34 +63,6 @@ function downloadBlob(content: BlobPart, filename: string, type: string) {
 
 export function downloadCsvReport(report: ReportDefinition) {
   downloadBlob(buildCsvReport(report), report.filename.endsWith(".csv") ? report.filename : `${report.filename}.csv`, "text/csv;charset=utf-8");
-}
-
-export async function createCsvLogoPackage(report: ReportDefinition, logoBytes: ArrayBuffer) {
-  const { default: JSZip } = await import("jszip");
-  const zip = new JSZip();
-  const baseName = report.filename.replace(/\.(csv|json|pdf|xlsx)$/i, "");
-  zip.file(`${baseName}.csv`, buildCsvReport(report));
-  zip.file("JESA-wordmark.png", logoBytes);
-  zip.file("README.txt", [
-    "JESA S.A. — DIGITAL ENGINEERING",
-    "VoR GATEWAY / PAP ATTACK REACTOR",
-    "",
-    "Package contents:",
-    `- ${baseName}.csv: organized, machine-readable report with JESA report-control metadata`,
-    "- JESA-wordmark.png: the JESA logo asset supplied with this report package",
-    "",
-    "The CSV itself remains a text format and therefore cannot render a bitmap image inline. The logo is supplied here as the original image file and is referenced from the CSV report-control block.",
-  ].join("\n"));
-  return zip.generateAsync({ type: "blob", compression: "DEFLATE" });
-}
-
-export async function downloadCsvLogoPackage(report: ReportDefinition) {
-  const response = await fetch(JESA_LOGO_URL);
-  if (!response.ok) throw new Error("The managed JESA wordmark could not be loaded.");
-  const logoBytes = await response.arrayBuffer();
-  const packageBlob = await createCsvLogoPackage(report, logoBytes);
-  const filename = report.filename.replace(/\.(csv|json|pdf|xlsx)$/i, "") + "-jesa-export.zip";
-  downloadBlob(packageBlob, filename, "application/zip");
 }
 
 export async function createExcelWorkbook(report: ReportDefinition, logoDataUrl?: string | null) {

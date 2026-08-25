@@ -504,3 +504,10 @@
 - [x] Make JESA branding and the logo asset reference unmistakable while keeping the CSV valid and organized.
 - [x] Add regression coverage for the exact branding markers, section layout, and download naming across all CSV call sites.
 - [x] Document the correction, run full QA, and save a verified checkpoint.
+
+# Remove CSV logo package — 2026-08-25
+
+- [x] Remove CSV + LOGO UI actions and CSV logo-package generation code from all report surfaces.
+- [x] Remove the unused ZIP dependency and update CSV documentation and regression tests.
+- [x] Verify organized CSV DATA remains available, Excel/PDF logo behavior remains intact, and run full QA.
+- [x] Save a verified checkpoint.
