@@ -15,6 +15,9 @@ describe("report exports", () => {
 
   it("includes metadata and section data in the CSV report", () => {
     const csv = buildCsvReport(report);
+    expect(csv.charCodeAt(0)).toBe(0xfeff);
+    expect(csv).toContain("# JESA S.A.");
+    expect(csv).toContain("# Brand asset: JESA wordmark / /manus-storage/jesa-wordmark_e357ca66.png");
     expect(csv).toContain("# JESA VoR Gateway — Audit trail");
     expect(csv).toContain("Source,Canonical DB / read-only");
     expect(csv).toContain("# Audit events");
@@ -28,7 +31,9 @@ describe("report exports", () => {
   });
 
   it("generates a non-empty PDF report from the same definition", () => {
-    const pdf = buildPdfReport(report);
+    const pdf = buildPdfReport(report, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=");
     expect(pdf.output("arraybuffer").byteLength).toBeGreaterThan(500);
+    expect(pdf.output()).toContain("JESA DIGITAL ENGINEERING");
+    expect(pdf.output()).toContain("CONFIDENTIAL");
   });
 });

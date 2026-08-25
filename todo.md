@@ -449,3 +449,11 @@
 - [x] Enforce recipient scoping, role-safe approval visibility, bounded result sizes, and canonical request context.
 - [x] Add the summary widget to Operations with loading, empty, error, retry, and navigation states.
 - [x] Add regression coverage, responsive QA, documentation, and a verified checkpoint.
+
+# Branded CSV and PDF export enhancement — 2026-08-25
+
+- [x] Audit current CSV/PDF export helpers, report contracts, and JESA logo asset references.
+- [x] Enhance CSV exports with a professional JESA report header, metadata, stable column structure, and preserved machine-readable records.
+- [x] Enhance PDF exports with an embedded JESA logo, branded header/footer, improved typography, tables, metadata, and page-break handling.
+- [x] Add regression tests for branded CSV/PDF output and verify downloaded files structurally and visually.
+- [x] Update export documentation, run full QA, and save a verified checkpoint.
