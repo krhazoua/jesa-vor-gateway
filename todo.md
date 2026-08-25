@@ -394,3 +394,10 @@
 - [x] Ensure revoked/retired anchors are excluded from validation and duplicate retirement is blocked.
 - [x] Add regression coverage for expiry boundaries, notification idempotency, role enforcement, and retirement preconditions.
 - [x] Run full QA, document the workflow, and save a verified checkpoint.
+
+# Configuration mutation response-transform repair — 2026-08-25
+
+- [x] Identify the Configuration mutation whose response cannot be transformed by the client.
+- [x] Return a transformer-safe response while preserving server authorization and mutation semantics.
+- [x] Add regression coverage for the corrected response contract.
+- [x] Run full QA, verify /configuration, and save a repair checkpoint.
