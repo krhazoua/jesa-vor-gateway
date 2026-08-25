@@ -73,3 +73,7 @@ The direct `CSV DATA` export is intentionally text-only. It contains the organiz
 ## Excel value preservation
 
 The detailed `JESA Report` worksheet writes section rows using their native report values. Numeric process values remain numeric Excel cells for sorting and calculation, zero values remain zero, text remains text, and null or undefined source values become intentionally blank cells. The report-control sheet and all visual styling remain unchanged. This keeps the downloaded workbook useful for engineering review rather than making it a text-only presentation.
+
+## Excel opening-sheet correction
+
+The downloaded workbook previously placed `Report control` before `JESA Report`, which made the file appear to contain only text when opened because the control sheet was the active first sheet. The workbook now creates `JESA Report` first, so the downloaded file opens directly on the populated detailed report with canonical section rows and values. `Report control` remains available as the second worksheet for document-control metadata and navigation.

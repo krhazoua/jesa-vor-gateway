@@ -496,7 +496,7 @@
 - [x] Inspect the recent CSS and export-component changes plus Vite diagnostics for the underlying reload failure.
 - [x] Fix the stylesheet/module syntax issue and restore clean HMR behavior without regressing the /audit export controls.
 - [x] Add or update regression coverage and verify tests, TypeScript, production build, and authenticated /audit rendering.
-- [x] Document the fix, close the checklist, and save a verified checkpoint.
+- [x] Document the root cause, close the checklist, and save a verified checkpoint.
 
 # CSV visible-branding regression — 2026-08-25
 
@@ -518,3 +518,10 @@
 - [x] Populate the detailed Excel worksheet with actual report section columns and row values while preserving the branded control sheet.
 - [x] Add round-trip regression assertions for numeric, textual, nullable, and multi-section values.
 - [x] Verify the downloaded XLSX structure, document the fix, run full QA, and save a verified checkpoint.
+
+# Excel values still missing — 2026-08-25
+
+- [x] Trace report construction, workbook row mapping, and download serialization to locate the remaining missing-values path.
+- [x] Ensure the detailed workbook sheet visibly contains populated canonical rows and values for every report section.
+- [x] Add serialized XLSX inspection coverage for worksheet names, cell values, and downloaded buffer contents.
+- [x] Document the root cause, run full QA, and save a verified checkpoint.

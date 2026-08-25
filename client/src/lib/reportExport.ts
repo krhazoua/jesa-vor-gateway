@@ -77,6 +77,7 @@ export async function createExcelWorkbook(report: ReportDefinition, logoDataUrl?
   workbook.created = new Date();
   workbook.modified = new Date();
 
+  const worksheet = workbook.addWorksheet("JESA Report", { properties: { defaultRowHeight: 18 }, views: [{ showGridLines: false }] });
   const controlSheet = workbook.addWorksheet("Report control", { properties: { defaultRowHeight: 20 }, views: [{ showGridLines: false }] });
   controlSheet.mergeCells("A1:F1");
   controlSheet.mergeCells("A2:F2");
@@ -117,7 +118,6 @@ export async function createExcelWorkbook(report: ReportDefinition, logoDataUrl?
   for (let column = 3; column <= 6; column += 1) controlSheet.getColumn(column).width = 15;
   controlSheet.headerFooter.oddFooter = "&LJESA S.A. · CONFIDENTIAL&CPage &P of &N&RVoR Gateway";
 
-  const worksheet = workbook.addWorksheet("JESA Report", { properties: { defaultRowHeight: 18 }, views: [{ showGridLines: false }] });
   const columnCount = Math.max(1, ...report.sections.map(section => section.columns.length));
   const lastColumn = String.fromCharCode(65 + Math.min(columnCount - 1, 25));
   worksheet.mergeCells(`A1:${lastColumn}1`);
