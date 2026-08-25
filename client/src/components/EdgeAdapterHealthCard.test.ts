@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getEdgeAdapterCardModel, formatAdapterAge, isSimulationMode, type AdapterState } from "./EdgeAdapterHealthCard";
+import { getEdgeAdapterCardModel, formatAdapterAge, isSimulationMode, SYSTEM_HEALTH_REFRESH_INTERVAL_MS, type AdapterState } from "./EdgeAdapterHealthCard";
 
 const adapter = (overrides: Partial<AdapterState> = {}): AdapterState => ({
   mode: "DISCONNECTED_READ_ONLY",
@@ -19,6 +19,10 @@ describe("EdgeAdapterHealthCard presentation contract", () => {
   it("formats snapshot age in operational units", () => {
     expect(formatAdapterAge(30_000)).toBe("30s");
     expect(formatAdapterAge(120_000)).toBe("2m");
+  });
+
+  it("uses the required 30-second health refresh cadence", () => {
+    expect(SYSTEM_HEALTH_REFRESH_INTERVAL_MS).toBe(30_000);
   });
 
   it("identifies simulator modes without treating them as production data", () => {

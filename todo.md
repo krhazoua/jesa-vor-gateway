@@ -565,3 +565,11 @@
 - [x] Implement all applicable corrections in place without duplicate applications, mock-only live data, personal names, unrelated branding, AI references, or plant writes.
 - [x] Add or update regression coverage and complete automated, browser, responsive, export, security, and no-fabrication QA.
 - [x] Update traceability documentation, close the checklist, and save a verified checkpoint.
+
+# Final industrial audit re-review — 2026-08-25
+
+- [x] Re-read the supplied final industrial specification and inspect the current running application.
+- [x] Re-compare route coverage, API contracts, workflow state, security, data boundaries, branding, UI, exports, and diagnostics.
+- [x] Implement only remaining applicable corrections in place and update focused regression coverage and documentation.
+- [x] Re-run automated, security, API, browser, responsive, export, and repository-hygiene verification.
+- [x] Close the re-review checklist and save a verified checkpoint.

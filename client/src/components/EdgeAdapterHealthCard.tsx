@@ -3,6 +3,8 @@ import { trpc } from "@/lib/trpc";
 
 type Props = { compact?: boolean };
 
+export const SYSTEM_HEALTH_REFRESH_INTERVAL_MS = 30_000;
+
 export type AdapterState = {
   mode: string;
   status: string;
@@ -45,7 +47,7 @@ export function getEdgeAdapterCardModel(input: { isLoading: boolean; isError: bo
 }
 
 export default function EdgeAdapterHealthCard({ compact = false }: Props) {
-  const healthQuery = trpc.systemHealth.summary.useQuery(undefined, { retry: false, refetchInterval: 15_000 });
+  const healthQuery = trpc.systemHealth.summary.useQuery(undefined, { retry: false, refetchInterval: SYSTEM_HEALTH_REFRESH_INTERVAL_MS });
   const model = getEdgeAdapterCardModel({ isLoading: healthQuery.isLoading, isError: healthQuery.isError, adapter: healthQuery.data?.dcs as AdapterState | undefined });
   if (model.kind === "loading") return <section className={`edge-adapter-card ${compact ? "compact" : ""}`} aria-label="Edge adapter health"><div className="edge-adapter-loading"><RefreshCw size={15} /> {model.label}</div></section>;
   if (model.kind === "error") return <section className={`edge-adapter-card ${compact ? "compact" : ""}`} aria-label="Edge adapter health"><div className="edge-adapter-card-head"><div><span className="eyebrow">DCS / EDGE ADAPTER</span><h2>{model.label}</h2></div><AlertTriangle size={17} className="adapter-icon-bad" /></div><p className="edge-adapter-description">{model.description}</p></section>;

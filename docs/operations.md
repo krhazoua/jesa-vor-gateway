@@ -100,3 +100,8 @@ The protected tRPC client now validates the response content type before allowin
 ## Final industrial audit corrections
 
 The routed module header reports only the authenticated server-session state; it does not display a fabricated or static session TTL. The edge adapter card derives simulator labeling from the protected adapter configuration and displays `SIMULATION MODE · READ-ONLY PREVIEW` only for a server-reported simulator mode. This keeps preview behavior visibly distinct from production DCS telemetry while preserving the hard-disabled plant write boundary.
+
+
+## System Health refresh cadence
+
+The edge-adapter health card uses the protected System Health summary with a 30-second refresh interval, explicit loading and error states, and a read-only write-path guard. Simulator labeling is derived from the adapter mode returned by the backend and is never inferred from client-side process data.
