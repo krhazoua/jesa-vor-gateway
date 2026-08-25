@@ -140,7 +140,7 @@ export default function ModulePage({ type }: { type: string }) {
   const workflowSimulation = trpc.workflow.simulate.useMutation({ onSuccess: result => toast.success(`${result.requestId} completed Submit → Validate → Approve → Audit.`), onError: error => toast.error(error.message) });
   const complianceQuery = trpc.configuration.compliance.useQuery(undefined, { enabled: type === "compliance", retry: false });
   const detailId = type.startsWith("detail:") ? type.slice(7) : "";
-  const detailQuery = trpc.requests.detail.useQuery({ requestId: detailId || "VOR-2026-0824-017" }, { enabled: Boolean(detailId), retry: false });
+  const detailQuery = trpc.requests.detail.useQuery({ requestId: detailId }, { enabled: Boolean(detailId), retry: false });
   const health = healthQuery.data;
   const analytics = analyticsQuery.data;
   const policy = policyQuery.data;

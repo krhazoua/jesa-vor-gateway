@@ -23,7 +23,7 @@ function Protected({ children }: { children: React.ReactNode }) {
 
 function RequestDetailRoute() {
   const [, params] = useRoute<{ id: string }>("/requests/:id");
-  return <Protected><ModulePage type={`detail:${params?.id || "VOR-2026-0824-017"}`} /></Protected>;
+  return <Protected><ModulePage type={`detail:${params?.id ?? ""}`} /></Protected>;
 }
 
 function CatalogImportDetailRoute() {

@@ -533,3 +533,4 @@
 - [x] Implement every applicable remaining gap in place without mock-only screens, personal names, unrelated branding, AI references, or plant writes.
 - [x] Add or update regression and integration coverage, then run full automated, browser, responsive, export, and no-fabrication verification.
 - [x] Update traceability documentation, close the checklist, and save a verified checkpoint.
+- [x] Remove fabricated request-detail and import-detail route fallback identifiers; show an explicit invalid-route state instead.
