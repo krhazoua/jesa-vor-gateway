@@ -113,3 +113,7 @@ The workbook implementation now lives in a dedicated `excelReport` module that i
 ## Deferred PDF module boundary
 
 PDF generation now lives in a dedicated `pdfReport` module that is dynamically imported only when a PDF export is requested. The initial application bundles contain no jsPDF, html2canvas, or DOMPurify references; PDF-only assets remain in deferred chunks. CSV, JSON, XLSX, navigation, and ordinary route rendering do not load the PDF dependency graph. Branded layout, optional JESA logo handling, progress callbacks, and report data fidelity remain unchanged.
+
+## Requests mutation proxy-origin correction
+
+The Requests mutation now remains compatible with the managed public reverse proxy. API origin validation derives the trusted public origin from the first forwarded protocol and host values when present, while retaining same-origin host validation for direct requests. Cross-origin API requests remain blocked, and missing trusted host information is rejected. This prevents a legitimate browser-originated `requests.create` mutation from being returned as a 403 HTML/transform-style client failure when the internal service host differs from the public gateway host.

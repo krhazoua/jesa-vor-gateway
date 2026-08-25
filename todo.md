@@ -593,3 +593,9 @@
 - [x] Lazy-load PDF-only dependencies when a PDF export is requested while preserving JESA branding, progress, and error handling.
 - [x] Add or update regression coverage and run export tests, type checking, build, and bundle-size verification.
 - [x] Document the optimization and save a verified checkpoint.
+
+# Requests mutation transform-error investigation — 2026-08-25
+
+- [x] Reproduce the reported `/requests` mutation `Unable to transform response from server` error and trace the request, response, and serializer.
+- [x] Fix the confirmed root cause while preserving protected authorization, canonical request creation, workflow transitions, and database safety.
+- [x] Add or update focused regression tests and verify the Requests route, mutation response, API probes, and full build.
