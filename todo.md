@@ -632,3 +632,11 @@
 - [x] Implement only confirmed remaining fixes in the existing architecture and update focused tests and documentation.
 - [x] Run backend/frontend tests, TypeScript, lint/build, database/API probes, browser route checks, responsive checks, and repository scans.
 - [x] Close traceability and save the verified final checkpoint.
+
+# Master final implementation audit — 2026-08-25
+
+- [x] Map the complete supplied master specification to the current repository and running service.
+- [x] Audit routes, authentication/RBAC, APIs, database, workflows, UI states, realtime, branding, performance, and diagnostics for confirmed gaps.
+- [x] Implement only confirmed repairs in the existing architecture and update focused tests, CI checks, and actual-implementation documentation.
+- [x] Run full automated, database/API, browser, responsive, export, security, and repository-hygiene verification.
+- [x] Close the audit checklist, record genuine limitations, and save the verified checkpoint.
