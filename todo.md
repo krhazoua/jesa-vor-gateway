@@ -425,3 +425,10 @@
 - [x] Run final tests, TypeScript, production build, route QA, and documentation review.
 - [x] Save a verified checkpoint for the completed applicable requirements.
 - [x] Add automatic System Health refresh and a manual refresh control with loading/error feedback.
+
+# Engineering data-source status tooltips — 2026-08-25
+
+- [x] Add informative hover and keyboard-focus tooltips for LOCAL AUTHORITATIVE DATASET.
+- [x] Add informative hover and keyboard-focus tooltips for PRODUCTION ADAPTER NOT CONFIGURED.
+- [x] Preserve read-only and no-connection semantics, responsive layout, and accessible labeling.
+- [x] Add regression coverage, run QA, verify desktop/mobile states, document, and save a checkpoint.
