@@ -1,0 +1,5 @@
+# Repeated site-wide health-check notes — 2026-08-25
+
+Fresh authenticated desktop captures rendered `/operations`, `/requests`, `/approvals`, `/validation`, `/audit`, `/system-health`, `/analytics`, and `/configuration`. The visible surfaces showed current canonical data or explicit empty/boundary states, including six requests, six compliance records, nine-step validation evidence, audit rows, a disconnected read-only edge, and configuration-backed evidence.
+
+Fresh narrow-width captures rendered `/login`, `/dashboard`, `/history`, `/compliance`, and `/requests/1`. The Operations and Audit aliases resolved to their intended modules, export controls remained reachable on the narrow layout, the compliance matrix remained horizontally data-safe, and unavailable request detail explicitly stated that no simulator row was substituted. No visual fatal state was observed. Dense engineering tables intentionally use horizontal scrolling at narrow widths and require control-level verification next.

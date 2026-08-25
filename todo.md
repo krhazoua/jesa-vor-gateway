@@ -668,3 +668,10 @@
 - [x] Verify authenticated and unauthenticated routes, API responses, browser diagnostics, responsive layouts, and export controls.
 - [x] Exercise representative site controls and repair any confirmed defects.
 - [x] Document the verification matrix and save a verified checkpoint.
+
+# Repeated site-wide functional health check — 2026-08-25
+- [x] Inventory current routes, controls, protected procedures, exports, and existing verification coverage.
+- [x] Run fresh automated, type, build, bundle, security, and repository-hygiene checks.
+- [x] Verify route rendering, authentication boundaries, APIs, responsive surfaces, exports, and current diagnostics.
+- [x] Exercise representative controls and repair any confirmed functional defects.
+- [x] Document fresh findings and save a verified checkpoint.
