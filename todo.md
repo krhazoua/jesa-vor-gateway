@@ -385,3 +385,12 @@
 - [x] Display rotation, retirement, gate-arm, and activation-readiness history with actor, result, reference, timestamp, and boundary context.
 - [x] Add loading, empty, error, and responsive states without exposing personal-name data.
 - [x] Add regression coverage, run full QA, verify /configuration, and save a checkpoint.
+
+# Certificate expiry notifications and trust-anchor retirement — 2026-08-25
+
+- [x] Add idempotent certificate-expiry alert generation for warning and critical windows.
+- [x] Add operator/admin notification presentation with certificate, anchor, expiry state, and remediation context.
+- [x] Add administrator-only evidence-gated revoke/retire workflow for active trust anchors after verified rotation.
+- [x] Ensure revoked/retired anchors are excluded from validation and duplicate retirement is blocked.
+- [x] Add regression coverage for expiry boundaries, notification idempotency, role enforcement, and retirement preconditions.
+- [x] Run full QA, document the workflow, and save a verified checkpoint.

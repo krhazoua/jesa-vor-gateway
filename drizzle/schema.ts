@@ -85,13 +85,14 @@ export const notifications = mysqlTable("notifications", {
   id: int("id").autoincrement().primaryKey(),
   recipientId: int("recipientId").notNull(),
   requestId: int("requestId"),
-  type: mysqlEnum("type", ["STATE_CHANGED", "APPROVAL_REQUIRED"]).notNull(),
+  type: mysqlEnum("type", ["STATE_CHANGED", "APPROVAL_REQUIRED", "CERTIFICATE_EXPIRY"]).notNull(),
   severity: mysqlEnum("severity", ["INFO", "WARNING", "CRITICAL"]).default("INFO").notNull(),
   title: varchar("title", { length: 180 }).notNull(),
   message: text("message").notNull(),
   readAt: timestamp("readAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-}, table => ({ recipientIdx: index("notifications_recipient_idx").on(table.recipientId, table.createdAt), unreadIdx: index("notifications_unread_idx").on(table.recipientId, table.readAt) }));
+  dedupeKey: varchar("dedupeKey", { length: 180 }),
+}, table => ({ recipientIdx: index("notifications_recipient_idx").on(table.recipientId, table.createdAt), dedupeIdx: uniqueIndex("notifications_recipient_dedupe_idx").on(table.recipientId, table.dedupeKey), unreadIdx: index("notifications_unread_idx").on(table.recipientId, table.readAt) }));
 
 export const auditEvents = mysqlTable("auditEvents", {
   id: int("id").autoincrement().primaryKey(),

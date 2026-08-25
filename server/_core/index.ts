@@ -11,6 +11,7 @@ import { serveStatic, setupVite } from "./vite";
 import { sdk } from "./sdk";
 import { registerNotificationStream } from "../notifications";
 import { applySecurityHeaders } from "../security";
+import { createCertificateExpiryNotifications } from "../db";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -31,6 +32,17 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
   throw new Error(`No available port found starting from ${startPort}`);
 }
 
+async function certificateExpiryAlertHandler(req: express.Request, res: express.Response) {
+  try {
+    const user = await sdk.authenticateRequest(req);
+    if (!user.isCron || !user.taskUid) { res.status(403).json({ error: "cron-only" }); return; }
+    const result = await createCertificateExpiryNotifications();
+    res.json({ ok: true, taskUid: user.taskUid, ...result });
+  } catch (error) {
+    res.status(500).json({ error: String(error), timestamp: new Date().toISOString(), context: { path: "/api/scheduled/certificate-expiry-alerts" } });
+  }
+}
+
 async function startServer() {
   const app = express();
   const server = createServer(app);
@@ -42,6 +54,7 @@ async function startServer() {
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   await registerNotificationStream(app, req => sdk.authenticateRequest(req));
+  app.post("/api/scheduled/certificate-expiry-alerts", certificateExpiryAlertHandler);
   // tRPC API
   app.use(
     "/api/trpc",

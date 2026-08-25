@@ -1,10 +1,11 @@
 export type NotificationEvent = {
   recipientId: number;
-  type: "STATE_CHANGED" | "APPROVAL_REQUIRED";
+  type: "STATE_CHANGED" | "APPROVAL_REQUIRED" | "CERTIFICATE_EXPIRY";
   severity: "INFO" | "WARNING" | "CRITICAL";
   title: string;
   message: string;
   requestId?: number;
+  dedupeKey?: string;
 };
 
 type Listener = (event: NotificationEvent) => void;
