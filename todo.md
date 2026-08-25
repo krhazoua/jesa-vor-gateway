@@ -599,3 +599,11 @@
 - [x] Reproduce the reported `/requests` mutation `Unable to transform response from server` error and trace the request, response, and serializer.
 - [x] Fix the confirmed root cause while preserving protected authorization, canonical request creation, workflow transitions, and database safety.
 - [x] Add or update focused regression tests and verify the Requests route, mutation response, API probes, and full build.
+
+# Final full audit and implementation pass — 2026-08-25
+
+- [x] Read the complete supplied acceptance specification and map its criteria to the current application.
+- [x] Audit current routes, APIs, authentication, workflow state, data boundaries, UI states, exports, diagnostics, and coverage for remaining gaps.
+- [x] Implement only confirmed applicable corrections in the existing project and update focused tests and documentation.
+- [x] Run automated, API, security, browser, responsive, export, and repository-hygiene verification.
+- [x] Close the audit traceability checklist and save the verified final checkpoint.
