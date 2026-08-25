@@ -91,3 +91,7 @@ The monitor displays the visible-row count against the canonical population, off
 ## Operations column visibility
 
 The request monitor includes a `COLUMNS` control for reducing visual density during tablet and mobile review. Operators can independently show or hide equipment, source UC, variable/tag, delta request, and decision columns while the request identity/time column remains visible as the stable row anchor. The menu uses native checkbox controls, exposes a `RESET` action, and keeps filtering, sorting, row selection, and canonical data unchanged when presentation columns are hidden. The table grid recalculates to the visible set so headers and cells remain aligned; narrow layouts retain horizontal safety for the remaining engineering values.
+
+## Approval API response hardening
+
+The protected tRPC client now validates the response content type before allowing the protocol transformer to parse it. If a transient development-server or route fallback returns HTML for an `/api/trpc` request, the client converts it into a structured 502 tRPC error with an actionable retry message instead of surfacing `Unexpected token '<'`. Normal JSON responses, including protected 401 authentication responses, pass through unchanged. The `/approvals` route was verified with the protected empty approval state after the change.

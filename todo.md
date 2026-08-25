@@ -550,3 +550,10 @@
 - [x] Preserve filtering, sorting, row selection, empty/error states, and canonical data when columns are hidden.
 - [x] Add regression coverage and responsive interaction QA for visibility controls.
 - [x] Update Operations documentation, run full QA, and save a verified checkpoint.
+
+# Approvals HTML-as-JSON query regression — 2026-08-25
+
+- [x] Inspect approval query wiring, tRPC endpoint mounting, network requests, and server diagnostics.
+- [x] Fix the source of the HTML response while preserving protected approval contracts and RBAC.
+- [x] Add regression coverage and verify approvals loading, empty/error states, authentication, and approval actions.
+- [x] Document the root cause, run full QA, and save a verified checkpoint.
