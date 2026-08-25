@@ -35,3 +35,9 @@ The Operations route uses canonical equipment and variable catalog labels whenev
 ## Acceptance-surface follow-up
 
 The protected application also resolves `/dashboard` to Operations and `/history` to the append-only Audit surface so both specification aliases retain the same session and role gates as their canonical routes. Pending approval records include joined equipment and variable context, persisted validation outcomes, and the request-creation reason; the confirmation dialog displays these values before a four-eyes decision is submitted. No approval row is synthesized in the client when the protected query is empty.
+
+## Governance attention summary
+
+The protected `dashboard.operationsSummary` procedure returns a bounded Operations summary for the authenticated recipient. Certificate-expiry alerts are selected from that recipient’s persisted notification rows and limited to five summary entries. Pending four-eyes approval details are returned only to supervisors, engineers, and administrators, with a maximum of five entries; other roles receive an explicit role-restricted contract with no approval count or detail.
+
+The Operations dashboard renders loading, query-error with retry, empty, authorized, and role-restricted states. Alert rows preserve acknowledgement state and approval rows navigate to canonical request detail; the approval queue remains available only through its existing server-enforced route. The summary refreshes on the same interval as persisted notification polling and does not fabricate expiry alerts or approvals when the database is empty.

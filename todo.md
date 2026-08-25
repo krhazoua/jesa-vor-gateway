@@ -442,3 +442,10 @@
 - [x] Run full automated QA, TypeScript, production build, browser/console/network review, responsive review, documentation update, and save a final checkpoint.
 
 - [x] Reconcile stale prototype-scope documentation with the current full-stack protected implementation and explicitly retain the disconnected read-only integration limits.
+
+# Operations notification and approval summary widget — 2026-08-25
+
+- [x] Add a protected backend summary contract for recent certificate-expiry notifications and pending four-eyes approvals.
+- [x] Enforce recipient scoping, role-safe approval visibility, bounded result sizes, and canonical request context.
+- [x] Add the summary widget to Operations with loading, empty, error, retry, and navigation states.
+- [x] Add regression coverage, responsive QA, documentation, and a verified checkpoint.
