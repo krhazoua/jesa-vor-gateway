@@ -647,3 +647,11 @@
 - [x] Recheck routes, authentication/RBAC, API contracts, data integrity, workflows, realtime, exports, UI states, responsiveness, branding, and diagnostics.
 - [x] Apply only confirmed remaining fixes and update focused documentation/tests.
 - [x] Run complete automated and live verification, then close the checklist and save a checkpoint.
+
+# Audit export content investigation — 2026-08-25
+- [x] Inspect Audit export controls, source query data, and shared CSV/XLSX builders.
+- [x] Reproduce the CSV/XLSX content failure and identify the exact mapping or serialization defect.
+- [x] Fix the export data mapping and add round-trip assertions for actual audit values and rows.
+- [x] Run export, full regression, type, build, bundle, and live Audit verification.
+- [x] Document the fix, close the checklist, and save a verified checkpoint.
+

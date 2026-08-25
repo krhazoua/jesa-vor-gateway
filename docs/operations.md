@@ -117,3 +117,7 @@ PDF generation now lives in a dedicated `pdfReport` module that is dynamically i
 ## Requests mutation proxy-origin correction
 
 The Requests mutation now remains compatible with the managed public reverse proxy. API origin validation derives the trusted public origin from the first forwarded protocol and host values when present, while retaining same-origin host validation for direct requests. Cross-origin API requests remain blocked, and missing trusted host information is rejected. This prevents a legitimate browser-originated `requests.create` mutation from being returned as a 403 HTML/transform-style client failure when the internal service host differs from the public gateway host.
+
+## Audit export content correction
+
+Audit CSV and XLSX downloads now use a dedicated content-preserving mapper over the complete filtered canonical audit-event set. Exported rows include event ID, UTC timestamp, request or SYSTEM scope, actor identity and role, action, module, previous state, new state, result, reason, certificate subject, and source IP when persisted. The XLSX `JESA Report` sheet contains these native values and remains the opening sheet; CSV contains the same rows beneath its JESA report-control sections. Round-trip tests verify actual values and multiple-row retention.
