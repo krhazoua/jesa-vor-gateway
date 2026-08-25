@@ -46,6 +46,17 @@ export function filterAuditRecords<T extends AuditFilterRecord>(records: T[], fi
   });
 }
 
+export type AuditTableEntry = { id: number; values: AuditTableRow };
+
+export function sortAuditEntries(entries: AuditTableEntry[], sort: AuditSort) {
+  return [...entries].sort((left, right) => {
+    const leftValue = left.values[sort.index] || "";
+    const rightValue = right.values[sort.index] || "";
+    const comparison = leftValue.localeCompare(rightValue, undefined, { numeric: true, sensitivity: "base" });
+    return sort.direction === "asc" ? comparison : -comparison;
+  });
+}
+
 export function sortAuditRows(rows: AuditTableRow[], sort: AuditSort) {
   return [...rows].sort((left, right) => {
     const leftValue = left[sort.index] || "";
@@ -55,7 +66,7 @@ export function sortAuditRows(rows: AuditTableRow[], sort: AuditSort) {
   });
 }
 
-export function paginateAuditRows(rows: AuditTableRow[], requestedPage: number, pageSize = AUDIT_PAGE_SIZE) {
+export function paginateAuditRows<T>(rows: T[], requestedPage: number, pageSize = AUDIT_PAGE_SIZE) {
   const safePageSize = Math.max(1, pageSize);
   const pageCount = Math.max(1, Math.ceil(rows.length / safePageSize));
   const page = Math.min(Math.max(1, requestedPage), pageCount);

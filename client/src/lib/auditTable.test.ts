@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { filterAuditRecords, paginateAuditRows, sortAuditRows } from "./auditTable";
+import { filterAuditRecords, paginateAuditRows, sortAuditEntries, sortAuditRows } from "./auditTable";
 
 const rows = [
   ["08:31:06", "VOR-003", "Operator", "RANGE_CHECK_FAILED", "REJECTED"],
@@ -32,6 +32,16 @@ describe("audit table navigation", () => {
     expect(page.start).toBe(21);
     expect(page.end).toBe(21);
     expect(page.total).toBe(21);
+  });
+
+  it("preserves unique audit-event IDs when display values collide", () => {
+    const entries = [
+      { id: 41, values: ["2026-08-24 16:27:32", "SYSTEM", "7 / OPERATOR", "CATALOG_IMPORT / CONFIGURATION", "— → COMPLETED"] },
+      { id: 42, values: ["2026-08-24 16:27:32", "SYSTEM", "7 / OPERATOR", "CATALOG_IMPORT / CONFIGURATION", "— → COMPLETED"] },
+    ];
+    const sorted = sortAuditEntries(entries, { index: 0, direction: "desc" });
+    expect(sorted.map(entry => entry.id)).toEqual([41, 42]);
+    expect(new Set(sorted.map(entry => entry.id)).size).toBe(sorted.length);
   });
 
   it("represents an empty result without an invalid range", () => {

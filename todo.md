@@ -401,3 +401,10 @@
 - [x] Return a transformer-safe response while preserving server authorization and mutation semantics.
 - [x] Add regression coverage for the corrected response contract.
 - [x] Run full QA, verify /configuration, and save a repair checkpoint.
+
+# Audit duplicate React key repair — 2026-08-25
+
+- [x] Identify the Audit row renderer producing duplicate composite keys.
+- [x] Use a stable unique audit-event key without changing filtering, sorting, pagination, or exports.
+- [x] Add regression coverage for duplicate-key inputs.
+- [x] Run full QA, verify /audit responsively, and save a repair checkpoint.
