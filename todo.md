@@ -542,3 +542,11 @@
 - [x] Add accessible sortable columns with stable deterministic ordering and clear reset behavior.
 - [x] Add regression coverage and responsive interaction QA for filtering, sorting, empty, and error states.
 - [x] Update Operations documentation, run full QA, and save a verified checkpoint.
+
+# Operations column visibility enhancement — 2026-08-25
+
+- [x] Audit current Operations table columns, sorting controls, and responsive layout.
+- [x] Add accessible column-visibility controls with sensible defaults and reset behavior.
+- [x] Preserve filtering, sorting, row selection, empty/error states, and canonical data when columns are hidden.
+- [x] Add regression coverage and responsive interaction QA for visibility controls.
+- [x] Update Operations documentation, run full QA, and save a verified checkpoint.
