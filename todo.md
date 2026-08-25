@@ -586,3 +586,10 @@
 - [x] Lazy-load ExcelJS only when an XLSX export is requested while preserving workbook values, branding, and error handling.
 - [x] Add or update regression coverage for deferred loading and run tests, type checking, build, and bundle-size verification.
 - [x] Document the optimization and save a verified checkpoint.
+
+# PDF export bundle optimization — 2026-08-25
+
+- [x] Inspect current PDF dependencies, export call paths, and production bundle baseline.
+- [x] Lazy-load PDF-only dependencies when a PDF export is requested while preserving JESA branding, progress, and error handling.
+- [x] Add or update regression coverage and run export tests, type checking, build, and bundle-size verification.
+- [x] Document the optimization and save a verified checkpoint.

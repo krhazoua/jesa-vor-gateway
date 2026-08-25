@@ -109,3 +109,7 @@ The edge-adapter health card uses the protected System Health summary with a 30-
 ## Deferred ExcelJS module boundary
 
 The workbook implementation now lives in a dedicated `excelReport` module that is itself loaded dynamically by `createExcelWorkbook`. The initial application bundles contain no ExcelJS reference. ExcelJS is fetched only when an XLSX export is explicitly requested; CSV, JSON, PDF, navigation, and ordinary route rendering do not load the workbook dependency. The generated workbook format and JESA branding remain unchanged.
+
+## Deferred PDF module boundary
+
+PDF generation now lives in a dedicated `pdfReport` module that is dynamically imported only when a PDF export is requested. The initial application bundles contain no jsPDF, html2canvas, or DOMPurify references; PDF-only assets remain in deferred chunks. CSV, JSON, XLSX, navigation, and ordinary route rendering do not load the PDF dependency graph. Branded layout, optional JESA logo handling, progress callbacks, and report data fidelity remain unchanged.

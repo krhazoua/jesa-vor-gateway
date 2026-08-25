@@ -68,8 +68,8 @@ describe("report exports", () => {
     expect(json.sections[0].rows[1][0]).toBe("VOR-002");
   });
 
-  it("generates a non-empty PDF report from the same definition", () => {
-    const pdf = buildPdfReport(report, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=");
+  it("generates a non-empty PDF report from the same definition", async () => {
+    const pdf = await buildPdfReport(report, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=");
     expect(pdf.output("arraybuffer").byteLength).toBeGreaterThan(500);
     expect(pdf.output()).toContain("JESA DIGITAL ENGINEERING");
     expect(pdf.output()).toContain("CONFIDENTIAL");
