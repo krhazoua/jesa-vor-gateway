@@ -677,11 +677,11 @@
 - [x] Document fresh findings and save a verified checkpoint.
 
 # Authenticated E2E and session-flow verification — 2026-08-25
-- [ ] Inspect secure E2E storage-state availability, current Playwright configuration, CI workflow, and session-loading implementation.
-- [ ] Add CI artifact retention for browser traces, reports, screenshots, videos, and downloaded CSV/XLSX files.
+- [x] Inspect secure E2E storage-state availability, current Playwright configuration, CI workflow, and session-loading implementation.
+- [x] Add CI artifact retention for browser traces, reports, screenshots, videos, and downloaded CSV/XLSX files.
 - [ ] Run authenticated Playwright tests with the supplied secure storage state and repair confirmed failures.
-- [ ] Validate the live authenticated session-loading flow and current browser diagnostics.
-- [ ] Document results and save a verified checkpoint.
+- [x] Validate the live authenticated session-loading flow and current browser diagnostics.
+- [x] Document results and save a verified checkpoint.
 
 # Compliance query error repair — 2026-08-25
 - [x] Reproduce the `/compliance` Missing result and gateway connection errors and inspect current logs.
