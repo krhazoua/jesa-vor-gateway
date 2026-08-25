@@ -661,3 +661,10 @@
 - [x] Add authenticated browser coverage for CSV and XLSX downloads with content assertions.
 - [x] Run Playwright discovery and authenticated execution when storage state is supplied, plus full quality gates.
 - [x] Document the browser-download coverage and save a verified checkpoint.
+
+# Site-wide functional verification — 2026-08-25
+- [x] Inventory every route, interactive control, protected procedure, export, and existing automated check.
+- [x] Run complete automated, type, build, bundle, security, and repository-hygiene verification.
+- [x] Verify authenticated and unauthenticated routes, API responses, browser diagnostics, responsive layouts, and export controls.
+- [x] Exercise representative site controls and repair any confirmed defects.
+- [x] Document the verification matrix and save a verified checkpoint.

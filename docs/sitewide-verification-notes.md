@@ -1,0 +1,5 @@
+# Site-wide verification notes — 2026-08-25
+
+The authenticated preview rendered the primary desktop routes `/operations`, `/requests`, `/approvals`, `/validation`, `/audit`, `/system-health`, `/analytics`, and `/configuration` without a fatal render state. The routes showed their intended canonical data, empty, protected, or boundary-specific messaging. The mobile preview rendered `/login`, `/dashboard`, `/history`, `/compliance`, and `/requests/1`; aliases resolved to their intended surfaces, compliance remained horizontally data-safe, and an unavailable request detail showed an honest empty state rather than fabricated data.
+
+The screenshots also exposed one item requiring interactive verification rather than an immediate defect: dense tabular surfaces intentionally remain horizontally scrollable on mobile, so control reachability and overflow behavior must be exercised through browser interaction. Historical Vite error lines still appear in trimmed diagnostics, but current TypeScript, build, and managed-server health are clean.
