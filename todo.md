@@ -457,3 +457,12 @@
 - [x] Enhance PDF exports with an embedded JESA logo, branded header/footer, improved typography, tables, metadata, and page-break handling.
 - [x] Add regression tests for branded CSV/PDF output and verify downloaded files structurally and visually.
 - [x] Update export documentation, run full QA, and save a verified checkpoint.
+
+# Supplied industrial specification audit — 2026-08-25
+
+- [x] Read and map the complete supplied specification against the current JESA VoR Gateway.
+- [x] Audit all specified routes, backend contracts, authentication/RBAC, data models, validation, exports, UI states, responsive behavior, and diagnostics.
+- [x] Implement every applicable remaining gap in place without duplicate routes, fabricated industrial data, personal names, or plant writes.
+- [x] Add regression coverage and complete automated, browser, responsive, API, and no-fabrication verification.
+- [x] Update traceability documentation, close this checklist, and save a verified checkpoint.
+- [x] Remove the residual secondary gate-mark and simulated certificate toggle from the public login surface; keep the existing server-mediated secure authentication boundary explicit.
