@@ -573,3 +573,9 @@
 - [x] Implement only remaining applicable corrections in place and update focused regression coverage and documentation.
 - [x] Re-run automated, security, API, browser, responsive, export, and repository-hygiene verification.
 - [x] Close the re-review checklist and save a verified checkpoint.
+
+# Configuration fetch-error investigation — 2026-08-25
+
+- [x] Reproduce the reported `/configuration` `Failed to fetch` error and trace the client request, server procedure, and response.
+- [x] Fix the confirmed root cause while preserving authentication, admin RBAC, canonical data, and read-only plant boundary behavior.
+- [x] Add or update focused regression tests and verify the configuration route in the browser and API probes.
