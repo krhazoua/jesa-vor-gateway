@@ -490,3 +490,10 @@
 - [x] Add an honest JESA wordmark reference that survives CSV limitations while keeping the file valid and machine-readable.
 - [x] Add regression tests for CSV organization, branding metadata, section boundaries, and preserved values; verify downloads.
 - [x] Document the CSV format correction, run full QA, and save a verified checkpoint.
+
+# Vite HMR reload regression — 2026-08-25
+
+- [x] Inspect the recent CSS and export-component changes plus Vite diagnostics for the underlying reload failure.
+- [x] Fix the stylesheet/module syntax issue and restore clean HMR behavior without regressing the /audit export controls.
+- [x] Add or update regression coverage and verify tests, TypeScript, production build, and authenticated /audit rendering.
+- [x] Document the fix, close the checklist, and save a verified checkpoint.
