@@ -534,3 +534,11 @@
 - [x] Add or update regression and integration coverage, then run full automated, browser, responsive, export, and no-fabrication verification.
 - [x] Update traceability documentation, close the checklist, and save a verified checkpoint.
 - [x] Remove fabricated request-detail and import-detail route fallback identifiers; show an explicit invalid-route state instead.
+
+# Operations filtering and sorting enhancement — 2026-08-25
+
+- [x] Audit the Operations request row model and current monitor controls.
+- [x] Add canonical-data filters for search, status, equipment, variable, priority, source UC, and date range.
+- [x] Add accessible sortable columns with stable deterministic ordering and clear reset behavior.
+- [x] Add regression coverage and responsive interaction QA for filtering, sorting, empty, and error states.
+- [x] Update Operations documentation, run full QA, and save a verified checkpoint.

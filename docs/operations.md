@@ -81,3 +81,9 @@ The downloaded workbook previously placed `Report control` before `JESA Report`,
 ## Canonical Operations data boundary
 
 The Operations request monitor and telemetry rail now use the protected canonical request and engineering-catalog queries exclusively. When no canonical rows are available, the interface shows an explicit empty state rather than substituting hardcoded plant-looking records. The former preview-stream utility remains isolated from the live page for deterministic test coverage only; no synthetic request row or process value is presented as live operational data.
+
+## Operations filtering and sorting
+
+The Operations request monitor provides a canonical-data filter bar for free-text search, status, equipment, variable, priority, source UC, and UTC date range. Filters apply to the protected request and engineering-catalog responses already loaded for the authenticated session; no synthetic rows are introduced. Sortable headers cover request identity, equipment, variable, requested value, and decision state. Priority sorting follows CRITICAL, HIGH, NORMAL, LOW, and equal values use the request identifier as a deterministic tie-breaker. Created time remains newest-first by default.
+
+The monitor displays the visible-row count against the canonical population, offers a clear-filters action only when filters are active, and preserves explicit API-error and no-record states. On narrow layouts, controls reflow into a two-column grid and the request table remains horizontally scrollable so engineering values are not truncated. Controls are semantic inputs and buttons with keyboard focus support.
