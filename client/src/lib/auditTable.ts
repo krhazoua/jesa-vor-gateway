@@ -46,9 +46,18 @@ export function filterAuditRecords<T extends AuditFilterRecord>(records: T[], fi
   });
 }
 
-export type AuditTableEntry = { id: number; values: AuditTableRow };
+export type AuditTableEntry<T = unknown> = { id: number; values: AuditTableRow; record?: T };
 
-export function sortAuditEntries(entries: AuditTableEntry[], sort: AuditSort) {
+export function serializeAuditMetadata(record: Record<string, unknown> | null | undefined) {
+  if (!record) return "{}";
+  try {
+    return JSON.stringify(record, null, 2) || "{}";
+  } catch {
+    return "{\n  \"error\": \"Metadata could not be serialized\"\n}";
+  }
+}
+
+export function sortAuditEntries<T>(entries: AuditTableEntry<T>[], sort: AuditSort) {
   return [...entries].sort((left, right) => {
     const leftValue = left.values[sort.index] || "";
     const rightValue = right.values[sort.index] || "";

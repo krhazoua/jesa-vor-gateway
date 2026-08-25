@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { filterAuditRecords, paginateAuditRows, sortAuditEntries, sortAuditRows } from "./auditTable";
+import { filterAuditRecords, paginateAuditRows, serializeAuditMetadata, sortAuditEntries, sortAuditRows } from "./auditTable";
 
 const rows = [
   ["08:31:06", "VOR-003", "Operator", "RANGE_CHECK_FAILED", "REJECTED"],
@@ -42,6 +42,12 @@ describe("audit table navigation", () => {
     const sorted = sortAuditEntries(entries, { index: 0, direction: "desc" });
     expect(sorted.map(entry => entry.id)).toEqual([41, 42]);
     expect(new Set(sorted.map(entry => entry.id)).size).toBe(sorted.length);
+  });
+
+  it("serializes complete event metadata without dropping nulls or nested payloads", () => {
+    const payload = JSON.parse(serializeAuditMetadata({ createdAt: new Date("2026-08-25T08:00:00Z"), reason: null, evidence: { fingerprint: "AA:BB", artifacts: ["rotation.pem"] } }));
+    expect(payload).toEqual({ createdAt: "2026-08-25T08:00:00.000Z", reason: null, evidence: { fingerprint: "AA:BB", artifacts: ["rotation.pem"] } });
+    expect(serializeAuditMetadata(null)).toBe("{}");
   });
 
   it("represents an empty result without an invalid range", () => {

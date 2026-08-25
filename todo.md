@@ -408,3 +408,11 @@
 - [x] Use a stable unique audit-event key without changing filtering, sorting, pagination, or exports.
 - [x] Add regression coverage for duplicate-key inputs.
 - [x] Run full QA, verify /audit responsively, and save a repair checkpoint.
+
+# Expandable Audit metadata rows — 2026-08-25
+
+- [x] Preserve the full canonical audit record alongside the display row through filtering, sorting, and pagination.
+- [x] Add accessible expand/collapse controls with stable event IDs and complete metadata payload rendering.
+- [x] Keep metadata safe and readable for dates, nulls, nested objects, and arrays without exposing unrelated records.
+- [x] Add responsive styles and loading/empty behavior consistent with the Audit table.
+- [x] Add regression coverage, run full QA, verify desktop/mobile behavior, document, and save a checkpoint.
