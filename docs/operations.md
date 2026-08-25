@@ -53,3 +53,7 @@ The supplied industrial specification was reviewed against the existing routes, 
 ## Branded Excel workbooks
 
 The report export controls now include an XLSX option for audit, analytics, and reconciliation reports. The workbook is generated from the same report definition as CSV, JSON, and PDF, preserving the canonical sections and row values. It includes a JESA wordmark image when the managed asset is available, JESA Digital Engineering title bands, report-control metadata, styled section headers, alternating data rows, readable column sizing, frozen headers, worksheet filters, and a confidential footer. ExcelJS is lazy-loaded only when an XLSX export is requested so normal route loading remains unaffected.
+
+## Site-wide export standard
+
+All audit, analytics, and reconciliation report downloads now use the shared JESA export helper. CSV files use a UTF-8 BOM, a consistent JESA Digital Engineering metadata preamble, report title and UTC generation context, a managed wordmark reference, and unchanged section headers and row values. Excel downloads use a two-sheet structure: a branded `Report control` cover sheet with the JESA logo, document-control metadata, and a link to `JESA Report`, followed by the detailed data sheet with the embedded JESA logo, styled report bands, filterable tables, frozen headers, controlled widths, alternating rows, and confidential pagination. This standard prevents individual pages from producing visually inconsistent report files.

@@ -474,3 +474,11 @@
 - [x] Refine CSV exports with stronger JESA branding while preserving machine-readable data and section boundaries.
 - [x] Add regression coverage and verify workbook structure, CSV output, logo inclusion, and download behavior.
 - [x] Update export documentation, run full QA, and save a verified checkpoint.
+
+# Site-wide branded Excel and CSV export enhancement — 2026-08-25
+
+- [x] Audit every CSV and Excel download path, report definition, and JESA logo reference across the site.
+- [x] Unify all Excel downloads under a polished JESA-branded workbook design with embedded logo media and consistent report controls.
+- [x] Unify all CSV downloads under a professional JESA-branded format while preserving machine-readable sections, headers, and values.
+- [x] Add regression coverage for every export path and verify logo inclusion, file structure, and responsive download controls.
+- [x] Update export documentation, run full QA, and save a verified checkpoint.

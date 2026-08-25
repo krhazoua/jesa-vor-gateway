@@ -62,6 +62,46 @@ export async function createExcelWorkbook(report: ReportDefinition, logoDataUrl?
   workbook.created = new Date();
   workbook.modified = new Date();
 
+  const controlSheet = workbook.addWorksheet("Report control", { properties: { defaultRowHeight: 20 }, views: [{ showGridLines: false }] });
+  controlSheet.mergeCells("A1:F1");
+  controlSheet.mergeCells("A2:F2");
+  controlSheet.getCell("A1").value = "JESA DIGITAL ENGINEERING | VoR GATEWAY";
+  controlSheet.getCell("A2").value = report.title;
+  controlSheet.getCell("A1").font = { name: "Arial", size: 12, bold: true, color: { argb: "FFFFFFFF" } };
+  controlSheet.getCell("A2").font = { name: "Arial", size: 18, bold: true, color: { argb: "FF003366" } };
+  controlSheet.getCell("A1").fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF003366" } };
+  controlSheet.getCell("A1").alignment = { horizontal: "right", vertical: "middle" };
+  controlSheet.getCell("A2").alignment = { vertical: "middle" };
+  controlSheet.getRow(1).height = 28;
+  controlSheet.getRow(2).height = 34;
+  if (logoDataUrl) {
+    const base64 = logoDataUrl.split(",")[1];
+    if (base64) {
+      const imageId = workbook.addImage({ base64, extension: "png" });
+      controlSheet.addImage(imageId, { tl: { col: 0.15, row: 0.2 }, ext: { width: 116, height: 32 } });
+    }
+  }
+  controlSheet.getCell("A4").value = "DOCUMENT CONTROL";
+  controlSheet.getCell("A4").font = { name: "Arial", size: 10, bold: true, color: { argb: "FF003366" } };
+  let controlRow = 5;
+  for (const [key, value] of Object.entries(report.metadata)) {
+    controlSheet.getRow(controlRow).values = [key, value];
+    controlSheet.getCell(`A${controlRow}`).font = { name: "Arial", size: 9, bold: true, color: { argb: "FF5E6B7A" } };
+    controlSheet.getCell(`B${controlRow}`).font = { name: "Arial", size: 9, color: { argb: "FF1A1A2E" } };
+    controlSheet.getCell(`A${controlRow}`).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF1F5F9" } };
+    controlSheet.getCell(`B${controlRow}`).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF8FAFC" } };
+    controlRow += 1;
+  }
+  controlRow += 1;
+  controlSheet.getCell(`A${controlRow}`).value = "DATA SHEET";
+  controlSheet.getCell(`B${controlRow}`).value = { text: "JESA Report", hyperlink: "#'JESA Report'!A1" };
+  controlSheet.getCell(`A${controlRow}`).font = { name: "Arial", size: 9, bold: true, color: { argb: "FF5E6B7A" } };
+  controlSheet.getCell(`B${controlRow}`).font = { name: "Arial", size: 9, bold: true, color: { argb: "FF003366" } };
+  controlSheet.getColumn(1).width = 27;
+  controlSheet.getColumn(2).width = 62;
+  for (let column = 3; column <= 6; column += 1) controlSheet.getColumn(column).width = 15;
+  controlSheet.headerFooter.oddFooter = "&LJESA S.A. · CONFIDENTIAL&CPage &P of &N&RVoR Gateway";
+
   const worksheet = workbook.addWorksheet("JESA Report", { properties: { defaultRowHeight: 18 }, views: [{ showGridLines: false }] });
   const columnCount = Math.max(1, ...report.sections.map(section => section.columns.length));
   const lastColumn = String.fromCharCode(65 + Math.min(columnCount - 1, 25));
