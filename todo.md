@@ -624,3 +624,11 @@
 - [x] Define and document an approved plant integration contract without enabling production writes or changing the read-only boundary.
 - [x] Run full tests, browser checks, build-budget checks, and security-boundary verification.
 - [x] Close the checklist and save a verified checkpoint.
+
+# Final-round deep audit and premium UI/UX pass — 2026-08-25
+
+- [x] Map the complete supplied final-round specification against the current project and live service.
+- [x] Audit route coverage, authentication/RBAC, API contracts, workflow states, data integrity, error states, responsive behavior, branding, and diagnostics.
+- [x] Implement only confirmed remaining fixes in the existing architecture and update focused tests and documentation.
+- [x] Run backend/frontend tests, TypeScript, lint/build, database/API probes, browser route checks, responsive checks, and repository scans.
+- [x] Close traceability and save the verified final checkpoint.
