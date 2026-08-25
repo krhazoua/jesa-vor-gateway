@@ -27,6 +27,23 @@ export function createTransportErrorTrpcResponse(status = 503) {
   return createTrpcErrorResponse(status, "Gateway connection could not be established. Please retry the request.");
 }
 
+function createIncompleteTrpcResponse(status = 502) {
+  return createTrpcErrorResponse(status, "Gateway returned an incomplete tRPC response. Please retry the request.");
+}
+
+async function hasTrpcEnvelope(response: Response) {
+  try {
+    const payload: unknown = await response.clone().json();
+    const entries = Array.isArray(payload) ? payload : [payload];
+    return entries.every(entry => {
+      if (!entry || typeof entry !== "object") return false;
+      return "result" in entry || "error" in entry;
+    });
+  } catch {
+    return false;
+  }
+}
+
 const READ_ONLY_TRANSPORT_RETRIES = 2;
 const TRANSPORT_RETRY_DELAY_MS = 150;
 
@@ -47,7 +64,15 @@ export async function fetchWithTrpcTransportGuard(
 
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     try {
-      return await fetchImpl(input, init);
+      const response = await fetchImpl(input, init);
+      if (isJsonResponse(response) && !(await hasTrpcEnvelope(response))) {
+        if (attempt + 1 < maxAttempts) {
+          await wait(TRANSPORT_RETRY_DELAY_MS * (attempt + 1));
+          continue;
+        }
+        return createIncompleteTrpcResponse();
+      }
+      return response;
     } catch {
       if (attempt + 1 < maxAttempts) {
         await wait(TRANSPORT_RETRY_DELAY_MS * (attempt + 1));

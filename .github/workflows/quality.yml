@@ -48,5 +48,15 @@ jobs:
           E2E_BASE_URL: http://127.0.0.1:3000
           E2E_STORAGE_STATE: e2e-storage-state.json
           E2E_REQUIRE_PENDING_APPROVAL: "true"
+      - name: Upload Playwright evidence and downloaded reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authenticated-browser-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: warn
+          retention-days: 14
       - if: always()
         run: rm -f e2e-storage-state.json

@@ -1,16 +1,18 @@
 import { readFile } from "node:fs/promises";
-import { test, expect, type Download } from "@playwright/test";
+import { test, expect, type Download, type TestInfo } from "@playwright/test";
 import ExcelJS from "exceljs";
 
 const hasStorageState = Boolean(process.env.E2E_STORAGE_STATE);
 
-async function readDownload(download: Download) {
+async function readDownload(download: Download, testInfo: TestInfo) {
   const path = await download.path();
   expect(
     path,
     "Playwright should provide a downloaded file path"
   ).not.toBeNull();
-  return readFile(path as string);
+  const artifactPath = testInfo.outputPath(download.suggestedFilename());
+  await download.saveAs(artifactPath);
+  return readFile(artifactPath);
 }
 
 test.describe("authenticated Audit report downloads", () => {
@@ -31,7 +33,7 @@ test.describe("authenticated Audit report downloads", () => {
 
   test("downloads CSV DATA with the report control block and audit data contract", async ({
     page,
-  }) => {
+  }, testInfo) => {
     const downloadPromise = page.waitForEvent("download");
     await page
       .getByRole("button", {
@@ -40,7 +42,7 @@ test.describe("authenticated Audit report downloads", () => {
       })
       .click();
     const download = await downloadPromise;
-    const csv = (await readDownload(download)).toString("utf8");
+    const csv = (await readDownload(download, testInfo)).toString("utf8");
 
     expect(download.suggestedFilename()).toMatch(
       /jesa-vor-audit-\d{4}-\d{2}-\d{2}\.csv$/
@@ -62,7 +64,7 @@ test.describe("authenticated Audit report downloads", () => {
 
   test("downloads XLSX with populated JESA Report cells and native values", async ({
     page,
-  }) => {
+  }, testInfo) => {
     const downloadPromise = page.waitForEvent("download");
     await page
       .getByRole("button", {
@@ -71,7 +73,7 @@ test.describe("authenticated Audit report downloads", () => {
       })
       .click();
     const download = await downloadPromise;
-    const buffer = await readDownload(download);
+    const buffer = await readDownload(download, testInfo);
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(buffer);
 

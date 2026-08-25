@@ -41,6 +41,19 @@ describe("tRPC response guard", () => {
     expect(isJsonResponse(response)).toBe(true);
   });
 
+  it("retries and normalizes a JSON batch item with a missing result", async () => {
+    let attempts = 0;
+    const fetchImpl = async () => {
+      attempts += 1;
+      return new Response("[{}]", { headers: { "content-type": "application/json" } });
+    };
+    const response = await fetchWithTrpcTransportGuard("/api/trpc/configuration.compliance", undefined, fetchImpl, async () => {});
+    const body = await response.json();
+    expect(attempts).toBe(3);
+    expect(response.status).toBe(502);
+    expect(body[0].error.json.message).toContain("incomplete tRPC response");
+  });
+
   it("does not retry a mutation after a network failure", async () => {
     let attempts = 0;
     const fetchImpl = async () => {
