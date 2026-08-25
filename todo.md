@@ -344,3 +344,21 @@
 - [x] Add responsive UI for sign-off quorum, certificate validation results, and activation procedure status.
 - [x] Add regression coverage for sign-off distinctness, certificate validation, gate activation, and no-write safeguards.
 - [x] Run migration if required, full QA, documentation, and save a verified checkpoint.
+
+# Authoritative Engineering Master Connection — 2026-08-24
+
+- [ ] Define the post-FAT/SAT authoritative-master connection contract with explicit read-only and authorization states.
+- [ ] Add persisted master-connection configuration, sync runs, evidence, and failure-state records.
+- [ ] Add protected procedures for connection validation, read-only synchronization, sync evidence, and explicit authorization.
+- [ ] Enforce FAT/SAT acceptance, certificate/trust evidence, and distinct authorization before any propagation gate can open.
+- [ ] Build responsive Configuration UI for connection status, sync evidence, and downstream authorization readiness.
+- [ ] Add tests proving the authoritative master cannot mutate the canonical catalog or plant systems before authorization.
+- [ ] Run migration, full QA, documentation review, and save a verified checkpoint.
+
+# Certificate Expiry and Trust-Anchor Rotation — 2026-08-24
+- [x] Add operator-configurable certificate expiry warning and critical thresholds.
+- [x] Persist trust-anchor rotation evidence with actor, reason, old/new fingerprints, and reference artifact metadata.
+- [x] Add protected procedures for expiry policy read/update, rotation evidence capture, and trust-store status.
+- [x] Surface certificate expiry state and rotation history in the Configuration governance panel.
+- [x] Add tests for warning boundaries, expired-certificate blocking, role enforcement, and append-only rotation evidence.
+- [x] Run migration, full QA, documentation review, and save a verified checkpoint.

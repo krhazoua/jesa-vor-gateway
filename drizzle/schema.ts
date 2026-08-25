@@ -195,12 +195,36 @@ export const certificateTrustAnchors = mysqlTable("certificateTrustAnchors", {
   id: int("id").autoincrement().primaryKey(),
   subject: varchar("subject", { length: 255 }).notNull(),
   fingerprint: varchar("fingerprint", { length: 128 }).notNull(),
+  validFrom: timestamp("validFrom"),
+  expiresAt: timestamp("expiresAt"),
   storageKey: varchar("storageKey", { length: 512 }).notNull(),
   storageUrl: varchar("storageUrl", { length: 600 }).notNull(),
   registeredBy: int("registeredBy").notNull(),
   status: mysqlEnum("status", ["ACTIVE", "REVOKED"]).notNull(),
   registeredAt: timestamp("registeredAt").defaultNow().notNull(),
 }, table => ({ fingerprintIdx: index("certificateTrustAnchors_fingerprint_idx").on(table.fingerprint), statusIdx: index("certificateTrustAnchors_status_idx").on(table.status) }));
+
+export const certificateTrustPolicies = mysqlTable("certificateTrustPolicies", {
+  id: int("id").autoincrement().primaryKey(),
+  warningDays: int("warningDays").default(30).notNull(),
+  criticalDays: int("criticalDays").default(7).notNull(),
+  updatedBy: int("updatedBy").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export const certificateTrustAnchorRotations = mysqlTable("certificateTrustAnchorRotations", {
+  id: int("id").autoincrement().primaryKey(),
+  oldAnchorId: int("oldAnchorId"),
+  oldFingerprint: varchar("oldFingerprint", { length: 128 }),
+  newAnchorId: int("newAnchorId").notNull(),
+  newFingerprint: varchar("newFingerprint", { length: 128 }).notNull(),
+  referenceId: varchar("referenceId", { length: 180 }).notNull(),
+  referenceStorageKey: varchar("referenceStorageKey", { length: 512 }).notNull(),
+  referenceStorageUrl: varchar("referenceStorageUrl", { length: 600 }).notNull(),
+  reason: varchar("reason", { length: 500 }).notNull(),
+  actorId: int("actorId").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, table => ({ newAnchorIdx: index("certificateTrustAnchorRotations_new_idx").on(table.newAnchorId), createdIdx: index("certificateTrustAnchorRotations_created_idx").on(table.createdAt) }));
 
 export const adapterActivationRuns = mysqlTable("adapterActivationRuns", {
   id: int("id").autoincrement().primaryKey(),

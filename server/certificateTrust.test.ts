@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hasDualIndependentApproval, validateCertificateChain, validateTrustAnchor } from "./certificateTrust";
+import { evaluateCertificateExpiry, hasDualIndependentApproval, validateCertificateChain, validateExpiryPolicy, validateTrustAnchor } from "./certificateTrust";
 
 describe("certificate trust governance", () => {
   it("rejects malformed trust-anchor evidence", () => {
@@ -28,5 +28,20 @@ describe("certificate trust governance", () => {
       { actorId: 2, decision: "REJECTED", chainStatus: "VALID" },
       { actorId: 3, decision: "APPROVED", chainStatus: "VALID" },
     ])).toBe(false);
+  });
+
+  it("classifies certificate expiry against operator-configured windows", () => {
+    const now = new Date("2026-08-25T00:00:00.000Z");
+    expect(evaluateCertificateExpiry("2026-09-30T00:00:00.000Z", 30, 7, now).state).toBe("VALID");
+    expect(evaluateCertificateExpiry("2026-09-10T00:00:00.000Z", 30, 7, now).state).toBe("EXPIRING_SOON");
+    expect(evaluateCertificateExpiry("2026-08-30T00:00:00.000Z", 30, 7, now).state).toBe("CRITICAL");
+    expect(evaluateCertificateExpiry("2026-08-24T00:00:00.000Z", 30, 7, now).state).toBe("EXPIRED");
+  });
+
+  it("rejects invalid expiry policy ordering and bounds", () => {
+    expect(validateExpiryPolicy(30, 7)).toBe(true);
+    expect(validateExpiryPolicy(7, 30)).toBe(false);
+    expect(validateExpiryPolicy(3651, 7)).toBe(false);
+    expect(validateExpiryPolicy(30.5, 7)).toBe(false);
   });
 });
