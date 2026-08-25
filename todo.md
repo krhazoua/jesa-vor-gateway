@@ -689,3 +689,14 @@
 - [x] Repair the confirmed defect and add focused regression coverage.
 - [x] Verify `/compliance` with focused/full tests, type/build checks, direct API probes, and live browser rendering.
 - [x] Document the root cause, close the checklist, and save a verified checkpoint.
+
+# Netlify frontend deployment preparation — 2026-08-25
+- [x] Audit the existing Vite frontend, routes, API/realtime configuration, authentication, assets, and backend separation.
+- [x] Add Netlify build, SPA fallback, security headers, cache rules, and documented public environment configuration.
+- [x] Preserve existing authentication, protected APIs, SSE/realtime behavior, exports, and JESA routes while adapting production-safe configuration.
+- [x] Run Netlify-oriented build, route, asset, security, and regression verification.
+- [x] Document backend/CORS/OAuth prerequisites and save a verified checkpoint.
+# Netlify configurable backend origin clarification — 2026-08-25
+- [x] Keep `VITE_API_BASE_URL` optional and configurable for later Netlify setup without placeholder or localhost production values.
+- [x] Verify the generated production frontend contains no localhost or placeholder backend URL.
+
