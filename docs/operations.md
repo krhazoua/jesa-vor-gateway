@@ -69,3 +69,7 @@ The reported `/audit` HMR messages for `index.css`, `ReportExportActions.tsx`, a
 ## CSV format
 
 The direct `CSV DATA` export is intentionally text-only. It contains the organized JESA report-control block and canonical report data, while the actual JESA bitmap remains embedded in the XLSX and PDF exports. This keeps the CSV portable and machine-readable without attaching binary packaging to the data file.
+
+## Excel value preservation
+
+The detailed `JESA Report` worksheet writes section rows using their native report values. Numeric process values remain numeric Excel cells for sorting and calculation, zero values remain zero, text remains text, and null or undefined source values become intentionally blank cells. The report-control sheet and all visual styling remain unchanged. This keeps the downloaded workbook useful for engineering review rather than making it a text-only presentation.

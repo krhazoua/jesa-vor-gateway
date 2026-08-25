@@ -50,6 +50,18 @@ describe("report exports", () => {
     expect(reloaded.getWorksheet("JESA Report")?.getCell("A10").value).toBe("VOR-001");
   });
 
+  it("preserves numeric and nullable values as Excel cells", async () => {
+    const workbook = await createExcelWorkbook({
+      ...report,
+      sections: [{ title: "Process values", columns: ["Tag", "Value", "Comment"], rows: [["TIC-5210", 75.8, null], ["AIC-5214", 0, "Stable"]] }],
+    }, null);
+    const worksheet = workbook.getWorksheet("JESA Report");
+    expect(worksheet?.getCell("A10").value).toBe("TIC-5210");
+    expect(worksheet?.getCell("B10").value).toBe(75.8);
+    expect(worksheet?.getCell("C10").value).toBe("");
+    expect(worksheet?.getCell("B11").value).toBe(0);
+  });
+
   it("serializes metadata and sections as structured JSON", () => {
     const json = JSON.parse(buildJsonReport({ ...report, filename: "audit" }));
     expect(json.metadata.Source).toBe("Canonical DB / read-only");

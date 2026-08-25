@@ -511,3 +511,10 @@
 - [x] Remove the unused ZIP dependency and update CSV documentation and regression tests.
 - [x] Verify organized CSV DATA remains available, Excel/PDF logo behavior remains intact, and run full QA.
 - [x] Save a verified checkpoint.
+
+# Excel downloaded-values regression — 2026-08-25
+
+- [x] Inspect Excel row mapping and current workbook output to locate why downloaded reports appear text-only.
+- [x] Populate the detailed Excel worksheet with actual report section columns and row values while preserving the branded control sheet.
+- [x] Add round-trip regression assertions for numeric, textual, nullable, and multi-section values.
+- [x] Verify the downloaded XLSX structure, document the fix, run full QA, and save a verified checkpoint.

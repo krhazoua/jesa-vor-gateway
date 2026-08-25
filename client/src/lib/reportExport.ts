@@ -15,6 +15,10 @@ export type ReportDefinition = {
   sections: ReportSection[];
 };
 
+function toExcelCellValue(value: string | number | null | undefined): string | number {
+  return value == null ? "" : value;
+}
+
 export function escapeCsvCell(value: string | number | null | undefined) {
   const text = value == null ? "" : String(value);
   return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
@@ -176,7 +180,7 @@ export async function createExcelWorkbook(report: ReportDefinition, logoDataUrl?
     const firstDataRow = rowNumber;
     section.rows.forEach((values, index) => {
       const dataRow = worksheet.getRow(rowNumber);
-      dataRow.values = values.map(value => value == null ? "" : String(value));
+      dataRow.values = values.map(toExcelCellValue);
       dataRow.eachCell(cell => {
         cell.font = { name: "Arial", size: 9, color: { argb: "FF1A1A2E" } };
         cell.alignment = { vertical: "top", wrapText: true };
