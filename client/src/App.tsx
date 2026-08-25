@@ -9,14 +9,19 @@ import { useAuth } from "./_core/hooks/useAuth";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ModulePage from "./pages/ModulePage";
+import { BackendConnectivityMonitor, BackendUnavailablePanel, useBrowserOffline } from "./components/BackendConnectivityState";
+import { isBackendUnavailable } from "./lib/backendStatus";
 
 function Protected({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
+  const offline = useBrowserOffline();
   const [, navigate] = useLocation();
+  const backendUnavailable = offline || isBackendUnavailable(auth.error);
   useEffect(() => {
     if (!auth.loading && !auth.isAuthenticated) navigate("/login");
   }, [auth.loading, auth.isAuthenticated, navigate]);
   if (auth.loading) return <div className="auth-loading"><span className="live-dot" /> AUTHENTICATING SERVER SESSION…</div>;
+  if (!auth.isAuthenticated && backendUnavailable) return <main className="auth-fallback"><BackendUnavailablePanel offline={offline} onRetry={() => void auth.refresh()} /></main>;
   if (!auth.isAuthenticated) return <div className="auth-loading"><span className="live-dot" /> REDIRECTING TO SECURE SIGN-IN…</div>;
   return <>{children}</>;
 }
@@ -39,7 +44,7 @@ function LoginRoute() {
 }
 
 export default function App() {
-  return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster theme="light" /><Switch>
+  return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster theme="light" /><BackendConnectivityMonitor /><Switch>
     <Route path="/login" component={LoginRoute} />
     <Route path="/"><Protected><Home /></Protected></Route>
     <Route path="/operations"><Protected><Home /></Protected></Route>

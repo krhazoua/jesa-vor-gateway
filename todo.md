@@ -700,3 +700,10 @@
 - [x] Keep `VITE_API_BASE_URL` optional and configurable for later Netlify setup without placeholder or localhost production values.
 - [x] Verify the generated production frontend contains no localhost or placeholder backend URL.
 
+
+# Backend unavailable and offline fallback — 2026-08-25
+- [x] Inspect current auth loading, tRPC transport errors, route shells, notification transport, and tests.
+- [x] Define a connectivity state model and safe read-only offline fallback without fabricated plant data.
+- [x] Implement reusable backend-unavailable UI, retry behavior, and offline-safe route presentation.
+- [x] Add regression tests and verify failure/recovery, route rendering, responsive behavior, and full quality gates.
+- [x] Document offline behavior, close the checklist, and save a verified checkpoint.
