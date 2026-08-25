@@ -347,13 +347,13 @@
 
 # Authoritative Engineering Master Connection — 2026-08-24
 
-- [ ] Define the post-FAT/SAT authoritative-master connection contract with explicit read-only and authorization states.
-- [ ] Add persisted master-connection configuration, sync runs, evidence, and failure-state records.
-- [ ] Add protected procedures for connection validation, read-only synchronization, sync evidence, and explicit authorization.
-- [ ] Enforce FAT/SAT acceptance, certificate/trust evidence, and distinct authorization before any propagation gate can open.
-- [ ] Build responsive Configuration UI for connection status, sync evidence, and downstream authorization readiness.
-- [ ] Add tests proving the authoritative master cannot mutate the canonical catalog or plant systems before authorization.
-- [ ] Run migration, full QA, documentation review, and save a verified checkpoint.
+- [x] Define the post-FAT/SAT authoritative-master connection contract with explicit read-only and authorization states.
+- [x] Add persisted master-connection configuration, sync runs, evidence, and failure-state records.
+- [x] Add protected procedures for connection validation, read-only synchronization, sync evidence, and explicit authorization.
+- [x] Enforce FAT/SAT acceptance, certificate/trust evidence, and distinct authorization before any propagation gate can open.
+- [x] Build responsive Configuration UI for connection status, sync evidence, and downstream authorization readiness.
+- [x] Add tests proving the authoritative master cannot mutate the canonical catalog or plant systems before authorization.
+- [x] Run migration, full QA, documentation review, and save a verified checkpoint.
 
 # Certificate Expiry and Trust-Anchor Rotation — 2026-08-24
 - [x] Add operator-configurable certificate expiry warning and critical thresholds.
@@ -416,3 +416,12 @@
 - [x] Keep metadata safe and readable for dates, nulls, nested objects, and arrays without exposing unrelated records.
 - [x] Add responsive styles and loading/empty behavior consistent with the Audit table.
 - [x] Add regression coverage, run full QA, verify desktop/mobile behavior, document, and save a checkpoint.
+
+# Confirmed master requirements specification — 2026-08-25
+- [x] Read and reconcile the remaining requirements in the supplied specification against the current implementation.
+- [x] Audit all protected routes, backend contracts, roles, validation, approvals, audit, health, analytics, configuration, simulator boundaries, and responsive states.
+- [x] Implement every applicable gap without fabricated data, personal names, plant writes, or a new application.
+- [x] Add regression coverage for each implemented correction and verify important interactions.
+- [x] Run final tests, TypeScript, production build, route QA, and documentation review.
+- [x] Save a verified checkpoint for the completed applicable requirements.
+- [x] Add automatic System Health refresh and a manual refresh control with loading/error feedback.
