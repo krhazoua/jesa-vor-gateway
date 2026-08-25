@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { evaluateCertificateExpiry, hasDualIndependentApproval, validateCertificateChain, validateExpiryPolicy, validateTrustAnchor } from "./certificateTrust";
+import { canRetireTrustAnchor, evaluateCertificateExpiry, hasDualIndependentApproval, validateCertificateChain, validateExpiryPolicy, validateTrustAnchor } from "./certificateTrust";
 
 describe("certificate trust governance", () => {
   it("rejects malformed trust-anchor evidence", () => {
@@ -43,5 +43,13 @@ describe("certificate trust governance", () => {
     expect(validateExpiryPolicy(7, 30)).toBe(false);
     expect(validateExpiryPolicy(3651, 7)).toBe(false);
     expect(validateExpiryPolicy(30.5, 7)).toBe(false);
+  });
+
+  it("allows retirement only with an active, distinct, unexpired replacement and verified rotation", () => {
+    const now = new Date("2026-08-25T00:00:00.000Z").getTime();
+    expect(canRetireTrustAnchor({ anchorStatus: "ACTIVE", replacementStatus: "ACTIVE", hasVerifiedRotation: true, replacementExpiresAt: "2026-09-25T00:00:00.000Z", now })).toBe(true);
+    expect(canRetireTrustAnchor({ anchorStatus: "RETIRED", replacementStatus: "ACTIVE", hasVerifiedRotation: true, now })).toBe(false);
+    expect(canRetireTrustAnchor({ anchorStatus: "ACTIVE", replacementStatus: "ACTIVE", hasVerifiedRotation: false, now })).toBe(false);
+    expect(canRetireTrustAnchor({ anchorStatus: "ACTIVE", replacementStatus: "ACTIVE", hasVerifiedRotation: true, replacementExpiresAt: "2026-08-24T00:00:00.000Z", now })).toBe(false);
   });
 });

@@ -200,7 +200,7 @@ export const certificateTrustAnchors = mysqlTable("certificateTrustAnchors", {
   storageKey: varchar("storageKey", { length: 512 }).notNull(),
   storageUrl: varchar("storageUrl", { length: 600 }).notNull(),
   registeredBy: int("registeredBy").notNull(),
-  status: mysqlEnum("status", ["ACTIVE", "REVOKED"]).notNull(),
+  status: mysqlEnum("status", ["ACTIVE", "REVOKED", "RETIRED"]).notNull(),
   registeredAt: timestamp("registeredAt").defaultNow().notNull(),
 }, table => ({ fingerprintIdx: index("certificateTrustAnchors_fingerprint_idx").on(table.fingerprint), statusIdx: index("certificateTrustAnchors_status_idx").on(table.status) }));
 
@@ -225,6 +225,19 @@ export const certificateTrustAnchorRotations = mysqlTable("certificateTrustAncho
   actorId: int("actorId").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, table => ({ newAnchorIdx: index("certificateTrustAnchorRotations_new_idx").on(table.newAnchorId), createdIdx: index("certificateTrustAnchorRotations_created_idx").on(table.createdAt) }));
+
+export const certificateTrustAnchorRetirements = mysqlTable("certificateTrustAnchorRetirements", {
+  id: int("id").autoincrement().primaryKey(),
+  anchorId: int("anchorId").notNull(),
+  replacementAnchorId: int("replacementAnchorId").notNull(),
+  action: mysqlEnum("action", ["REVOKED", "RETIRED"]).notNull(),
+  referenceId: varchar("referenceId", { length: 180 }).notNull(),
+  referenceStorageKey: varchar("referenceStorageKey", { length: 512 }).notNull(),
+  referenceStorageUrl: varchar("referenceStorageUrl", { length: 600 }).notNull(),
+  reason: varchar("reason", { length: 500 }).notNull(),
+  actorId: int("actorId").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, table => ({ anchorIdx: index("certificateTrustAnchorRetirements_anchor_idx").on(table.anchorId), createdIdx: index("certificateTrustAnchorRetirements_created_idx").on(table.createdAt) }));
 
 export const adapterActivationRuns = mysqlTable("adapterActivationRuns", {
   id: int("id").autoincrement().primaryKey(),

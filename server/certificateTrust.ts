@@ -1,7 +1,7 @@
 import { X509Certificate } from "node:crypto";
 
 export type CertificateChainStatus = "VALID" | "INVALID" | "TRUST_STORE_MISSING";
-export type TrustAnchor = { subject: string; fingerprint: string; status: "ACTIVE" | "REVOKED"; expiresAt?: Date | string | null };
+export type TrustAnchor = { subject: string; fingerprint: string; status: "ACTIVE" | "REVOKED" | "RETIRED"; expiresAt?: Date | string | null };
 export type CertificateExpiryState = "VALID" | "EXPIRING_SOON" | "CRITICAL" | "EXPIRED" | "UNKNOWN";
 
 function normalizeFingerprint(value: string) { return value.replace(/[^a-fA-F0-9]/g, "").toUpperCase(); }
@@ -25,6 +25,7 @@ export function evaluateCertificateExpiry(expiresAt: Date | string | null | unde
 }
 
 export function validateExpiryPolicy(warningDays: number, criticalDays: number) { return Number.isInteger(warningDays) && Number.isInteger(criticalDays) && criticalDays >= 0 && warningDays >= criticalDays && warningDays <= 3650; }
+export function canRetireTrustAnchor(args: { anchorStatus: TrustAnchor["status"]; replacementStatus: TrustAnchor["status"]; hasVerifiedRotation: boolean; replacementExpiresAt?: Date | string | null; now?: number }) { const replacementExpiry = args.replacementExpiresAt ? new Date(args.replacementExpiresAt).getTime() : null; return args.anchorStatus === "ACTIVE" && args.replacementStatus === "ACTIVE" && args.hasVerifiedRotation && (replacementExpiry === null || replacementExpiry > (args.now ?? Date.now())); }
 
 export function validateTrustAnchor(data: Buffer, fingerprint: string) {
   try {

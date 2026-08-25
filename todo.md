@@ -362,3 +362,12 @@
 - [x] Surface certificate expiry state and rotation history in the Configuration governance panel.
 - [x] Add tests for warning boundaries, expired-certificate blocking, role enforcement, and append-only rotation evidence.
 - [x] Run migration, full QA, documentation review, and save a verified checkpoint.
+
+# Trust-Anchor Retirement Workflow — 2026-08-25
+
+- [x] Add administrator-only retirement/revocation procedure requiring a verified replacement and rotation evidence.
+- [x] Persist retirement evidence with actor, reason, reference artifact, and old/new fingerprints in append-only storage.
+- [x] Ensure retired anchors cannot validate certificate chains and cannot be retired twice.
+- [x] Build responsive Configuration controls for selecting, reviewing, and retiring an existing active anchor.
+- [x] Add tests for replacement gating, role enforcement, duplicate retirement blocking, chain invalidation, and audit evidence.
+- [x] Run full QA, documentation review, and save a verified checkpoint.
