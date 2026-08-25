@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { advanceSimulation, getSimulationControlLabel } from "./Home";
+import { advanceSimulation, getSimulationControlLabel } from "@/lib/operationsSimulation";
 
 const baseRequests = [
   { id: "VOR-1", time: "08:42:19" },

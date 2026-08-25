@@ -525,3 +525,11 @@
 - [x] Ensure the detailed workbook sheet visibly contains populated canonical rows and values for every report section.
 - [x] Add serialized XLSX inspection coverage for worksheet names, cell values, and downloaded buffer contents.
 - [x] Document the root cause, run full QA, and save a verified checkpoint.
+
+# Complete supplied specification audit — 2026-08-25
+
+- [x] Read the complete supplied specification and map each applicable requirement to the existing implementation.
+- [x] Audit all routes, UI states, APIs, database models, permissions, workflows, exports, responsive behavior, accessibility, and security boundaries.
+- [x] Implement every applicable remaining gap in place without mock-only screens, personal names, unrelated branding, AI references, or plant writes.
+- [x] Add or update regression and integration coverage, then run full automated, browser, responsive, export, and no-fabrication verification.
+- [x] Update traceability documentation, close the checklist, and save a verified checkpoint.

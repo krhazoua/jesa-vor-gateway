@@ -77,3 +77,7 @@ The detailed `JESA Report` worksheet writes section rows using their native repo
 ## Excel opening-sheet correction
 
 The downloaded workbook previously placed `Report control` before `JESA Report`, which made the file appear to contain only text when opened because the control sheet was the active first sheet. The workbook now creates `JESA Report` first, so the downloaded file opens directly on the populated detailed report with canonical section rows and values. `Report control` remains available as the second worksheet for document-control metadata and navigation.
+
+## Canonical Operations data boundary
+
+The Operations request monitor and telemetry rail now use the protected canonical request and engineering-catalog queries exclusively. When no canonical rows are available, the interface shows an explicit empty state rather than substituting hardcoded plant-looking records. The former preview-stream utility remains isolated from the live page for deterministic test coverage only; no synthetic request row or process value is presented as live operational data.
