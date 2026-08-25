@@ -615,3 +615,12 @@
 - [x] Implement only confirmed applicable fixes in the existing project and update focused tests and actual-implementation documentation.
 - [x] Run the full automated, API, browser, responsive, export, security, and repository-hygiene verification pass.
 - [x] Close the audit checklist and save a verified checkpoint.
+
+# Approval automation, performance budgets, and plant contract — 2026-08-25
+
+- [x] Inspect existing browser/test tooling, authentication fixtures, approval workflow, build scripts, and integration documentation.
+- [x] Add authenticated browser automation covering approval and logout flows without exposing credentials or weakening authentication.
+- [x] Add enforceable CI checks for initial and deferred JavaScript bundle budgets.
+- [x] Define and document an approved plant integration contract without enabling production writes or changing the read-only boundary.
+- [x] Run full tests, browser checks, build-budget checks, and security-boundary verification.
+- [x] Close the checklist and save a verified checkpoint.
