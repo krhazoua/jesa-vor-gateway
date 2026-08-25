@@ -655,3 +655,9 @@
 - [x] Run export, full regression, type, build, bundle, and live Audit verification.
 - [x] Document the fix, close the checklist, and save a verified checkpoint.
 
+
+# Authenticated Audit export browser coverage — 2026-08-25
+- [x] Inspect the existing Playwright authentication storage-state contract and Audit export controls.
+- [x] Add authenticated browser coverage for CSV and XLSX downloads with content assertions.
+- [x] Run Playwright discovery and authenticated execution when storage state is supplied, plus full quality gates.
+- [x] Document the browser-download coverage and save a verified checkpoint.
