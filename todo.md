@@ -497,3 +497,10 @@
 - [x] Fix the stylesheet/module syntax issue and restore clean HMR behavior without regressing the /audit export controls.
 - [x] Add or update regression coverage and verify tests, TypeScript, production build, and authenticated /audit rendering.
 - [x] Document the fix, close the checklist, and save a verified checkpoint.
+
+# CSV visible-branding regression — 2026-08-25
+
+- [x] Inspect the exact generated CSV bytes and the user-visible file behavior.
+- [x] Make JESA branding and the logo asset reference unmistakable while keeping the CSV valid and organized.
+- [x] Add regression coverage for the exact branding markers, section layout, and download naming across all CSV call sites.
+- [x] Document the correction, run full QA, and save a verified checkpoint.

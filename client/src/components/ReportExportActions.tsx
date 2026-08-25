@@ -1,7 +1,7 @@
 import { Download, FileSpreadsheet, FileText, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { downloadCsvReport, downloadExcelReport, downloadJsonReport, downloadPdfReportWithProgress, ReportDefinition } from "@/lib/reportExport";
+import { downloadCsvLogoPackage, downloadCsvReport, downloadExcelReport, downloadJsonReport, downloadPdfReportWithProgress, ReportDefinition } from "@/lib/reportExport";
 
 type Props = {
   report: ReportDefinition;
@@ -24,11 +24,25 @@ export function getPdfExportPresentation(state: PdfState) {
 export default function ReportExportActions({ report, label = "EXPORT REPORT" }: Props) {
   const [pdfState, setPdfState] = useState<PdfState>({ status: "idle", progress: 0, step: "Ready to generate" });
   const [excelBusy, setExcelBusy] = useState(false);
+  const [csvPackageBusy, setCsvPackageBusy] = useState(false);
   const presentation = getPdfExportPresentation(pdfState);
 
   const exportCsv = () => {
     downloadCsvReport(report);
     toast.success(`${label} CSV downloaded.`);
+  };
+
+  const exportCsvPackage = async () => {
+    if (csvPackageBusy) return;
+    setCsvPackageBusy(true);
+    try {
+      await downloadCsvLogoPackage(report);
+      toast.success(`${label} CSV + JESA logo package downloaded.`);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : `${label} CSV logo package failed.`);
+    } finally {
+      setCsvPackageBusy(false);
+    }
   };
 
   const exportJson = () => {
@@ -66,8 +80,12 @@ export default function ReportExportActions({ report, label = "EXPORT REPORT" }:
 
   return <div className="report-export-actions" aria-label={`${label} controls`}>
     <span>{label}</span>
-    <button type="button" onClick={exportCsv} aria-label={`Download ${label} as CSV`}>
-      <Download size={13} /> CSV
+    <button type="button" onClick={exportCsv} aria-label={`Download ${label} as CSV data`}>
+      <Download size={13} /> CSV DATA
+    </button>
+    <button type="button" onClick={() => void exportCsvPackage()} disabled={csvPackageBusy} aria-label={csvPackageBusy ? `Packaging ${label} CSV and JESA logo` : `Download ${label} CSV and JESA logo package`}>
+      {csvPackageBusy ? <Loader2 size={13} className="export-spinner" aria-hidden="true" /> : <Download size={13} />}
+      {csvPackageBusy ? "CSV + LOGO…" : "CSV + LOGO"}
     </button>
     <button type="button" onClick={exportJson} aria-label={`Download ${label} as JSON`}>
       <FileText size={13} /> JSON

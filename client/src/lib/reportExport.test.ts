@@ -1,6 +1,7 @@
 import ExcelJS from "exceljs";
+import JSZip from "jszip";
 import { describe, expect, it } from "vitest";
-import { buildCsvReport, buildJsonReport, buildPdfReport, createExcelWorkbook, escapeCsvCell, JESA_LOGO_URL } from "./reportExport";
+import { buildCsvReport, buildJsonReport, buildPdfReport, createCsvLogoPackage, createExcelWorkbook, escapeCsvCell, JESA_LOGO_URL } from "./reportExport";
 
 describe("report exports", () => {
   const report = {
@@ -29,6 +30,17 @@ describe("report exports", () => {
     expect(csv).toContain("SECTION,Audit events,2,2");
     expect(csv).toContain("# Audit events");
     expect(csv).toContain("VOR-002,\"Operator, reviewed\"");
+  });
+
+  it("packages the organized CSV with the actual JESA wordmark and a manifest", async () => {
+    const logoBytes = new Uint8Array([137, 80, 78, 71]).buffer;
+    const packageBlob = await createCsvLogoPackage({ ...report, filename: "audit-report.csv" }, logoBytes);
+    const zip = await JSZip.loadAsync(await packageBlob.arrayBuffer());
+    expect(zip.file("audit-report.csv")).toBeDefined();
+    expect(zip.file("JESA-wordmark.png")).toBeDefined();
+    expect(zip.file("README.txt")).toBeDefined();
+    expect(await zip.file("JESA-wordmark.png")?.async("uint8array")).toEqual(new Uint8Array([137, 80, 78, 71]));
+    expect(await zip.file("README.txt")?.async("string")).toContain("CSV itself remains a text format");
   });
 
   it("creates a branded Excel workbook with embedded logo media and usable table controls", async () => {

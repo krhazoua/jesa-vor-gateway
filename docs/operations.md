@@ -65,3 +65,7 @@ CSV exports now begin with a clearly labeled JESA report-control block, followed
 ## Vite HMR reload recovery
 
 The reported `/audit` HMR messages for `index.css`, `ReportExportActions.tsx`, and `ReconciliationEvidencePanel.tsx` were investigated against the current source and server diagnostics. The current stylesheet and module graph compile successfully; the failure was a stale HMR state left behind during rapid related source updates rather than an active syntax or missing-module defect. Restarting the managed development server rebuilt the module graph cleanly. Authenticated `/audit` verification now renders the export controls and audit table without reload failures, and the production build remains successful.
+
+## CSV + JESA logo package
+
+A direct CSV file cannot render a bitmap image because CSV is a text-only interchange format. To provide the actual logo file requested by operators, report export controls now include `CSV + LOGO`. This downloads a ZIP package containing the organized CSV, `JESA-wordmark.png`, and a README manifest. The direct `CSV DATA` option remains available for systems that require only a plain CSV file. Both options use the same canonical report definition and data values.
