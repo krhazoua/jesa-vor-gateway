@@ -640,3 +640,10 @@
 - [x] Implement only confirmed repairs in the existing architecture and update focused tests, CI checks, and actual-implementation documentation.
 - [x] Run full automated, database/API, browser, responsive, export, security, and repository-hygiene verification.
 - [x] Close the audit checklist, record genuine limitations, and save the verified checkpoint.
+
+# Repeated master-specification audit — 2026-08-25
+
+- [x] Map the supplied master specification to the current project state.
+- [x] Recheck routes, authentication/RBAC, API contracts, data integrity, workflows, realtime, exports, UI states, responsiveness, branding, and diagnostics.
+- [x] Apply only confirmed remaining fixes and update focused documentation/tests.
+- [x] Run complete automated and live verification, then close the checklist and save a checkpoint.
