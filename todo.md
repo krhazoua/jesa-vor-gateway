@@ -371,3 +371,10 @@
 - [x] Build responsive Configuration controls for selecting, reviewing, and retiring an existing active anchor.
 - [x] Add tests for replacement gating, role enforcement, duplicate retirement blocking, chain invalidation, and audit evidence.
 - [x] Run full QA, documentation review, and save a verified checkpoint.
+
+# Configuration masterGate query repair — 2026-08-25
+
+- [x] Ensure the protected masterGate query returns a defined empty-state object when no gate exists.
+- [x] Preserve armed-gate fields and Configuration UI behavior for existing gates.
+- [x] Add regression coverage for empty and armed masterGate responses.
+- [x] Run full QA, verify /configuration, and save a repair checkpoint.
