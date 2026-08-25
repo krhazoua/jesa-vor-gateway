@@ -432,3 +432,13 @@
 - [x] Add informative hover and keyboard-focus tooltips for PRODUCTION ADAPTER NOT CONFIGURED.
 - [x] Preserve read-only and no-connection semantics, responsive layout, and accessible labeling.
 - [x] Add regression coverage, run QA, verify desktop/mobile states, document, and save a checkpoint.
+
+# Confirmed final full-audit specification — 2026-08-25
+
+- [x] Read the complete supplied specification and map every acceptance criterion to the existing application.
+- [x] Verify every required route, backend contract, authentication/RBAC boundary, data source, control, form, loading state, empty state, error state, refresh path, and export.
+- [x] Implement every genuine remaining gap in place without fabricated data, personal names, unexplained production claims, or plant writes.
+- [x] Verify the nine-step validation engine, four-eyes approval, audit trail, notifications, health states, configuration governance, analytics, and local authoritative-master boundary.
+- [x] Run full automated QA, TypeScript, production build, browser/console/network review, responsive review, documentation update, and save a final checkpoint.
+
+- [x] Reconcile stale prototype-scope documentation with the current full-stack protected implementation and explicitly retain the disconnected read-only integration limits.
