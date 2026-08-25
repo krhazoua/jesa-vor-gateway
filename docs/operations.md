@@ -49,3 +49,7 @@ Audit, analytics, and reconciliation report downloads now use a consistent JESA 
 ## Supplied specification audit outcome
 
 The supplied industrial specification was reviewed against the existing routes, protected tRPC contracts, schema, validation engine, approval workflow, notification transport, edge adapter, exports, and responsive surfaces. The current implementation retains the safer managed OAuth/session architecture rather than introducing an unbacked username/password or client-side certificate credential flow. The login surface now presents one JESA wordmark and describes certificate-aware server authentication without exposing or collecting private certificate material. Protected routes and backend procedures remain session- and role-enforced, while the disconnected edge adapter remains explicitly read-only until an approved plant integration contract exists.
+
+## Branded Excel workbooks
+
+The report export controls now include an XLSX option for audit, analytics, and reconciliation reports. The workbook is generated from the same report definition as CSV, JSON, and PDF, preserving the canonical sections and row values. It includes a JESA wordmark image when the managed asset is available, JESA Digital Engineering title bands, report-control metadata, styled section headers, alternating data rows, readable column sizing, frozen headers, worksheet filters, and a confidential footer. ExcelJS is lazy-loaded only when an XLSX export is requested so normal route loading remains unaffected.

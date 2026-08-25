@@ -1,5 +1,6 @@
+import ExcelJS from "exceljs";
 import { describe, expect, it } from "vitest";
-import { buildCsvReport, buildJsonReport, buildPdfReport, escapeCsvCell } from "./reportExport";
+import { buildCsvReport, buildJsonReport, buildPdfReport, createExcelWorkbook, escapeCsvCell } from "./reportExport";
 
 describe("report exports", () => {
   const report = {
@@ -22,6 +23,22 @@ describe("report exports", () => {
     expect(csv).toContain("Source,Canonical DB / read-only");
     expect(csv).toContain("# Audit events");
     expect(csv).toContain("VOR-002,\"Operator, reviewed\"");
+  });
+
+  it("creates a branded Excel workbook with embedded logo media and usable table controls", async () => {
+    const workbook = await createExcelWorkbook(report, "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=");
+    expect(workbook.creator).toBe("JESA Digital Engineering");
+    expect(workbook.company).toBe("JESA S.A.");
+    expect(workbook.worksheets[0].name).toBe("JESA Report");
+    expect(workbook.worksheets[0].getCell("A2").value).toBe(report.title);
+    expect(workbook.worksheets[0].getCell("A8").value).toBe("Audit events");
+    expect(workbook.worksheets[0].views[0].state).toBe("frozen");
+    expect(workbook.worksheets[0].autoFilter).toBeDefined();
+    expect(workbook.model.media.length).toBe(1);
+    const buffer = await workbook.xlsx.writeBuffer();
+    const reloaded = new ExcelJS.Workbook();
+    await reloaded.xlsx.load(buffer);
+    expect(reloaded.getWorksheet("JESA Report")?.getCell("A10").value).toBe("VOR-001");
   });
 
   it("serializes metadata and sections as structured JSON", () => {

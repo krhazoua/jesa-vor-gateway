@@ -466,3 +466,11 @@
 - [x] Add regression coverage and complete automated, browser, responsive, API, and no-fabrication verification.
 - [x] Update traceability documentation, close this checklist, and save a verified checkpoint.
 - [x] Remove the residual secondary gate-mark and simulated certificate toggle from the public login surface; keep the existing server-mediated secure authentication boundary explicit.
+
+# Branded Excel and CSV export enhancement — 2026-08-25
+
+- [x] Audit current Excel/CSV export paths, report definitions, and JESA logo asset references.
+- [x] Add a branded Excel workbook export with JESA logo, formatted metadata, readable tables, filters, widths, and frozen headers.
+- [x] Refine CSV exports with stronger JESA branding while preserving machine-readable data and section boundaries.
+- [x] Add regression coverage and verify workbook structure, CSV output, logo inclusion, and download behavior.
+- [x] Update export documentation, run full QA, and save a verified checkpoint.

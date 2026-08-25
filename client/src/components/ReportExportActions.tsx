@@ -1,7 +1,7 @@
-import { Download, FileText, Loader2 } from "lucide-react";
+import { Download, FileSpreadsheet, FileText, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { downloadCsvReport, downloadJsonReport, downloadPdfReportWithProgress, ReportDefinition } from "@/lib/reportExport";
+import { downloadCsvReport, downloadExcelReport, downloadJsonReport, downloadPdfReportWithProgress, ReportDefinition } from "@/lib/reportExport";
 
 type Props = {
   report: ReportDefinition;
@@ -23,6 +23,7 @@ export function getPdfExportPresentation(state: PdfState) {
 
 export default function ReportExportActions({ report, label = "EXPORT REPORT" }: Props) {
   const [pdfState, setPdfState] = useState<PdfState>({ status: "idle", progress: 0, step: "Ready to generate" });
+  const [excelBusy, setExcelBusy] = useState(false);
   const presentation = getPdfExportPresentation(pdfState);
 
   const exportCsv = () => {
@@ -33,6 +34,19 @@ export default function ReportExportActions({ report, label = "EXPORT REPORT" }:
   const exportJson = () => {
     downloadJsonReport(report);
     toast.success(`${label} JSON downloaded.`);
+  };
+
+  const exportExcel = async () => {
+    if (excelBusy) return;
+    setExcelBusy(true);
+    try {
+      await downloadExcelReport(report);
+      toast.success(`${label} Excel workbook downloaded.`);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : `${label} Excel generation failed.`);
+    } finally {
+      setExcelBusy(false);
+    }
   };
 
   const exportPdf = async () => {
@@ -57,6 +71,10 @@ export default function ReportExportActions({ report, label = "EXPORT REPORT" }:
     </button>
     <button type="button" onClick={exportJson} aria-label={`Download ${label} as JSON`}>
       <FileText size={13} /> JSON
+    </button>
+    <button type="button" onClick={() => void exportExcel()} disabled={excelBusy} aria-label={excelBusy ? `Generating ${label} Excel workbook` : `Download ${label} as Excel workbook`}>
+      {excelBusy ? <Loader2 size={13} className="export-spinner" aria-hidden="true" /> : <FileSpreadsheet size={13} />}
+      {excelBusy ? "XLSX…" : "XLSX"}
     </button>
     <button type="button" onClick={exportPdf} disabled={presentation.busy} aria-label={presentation.busy ? `Generating ${label} PDF` : `Download ${label} as PDF`}>
       {presentation.busy ? <Loader2 size={13} className="export-spinner" aria-hidden="true" /> : <FileText size={13} />}
