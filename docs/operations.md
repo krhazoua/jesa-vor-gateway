@@ -95,3 +95,8 @@ The request monitor includes a `COLUMNS` control for reducing visual density dur
 ## Approval API response hardening
 
 The protected tRPC client now validates the response content type before allowing the protocol transformer to parse it. If a transient development-server or route fallback returns HTML for an `/api/trpc` request, the client converts it into a structured 502 tRPC error with an actionable retry message instead of surfacing `Unexpected token '<'`. Normal JSON responses, including protected 401 authentication responses, pass through unchanged. The `/approvals` route was verified with the protected empty approval state after the change.
+
+
+## Final industrial audit corrections
+
+The routed module header reports only the authenticated server-session state; it does not display a fabricated or static session TTL. The edge adapter card derives simulator labeling from the protected adapter configuration and displays `SIMULATION MODE · READ-ONLY PREVIEW` only for a server-reported simulator mode. This keeps preview behavior visibly distinct from production DCS telemetry while preserving the hard-disabled plant write boundary.

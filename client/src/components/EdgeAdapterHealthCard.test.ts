@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getEdgeAdapterCardModel, formatAdapterAge, type AdapterState } from "./EdgeAdapterHealthCard";
+import { getEdgeAdapterCardModel, formatAdapterAge, isSimulationMode, type AdapterState } from "./EdgeAdapterHealthCard";
 
 const adapter = (overrides: Partial<AdapterState> = {}): AdapterState => ({
   mode: "DISCONNECTED_READ_ONLY",
@@ -19,6 +19,11 @@ describe("EdgeAdapterHealthCard presentation contract", () => {
   it("formats snapshot age in operational units", () => {
     expect(formatAdapterAge(30_000)).toBe("30s");
     expect(formatAdapterAge(120_000)).toBe("2m");
+  });
+
+  it("identifies simulator modes without treating them as production data", () => {
+    expect(isSimulationMode("DCS_SIMULATOR_READ_ONLY")).toBe(true);
+    expect(isSimulationMode("DISCONNECTED_READ_ONLY")).toBe(false);
   });
 
   it("renders an explicit loading state", () => {

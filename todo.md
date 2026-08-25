@@ -557,3 +557,11 @@
 - [x] Fix the source of the HTML response while preserving protected approval contracts and RBAC.
 - [x] Add regression coverage and verify approvals loading, empty/error states, authentication, and approval actions.
 - [x] Document the root cause, run full QA, and save a verified checkpoint.
+
+# Supplied final industrial audit — 2026-08-25
+
+- [x] Read and map the complete supplied specification against the current implementation.
+- [x] Audit every required route, workflow, API contract, security boundary, data model, export, UI state, and diagnostic path.
+- [x] Implement all applicable corrections in place without duplicate applications, mock-only live data, personal names, unrelated branding, AI references, or plant writes.
+- [x] Add or update regression coverage and complete automated, browser, responsive, export, security, and no-fabrication QA.
+- [x] Update traceability documentation, close the checklist, and save a verified checkpoint.

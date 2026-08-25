@@ -31,6 +31,10 @@ export function formatAdapterAge(ms: number) {
   return `${Math.round(ms / 60_000)}m`;
 }
 
+export function isSimulationMode(mode: string) {
+  return mode.toUpperCase().includes("SIMUL");
+}
+
 export type EdgeAdapterCardModel = { kind: "loading" | "error" | "ready"; label: string; description: string; tone?: string; adapter?: AdapterState; stateLabel?: string; stateTone?: string; writeLabel?: string };
 
 export function getEdgeAdapterCardModel(input: { isLoading: boolean; isError: boolean; adapter?: AdapterState | null }): EdgeAdapterCardModel {
@@ -52,6 +56,7 @@ export default function EdgeAdapterHealthCard({ compact = false }: Props) {
   return <section className={`edge-adapter-card ${compact ? "compact" : ""}`} aria-label="Edge adapter health and configuration">
     <div className="edge-adapter-card-head"><div><span className="eyebrow">DCS / EDGE ADAPTER</span><h2>Read-only plant boundary</h2></div><div className={`adapter-state ${state.tone}`}><Icon size={14} /> {state.label}</div></div>
     <p className="edge-adapter-description">{state.description}</p>
+    {isSimulationMode(adapter.mode) && <div className="edge-adapter-simulation" role="status">SIMULATION MODE · READ-ONLY PREVIEW</div>}
     <div className="edge-adapter-config"><div><span>MODE</span><strong>{adapter.mode.replaceAll("_", " ")}</strong></div><div><span>SECURITY</span><strong>{adapter.securityPolicy.replaceAll("_", " ")}</strong></div><div><span>SNAPSHOT AGE</span><strong>{formatAdapterAge(adapter.maxSnapshotAgeMs)}</strong></div><div><span>ALLOWLIST</span><strong>{adapter.tagAllowlistCount} TAGS</strong></div></div>
     <div className="edge-adapter-guard"><span><ShieldCheck size={13} /> WRITE PATH</span><strong><LockKeyhole size={12} /> {model.writeLabel}</strong></div>
     {!compact && <div className="edge-adapter-foot"><span><Network size={12} /> ENDPOINT {adapter.endpointConfigured ? "CONFIGURED" : "NOT CONFIGURED"}</span><span>{adapter.lastSnapshotAt ? `LAST SNAPSHOT ${new Date(adapter.lastSnapshotAt).toLocaleTimeString()}` : "NO SNAPSHOT RECEIVED"}</span></div>}
