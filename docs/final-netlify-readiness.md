@@ -6,19 +6,19 @@
 
 ## Executive decision
 
-# 🔴 NOT READY FOR NETLIFY
+# 🟢 FRONTEND READY FOR NETLIFY CONFIGURATION
 
-The frontend is prepared for a frontend-only Netlify deployment, but production use is blocked until a stable public HTTPS backend origin exists and the backend is configured for the exact Netlify origin. The browser continues to communicate only with backend APIs and SSE; it never connects directly to PostgreSQL or OPC UA. The protected authenticated Playwright suite is also gated on the protected CI `E2E_STORAGE_STATE` secret and was not executed in this sandbox.
+The existing frontend is prepared for a frontend-only Netlify deployment. Final production operation remains dependent on a stable public HTTPS backend origin and exact backend configuration. The browser continues to communicate only with backend APIs and SSE; it never connects directly to PostgreSQL or OPC UA. The protected authenticated Playwright suite is gated on the protected CI `E2E_STORAGE_STATE` secret and was not executed in this sandbox.
 
 ## Status matrix
 
 | Area | Status | Evidence and interpretation |
 |---|---|---|
 | Build status | PASS | `pnpm build` completed successfully. |
-| Test status | PASS WITH LIMITATION | 139 Vitest tests passed. Playwright discovery found four authenticated tests; credentialed execution is correctly skipped without protected storage state. |
-| Netlify compatibility | NOT READY | Static frontend configuration is present, but the public backend HTTPS origin and cross-origin backend configuration are not deployed. |
+| Test status | PASS WITH LIMITATION | 141 Vitest tests passed. Playwright discovery found four authenticated tests; credentialed execution is correctly skipped without protected storage state. |
+| Netlify compatibility | READY FOR CONFIGURATION | Static frontend configuration, SPA fallback, headers, caching, and optional backend-origin handling are present. The real backend origin is an external configuration dependency. |
 | Authentication | PASS IN CURRENT DEPLOYMENT | Protected route shell and server-session behavior render correctly; authentication remains server-enforced. Separate Netlify authentication requires backend OAuth and cookie validation. |
-| API connectivity | PASS IN CURRENT DEPLOYMENT / BLOCKED FOR NETLIFY | Same-origin managed API behavior is available. `VITE_API_BASE_URL` remains intentionally unset until the real HTTPS backend exists. |
+| API connectivity | PASS IN CURRENT DEPLOYMENT / EXTERNAL DEPENDENCY FOR NETLIFY | Same-origin managed API behavior is available. `VITE_API_BASE_URL` remains intentionally unset until the real HTTPS backend exists. |
 | SPA routing | PASS | Production static-host simulation returned HTTP 200 for `/login` and all major SPA routes, including direct refresh paths. |
 | Security | PASS | Netlify headers, CSP, no-store document/API policy, immutable asset caching, and protected backend boundaries are configured. |
 | VoR workflow | PASS | Existing nine-step NE178 validation, five-state workflow, four-eyes controls, and read-only OT boundary remain intact. |
@@ -31,7 +31,7 @@ The frontend is prepared for a frontend-only Netlify deployment, but production 
 
 ## Verification performed
 
-The repository passed the Vitest suite, scoped Prettier lint gate, TypeScript validation, production Vite/server build, deferred-bundle budgets, and `git diff --check`. Production output was served with the Vite static preview and returned HTTP 200 for `/login`, `/dashboard`, `/operations`, `/validation`, `/approvals`, `/requests`, `/history`, `/audit-trail`, `/configuration`, `/system-health`, `/analytics`, `/compliance`, and `/audit`. Desktop and narrow responsive captures covered the primary workflow, compliance, configuration, health, request, and approval surfaces. The connectivity-aware offline fallback and manual Check Connection action remain available without fabricating plant data.
+The repository passed 141 Vitest tests, the scoped Prettier lint gate, TypeScript validation, production Vite/server build, deferred-bundle budgets, and `git diff --check`. Production output was served with the Vite static preview and returned HTTP 200 for `/login`, `/dashboard`, `/operations`, `/validation`, `/approvals`, `/requests`, `/history`, `/audit-trail`, `/configuration`, `/system-health`, `/analytics`, `/compliance`, and `/audit`. Desktop and narrow responsive captures covered the primary workflow, compliance, configuration, health, request, and approval surfaces. The connectivity-aware offline fallback and manual Check Connection action remain available without fabricating plant data.
 
 The browser E2E suite contains four tests covering approval, logout, CSV download, and XLSX download. The suite requires `E2E_STORAGE_STATE`; it is not present in this environment, so no credentialed result is claimed. GitHub Actions is configured to run those tests only when the protected secret exists and to retain traces, screenshots, videos, reports, and downloaded CSV/XLSX files.
 
@@ -56,6 +56,11 @@ No new application, architecture replacement, plant connection, propagation path
 
 ## Final decision
 
-# 🔴 NOT READY FOR NETLIFY
+| Category | Decision |
+|---|---|
+| **A. Code readiness** | **READY** |
+| **B. Netlify frontend readiness** | **READY FOR CONFIGURATION** |
+| **C. Backend infrastructure readiness** | **EXTERNAL BACKEND CONFIGURATION REQUIRED** |
+| **D. E2E environment readiness** | **PENDING PROTECTED CI STORAGE STATE** |
 
-The safe frontend preparation is complete. The documented environment contract substitutes for the absent root `.env.example` file, but deployment may proceed only after the three blockers above are resolved and the authenticated browser suite passes in protected CI.
+The safe frontend preparation is complete. The documented environment contract substitutes for the absent root `.env.example` file. The repository itself is not blocked by the missing backend domain; final deployment operation must wait for the external backend contract and protected E2E evidence described above.

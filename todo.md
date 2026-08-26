@@ -735,3 +735,10 @@
 - [x] Apply a managed-preview-safe HMR configuration and add configuration regression coverage where practical.
 - [x] Restart and verify HMR diagnostics, route rendering, TypeScript, build, tests, and production configuration.
 - [x] Document the repair, close the checklist, and save a verified checkpoint.
+
+# Final Netlify checklist reconciliation — 2026-08-26
+- [x] Reconcile existing audit evidence with the supplied final deployment requirements.
+- [x] Create the complete `docs/NETLIFY_DEPLOYMENT_CHECKLIST.md` with pre-deploy, Netlify, backend, and post-deploy gates.
+- [x] Update readiness reporting to separate code, Netlify, backend infrastructure, and E2E environment readiness.
+- [x] Rerun applicable tests/build/static-host/security verification and repair confirmed application-caused issues.
+- [x] Close the checklist and save a verified checkpoint.
