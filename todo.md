@@ -756,3 +756,10 @@
 - [x] Apply a robust development-only fix without changing production behavior.
 - [x] Restart and verify `/configuration`, browser diagnostics, TypeScript, tests, build, and managed preview behavior.
 - [x] Document the resolution, close the checklist, and save a verified checkpoint.
+
+# Recurring root-route HMR client repair — 2026-08-26
+- [x] Inspect the latest served HTML, exact Vite client path, managed process/version, and fresh diagnostics.
+- [x] Identify why the previous managed-preview suppression is not reflected in the reported browser session.
+- [x] Apply and test a definitive development-only suppression without affecting local HMR or production output.
+- [x] Restart and verify the root route, `/@vite/client`, browser diagnostics, TypeScript, tests, build, and preview behavior.
+- [x] Document the recurrence resolution, close the checklist, and save a verified checkpoint.
