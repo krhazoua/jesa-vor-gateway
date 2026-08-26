@@ -728,3 +728,10 @@
 - [x] Verify SPA routing, refreshes, auth boundaries, API/SSE configuration, accessibility, responsive UI, error states, and critical VoR workflows.
 - [x] Fix safe applicable issues and rerun affected checks without weakening security or fabricating infrastructure.
 - [x] Produce the final READY/NOT READY deployment report, update the checklist, and save a verified checkpoint.
+
+# Vite HMR WebSocket repair — 2026-08-26
+- [x] Inspect Vite HMR configuration, dev-server startup, managed proxy environment, diagnostics, and package scripts.
+- [x] Identify the host/protocol/port mismatch without changing production API or authentication behavior.
+- [x] Apply a managed-preview-safe HMR configuration and add configuration regression coverage where practical.
+- [x] Restart and verify HMR diagnostics, route rendering, TypeScript, build, tests, and production configuration.
+- [x] Document the repair, close the checklist, and save a verified checkpoint.

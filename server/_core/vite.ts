@@ -6,10 +6,17 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
 
-export async function setupVite(app: Express, server: Server) {
+export function resolveHmrClientPort(port: number): number {
+  return Number.isInteger(port) && port >= 1 && port <= 65_535 ? port : 3000;
+}
+
+export async function setupVite(app: Express, server: Server, port: number) {
   const serverOptions = {
     middlewareMode: true,
-    hmr: { server },
+    // The managed preview terminates HTTP(S) outside this process. Explicitly
+    // advertise the actual application port so Vite does not fall back to its
+    // standalone default (localhost:5173) for the HMR WebSocket client.
+    hmr: { server, clientPort: resolveHmrClientPort(port) },
     allowedHosts: true as const,
   };
 
