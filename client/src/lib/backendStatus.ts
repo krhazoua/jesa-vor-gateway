@@ -13,6 +13,9 @@ export function isBackendUnavailable(error: unknown) {
   return CONNECTIVITY_MESSAGES.some(fragment => message.includes(fragment));
 }
 
+export const CONNECTION_CHECK_LABEL = "CHECK CONNECTION";
+export const CONNECTION_CHECK_BUSY_LABEL = "CHECKING…";
+
 export function backendUnavailableCopy(offline: boolean) {
   return offline
     ? {

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { AlertTriangle, CloudOff, RefreshCw } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { backendUnavailableCopy, isBackendUnavailable } from "@/lib/backendStatus";
+import {
+  backendUnavailableCopy,
+  CONNECTION_CHECK_BUSY_LABEL,
+  CONNECTION_CHECK_LABEL,
+  isBackendUnavailable,
+} from "@/lib/backendStatus";
 
 export function BackendConnectivityMonitor() {
   const queryClient = useQueryClient();
@@ -44,9 +49,16 @@ export function BackendConnectivityBanner({ offline = false }: { offline?: boole
         <strong>{copy.title}</strong>
         <span>{copy.body}</span>
       </div>
-      <button type="button" className="backend-connectivity-retry" onClick={() => void retry()} disabled={retrying}>
+      <button
+        type="button"
+        className="backend-connectivity-retry"
+        onClick={() => void retry()}
+        disabled={retrying}
+        aria-label="Check backend connection"
+        title="Check backend connection"
+      >
         <RefreshCw size={14} className={retrying ? "spin" : undefined} />
-        {retrying ? "CHECKING…" : "RETRY CONNECTION"}
+        {retrying ? CONNECTION_CHECK_BUSY_LABEL : CONNECTION_CHECK_LABEL}
       </button>
     </div>
   );
@@ -61,7 +73,7 @@ export function BackendUnavailablePanel({ offline, onRetry }: { offline: boolean
         <div className="eyebrow red-label">{copy.eyebrow}</div>
         <h2>{copy.title}</h2>
         <p>{copy.body}</p>
-        <button type="button" className="primary-btn" onClick={onRetry}>RETRY CONNECTION</button>
+        <button type="button" className="primary-btn" onClick={onRetry}>{CONNECTION_CHECK_LABEL}</button>
       </div>
     </section>
   );

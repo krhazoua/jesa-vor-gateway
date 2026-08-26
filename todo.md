@@ -707,3 +707,10 @@
 - [x] Implement reusable backend-unavailable UI, retry behavior, and offline-safe route presentation.
 - [x] Add regression tests and verify failure/recovery, route rendering, responsive behavior, and full quality gates.
 - [x] Document offline behavior, close the checklist, and save a verified checkpoint.
+
+# Manual backend connection check — 2026-08-25
+- [x] Inspect the current global connectivity banner and retry/query-cache mechanics.
+- [x] Add an accessible “Check Connection” action that actively probes the backend.
+- [x] Show deterministic checking, recovered, and still-unavailable feedback without bypassing authentication.
+- [x] Add focused tests and verify desktop/mobile rendering plus the full quality gates.
+- [x] Document the control, close the checklist, and save a verified checkpoint.
