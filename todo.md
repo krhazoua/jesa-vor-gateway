@@ -742,3 +742,10 @@
 - [x] Update readiness reporting to separate code, Netlify, backend infrastructure, and E2E environment readiness.
 - [x] Rerun applicable tests/build/static-host/security verification and repair confirmed application-caused issues.
 - [x] Close the checklist and save a verified checkpoint.
+
+# Intermittent HMR WebSocket close repair — 2026-08-26
+- [x] Inspect current HMR configuration, managed proxy behavior, server binding, and fresh diagnostics.
+- [x] Determine whether the close is caused by protocol, port, proxy upgrade, startup race, or stale client state.
+- [x] Apply the smallest safe development-only fix and extend regression coverage.
+- [x] Restart and verify WebSocket diagnostics, route rendering, TypeScript, tests, build, and preview behavior.
+- [x] Document the repair, close the checklist, and save a verified checkpoint.

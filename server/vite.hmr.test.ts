@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveHmrClientPort } from "./_core/vite";
+import { resolveHmrClientPort, shouldDisableManagedHmr } from "./_core/vite";
 
 describe("resolveHmrClientPort", () => {
   it("preserves a valid managed application port", () => {
@@ -12,5 +12,10 @@ describe("resolveHmrClientPort", () => {
     expect(resolveHmrClientPort(-1)).toBe(3000);
     expect(resolveHmrClientPort(65_536)).toBe(3000);
     expect(resolveHmrClientPort(Number.NaN)).toBe(3000);
+  });
+
+  it("disables unstable managed-preview HMR while preserving local HMR", () => {
+    expect(shouldDisableManagedHmr({ MANUS_WEBDEV_PROJECT_ID: "project-1" })).toBe(true);
+    expect(shouldDisableManagedHmr({ MANUS_WEBDEV_PROJECT_ID: undefined })).toBe(false);
   });
 });

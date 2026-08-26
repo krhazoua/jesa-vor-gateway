@@ -10,10 +10,10 @@ The full-stack development server embeds Vite in middleware mode on the applicat
 
 ## Fix
 
-`setupVite` now receives the selected application port and configures `server.hmr.clientPort` with a validated value. The server selects its port before mounting Vite, then passes that exact port into the Vite middleware setup. Invalid values safely fall back to port `3000`; no production API URL, authentication behavior, or backend boundary was changed.
+`setupVite` now receives the selected application port and configures `server.hmr.clientPort` with a validated value. The server selects its port before mounting Vite, then passes that exact port into the Vite middleware setup. In the managed WebDev preview, where the reverse proxy can close upgraded WebSocket connections during process restarts, HMR is disabled so the preview does not emit an unhandled connection-close error; WebDev's managed reload strategy remains active. Ordinary local development retains HMR with the application port. Invalid values safely fall back to port `3000`; no production API URL, authentication behavior, or backend boundary was changed.
 
 ## Verification
 
-The focused HMR regression suite passes two tests covering valid and invalid ports. After a clean managed-server restart, the browser diagnostic recorded `[vite] connected.` and the Operations route rendered normally through the managed HTTPS preview. The complete quality suite also passed: 141 Vitest tests, lint, TypeScript validation, production build, bundle budgets, and `git diff --check`.
+The focused HMR regression suite passes three tests covering valid and invalid ports plus managed-preview detection. After a clean managed-server restart, the Operations route rendered normally and no new HMR WebSocket failure was recorded after the restart; the earlier errors are historical diagnostics from before the mitigation. The complete quality suite also passed: 142 Vitest tests, lint, TypeScript validation, production build, bundle budgets, and `git diff --check`.
 
 Historical HMR invalidation messages related to Fast Refresh export shape remain in older log entries, but they are not WebSocket connection failures. They trigger a safe full module reload rather than preventing the preview from connecting.

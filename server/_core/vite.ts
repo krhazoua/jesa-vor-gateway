@@ -10,13 +10,20 @@ export function resolveHmrClientPort(port: number): number {
   return Number.isInteger(port) && port >= 1 && port <= 65_535 ? port : 3000;
 }
 
+export function shouldDisableManagedHmr(env: Record<string, string | undefined>): boolean {
+  return Boolean(env.MANUS_WEBDEV_PROJECT_ID);
+}
+
 export async function setupVite(app: Express, server: Server, port: number) {
   const serverOptions = {
     middlewareMode: true,
-    // The managed preview terminates HTTP(S) outside this process. Explicitly
-    // advertise the actual application port so Vite does not fall back to its
-    // standalone default (localhost:5173) for the HMR WebSocket client.
-    hmr: { server, clientPort: resolveHmrClientPort(port) },
+    // The managed preview proxy can close upgraded WebSocket connections while
+    // the application process is restarting. WebDev already reloads the preview
+    // on source changes, so avoid emitting a noisy, non-retryable HMR failure in
+    // that environment. Ordinary local development retains HMR.
+    hmr: shouldDisableManagedHmr(process.env)
+      ? false
+      : { server, clientPort: resolveHmrClientPort(port) },
     allowedHosts: true as const,
   };
 
