@@ -714,3 +714,17 @@
 - [x] Show deterministic checking, recovered, and still-unavailable feedback without bypassing authentication.
 - [x] Add focused tests and verify desktop/mobile rendering plus the full quality gates.
 - [x] Document the control, close the checklist, and save a verified checkpoint.
+
+# Final Netlify deployment-readiness audit — 2026-08-25
+- [x] Inventory actual architecture, routes, APIs, authentication, configuration, assets, CI, Netlify settings, and deployment-sensitive references.
+- [x] Run production build, tests, type/lint checks, bundle budgets, secret scans, and static-host simulation.
+- [x] Verify SPA refreshes, protected boundaries, API/SSE configuration, error states, responsive routes, and key workflows.
+- [x] Fix safe applicable blockers and rerun affected verification.
+- [x] Write readiness report, record infrastructure blockers, and save a verified checkpoint.
+
+# Confirmed pre-Netlify deployment audit — 2026-08-26
+- [x] Re-audit the existing architecture, routes, APIs, authentication, configuration, assets, CI, Netlify settings, and deployment-sensitive references.
+- [x] Run all available tests, type/lint checks, production build, bundle budgets, secret scans, and static-host simulation.
+- [x] Verify SPA routing, refreshes, auth boundaries, API/SSE configuration, accessibility, responsive UI, error states, and critical VoR workflows.
+- [x] Fix safe applicable issues and rerun affected checks without weakening security or fabricating infrastructure.
+- [x] Produce the final READY/NOT READY deployment report, update the checklist, and save a verified checkpoint.
