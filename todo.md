@@ -749,3 +749,10 @@
 - [x] Apply the smallest safe development-only fix and extend regression coverage.
 - [x] Restart and verify WebSocket diagnostics, route rendering, TypeScript, tests, build, and preview behavior.
 - [x] Document the repair, close the checklist, and save a verified checkpoint.
+
+# Recurring configuration-route HMR close repair — 2026-08-26
+- [x] Inspect the active managed preview process, delivered HMR source, preview version, and fresh `/configuration` diagnostics.
+- [x] Determine whether stale code, an alternate Vite process, or managed-environment detection is responsible.
+- [x] Apply a robust development-only fix without changing production behavior.
+- [x] Restart and verify `/configuration`, browser diagnostics, TypeScript, tests, build, and managed preview behavior.
+- [x] Document the resolution, close the checklist, and save a verified checkpoint.

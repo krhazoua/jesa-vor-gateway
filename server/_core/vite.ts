@@ -14,6 +14,13 @@ export function shouldDisableManagedHmr(env: Record<string, string | undefined>)
   return Boolean(env.MANUS_WEBDEV_PROJECT_ID);
 }
 
+export function stripManagedHmrClient(html: string, disableHmr: boolean): string {
+  if (!disableHmr) return html;
+  return html
+    .replace(/\s*<script[^>]+src=["']\/\@vite\/client["'][^>]*><\/script>/g, "")
+    .replace(/\s*<script[^>]+src=["']\/\@react-refresh["'][^>]*><\/script>/g, "");
+}
+
 export async function setupVite(app: Express, server: Server, port: number) {
   const serverOptions = {
     middlewareMode: true,
@@ -53,7 +60,17 @@ export async function setupVite(app: Express, server: Server, port: number) {
         `src="/src/main.tsx?v=${nanoid()}"`
       );
       const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+      const managedPage = stripManagedHmrClient(
+        page,
+        shouldDisableManagedHmr(process.env)
+      );
+      res
+        .status(200)
+        .set({
+          "Content-Type": "text/html",
+          "Cache-Control": "no-store, no-cache, must-revalidate",
+        })
+        .end(managedPage);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);
