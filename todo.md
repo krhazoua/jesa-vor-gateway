@@ -789,3 +789,9 @@
 - [x] Vérifier les exigences CORS, cookies, OAuth, JWT, 401/403, logout et backend externe; corriger les défauts confirmés dans le contrat CORS/OAuth sans affaiblir la sécurité.
 - [x] Exécuter les tests sûrs, les contrôles de sécurité et le build; documenter les limites E2E protégées sans demander de credentials.
 - [x] Mettre à jour le rapport final Netlify avec les fichiers modifiés, variables non secrètes, exigences backend et statut READY honnête.
+
+# Audit auth end-to-end confirmé — 2026-09-01
+- [ ] Vérifier la chaîne complète frontend Netlify → backend HTTPS → session → route protégée sans utiliser de credentials en clair.
+- [x] Vérifier les contrôles locaux disponibles pour cookies, JWT, X.509, RBAC, logout, persistance, 401/403, SSE et SPA routing.
+- [x] Identifier les validations de production impossibles sans domaine backend/Netlify et storage state protégé, sans les simuler.
+- [x] Exécuter les contrôles après les corrections cookie/OAuth/CORS et documenter le verdict final READY / NOT READY.

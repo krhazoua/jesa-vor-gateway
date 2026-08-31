@@ -16,11 +16,11 @@
 | Gate | Status | Verification or action |
 |---|---|---|
 | Production build passes | [x] | `pnpm build` passes. |
-| Tests pass | [x] | 153 Vitest tests pass, including nameless OAuth-session, exact-origin CORS, and split-origin OAuth return-URI regression coverage. |
+| Tests pass | [x] | 156 Vitest tests pass, including nameless OAuth-session, exact-origin CORS, split-origin OAuth return-URI, and HTTPS/local cookie-policy regression coverage. |
 | TypeScript passes | [x] | `pnpm check` passes. |
 | Lint passes | [x] | Scoped Prettier lint passes. |
 | SPA routing works | [x] | Direct route and refresh checks return the application shell for major routes. |
-| Authentication works | [x] | Server-enforced OAuth/session boundary is preserved. OAuth now starts at the backend, sets the HttpOnly CSRF state cookie on the backend host, validates the return URI, and nameless OAuth profiles receive a valid verification-safe session claim derived from `openId`. |
+| Authentication works | [x] | Server-enforced OAuth/session boundary is preserved. OAuth starts at the backend, sets the HttpOnly CSRF state cookie on the backend host, validates the return URI, uses secure HTTPS versus safe local cookie policy, and nameless OAuth profiles receive a valid verification-safe session claim derived from `openId`. |
 | Protected routes work | [x] | Protected route rendering and structured unauthenticated API behavior are verified. |
 | No frontend secrets | [x] | No tracked secret-like files or deployable frontend credentials found. |
 | API URL configurable | [x] | `VITE_API_BASE_URL` is centralized, optional, and has no placeholder production value. |
