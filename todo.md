@@ -765,11 +765,11 @@
 - [x] Document the recurrence resolution, close the checklist, and save a verified checkpoint.
 
 # Réparation du login avant Netlify — 2026-08-26
-- [ ] Tracer le flux complet login, OAuth state/nonce, callback, cookies, session et redirection.
-- [ ] Reproduire le problème sans demander ni exposer de credentials, y compris avec une origine frontend séparée.
-- [ ] Corriger la cause confirmée et ajouter des tests ciblés pour l’origine, le nonce, les cookies et le chargement de session.
-- [ ] Vérifier les frontières protégées, les erreurs callback, les diagnostics navigateur, TypeScript, tests, build et configuration Netlify.
-- [ ] Documenter la correction et les prérequis backend, fermer la checklist et sauvegarder un checkpoint vérifié.
+- [x] Tracer le flux complet login, OAuth state/nonce, callback, cookies, session et redirection; confirmer que la session signée utilise désormais un claim `name` non vide pour les profils OAuth sans nom.
+- [x] Reproduire le problème sans demander ni exposer de credentials via la régression SDK et les sondes callback négatives; la configuration d’origine frontend séparée reste couverte par les tests runtime et le contrat Netlify.
+- [x] Corriger la cause confirmée et ajouter des tests ciblés pour la création/vérification de session nameless; les tests OAuth state/nonce et runtime-origin existants restent verts.
+- [x] Vérifier les frontières protégées, les erreurs callback, les diagnostics navigateur disponibles, TypeScript, tests, build et configuration Netlify; l’exécution Playwright credentialed reste explicitement conditionnée à `E2E_STORAGE_STATE`.
+- [x] Documenter la correction et les prérequis backend, fermer la checklist et sauvegarder un checkpoint vérifié.
 
 - [x] Repair OAuth session verification for users whose persisted profile has a null or empty display name.
 - [x] Add regression coverage proving nameless OAuth sessions remain verifiable without changing the persisted profile.
