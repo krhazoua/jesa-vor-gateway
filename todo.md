@@ -763,3 +763,15 @@
 - [x] Apply and test a definitive development-only suppression without affecting local HMR or production output.
 - [x] Restart and verify the root route, `/@vite/client`, browser diagnostics, TypeScript, tests, build, and preview behavior.
 - [x] Document the recurrence resolution, close the checklist, and save a verified checkpoint.
+
+# Réparation du login avant Netlify — 2026-08-26
+- [ ] Tracer le flux complet login, OAuth state/nonce, callback, cookies, session et redirection.
+- [ ] Reproduire le problème sans demander ni exposer de credentials, y compris avec une origine frontend séparée.
+- [ ] Corriger la cause confirmée et ajouter des tests ciblés pour l’origine, le nonce, les cookies et le chargement de session.
+- [ ] Vérifier les frontières protégées, les erreurs callback, les diagnostics navigateur, TypeScript, tests, build et configuration Netlify.
+- [ ] Documenter la correction et les prérequis backend, fermer la checklist et sauvegarder un checkpoint vérifié.
+
+- [x] Repair OAuth session verification for users whose persisted profile has a null or empty display name.
+- [x] Add regression coverage proving nameless OAuth sessions remain verifiable without changing the persisted profile.
+- [x] Update Netlify readiness documentation with the resolved authentication blocker and final verification evidence.
+- [x] Complete final deployment-readiness checkpoint after authentication repair.

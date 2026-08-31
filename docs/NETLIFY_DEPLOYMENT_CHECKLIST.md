@@ -16,11 +16,11 @@
 | Gate | Status | Verification or action |
 |---|---|---|
 | Production build passes | [x] | `pnpm build` passes. |
-| Tests pass | [x] | 141 Vitest tests pass in the current checkpoint. |
+| Tests pass | [x] | 145 Vitest tests pass, including nameless OAuth-session regression coverage. |
 | TypeScript passes | [x] | `pnpm check` passes. |
 | Lint passes | [x] | Scoped Prettier lint passes. |
 | SPA routing works | [x] | Direct route and refresh checks return the application shell for major routes. |
-| Authentication works | [x] | Existing server-enforced OAuth/session boundary is preserved. |
+| Authentication works | [x] | Server-enforced OAuth/session boundary is preserved, and nameless OAuth profiles now receive a valid verification-safe session claim derived from `openId`. |
 | Protected routes work | [x] | Protected route rendering and structured unauthenticated API behavior are verified. |
 | No frontend secrets | [x] | No tracked secret-like files or deployable frontend credentials found. |
 | API URL configurable | [x] | `VITE_API_BASE_URL` is centralized, optional, and has no placeholder production value. |
@@ -60,7 +60,7 @@ Run these checks only after the real backend and domains are configured.
 
 | Check | Status | Action |
 |---|---|---|
-| Login | [ ] | Complete normal OAuth login from the Netlify origin. |
+| Login | [ ] | Complete normal OAuth login from the Netlify origin after the real backend domain, OAuth allowlist, cookie policy, and `VITE_API_BASE_URL` are configured. Local regression coverage confirms the prior null-name login-loop defect is resolved. |
 | Dashboard | [ ] | Confirm authenticated summary data loads. |
 | Operations | [ ] | Confirm live canonical query, filters, sorting, columns, notifications, and refresh. |
 | Validation | [ ] | Confirm nine-step evidence and protected rerun behavior. |
