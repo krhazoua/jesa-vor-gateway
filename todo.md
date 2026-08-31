@@ -775,3 +775,9 @@
 - [x] Add regression coverage proving nameless OAuth sessions remain verifiable without changing the persisted profile.
 - [x] Update Netlify readiness documentation with the resolved authentication blocker and final verification evidence.
 - [x] Complete final deployment-readiness checkpoint after authentication repair.
+
+# Récurrence HMR WebSocket — 2026-08-31
+- [x] Inspecter les diagnostics récents et la configuration Vite/HMR responsables de la fermeture WebSocket sur la route racine.
+- [x] Appliquer un correctif de développement ciblé sans modifier le comportement du build Netlify.
+- [x] Redémarrer le serveur, vérifier le HTML servi et l’absence de nouvelle erreur WebSocket dans les diagnostics navigateur.
+- [x] Exécuter les tests, TypeScript, build, budgets et diff hygiene, puis documenter et sauvegarder le correctif.

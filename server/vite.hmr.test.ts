@@ -3,6 +3,8 @@ import {
   resolveHmrClientPort,
   shouldDisableManagedHmr,
   stripManagedHmrClient,
+  isManagedHmrModulePath,
+  managedHmrNoopModule,
 } from "./_core/vite";
 
 describe("resolveHmrClientPort", () => {
@@ -27,5 +29,21 @@ describe("resolveHmrClientPort", () => {
     const html = '<script type="module" src="/@vite/client"></script><main>VoR</main>';
     expect(stripManagedHmrClient(html, true)).toBe("<main>VoR</main>");
     expect(stripManagedHmrClient(html, false)).toBe(html);
+  });
+
+  it("strips cached bootstrap scripts even when they carry a query string", () => {
+    const html = '<script src="/@vite/client?v=123"></script><script src="/@react-refresh?v=123"></script><main>VoR</main>';
+    expect(stripManagedHmrClient(html, true)).toBe("<main>VoR</main>");
+  });
+
+  it("recognizes only the legacy managed HMR module paths", () => {
+    expect(isManagedHmrModulePath("/@vite/client")).toBe(true);
+    expect(isManagedHmrModulePath("/@react-refresh?direct")).toBe(true);
+    expect(isManagedHmrModulePath("/src/main.tsx")).toBe(false);
+    expect(isManagedHmrModulePath(undefined)).toBe(false);
+  });
+
+  it("provides a harmless JavaScript response for stale managed HMR requests", () => {
+    expect(managedHmrNoopModule()).toContain("HMR is disabled");
   });
 });
