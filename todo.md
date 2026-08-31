@@ -781,3 +781,11 @@
 - [x] Appliquer un correctif de développement ciblé sans modifier le comportement du build Netlify.
 - [x] Redémarrer le serveur, vérifier le HTML servi et l’absence de nouvelle erreur WebSocket dans les diagnostics navigateur.
 - [x] Exécuter les tests, TypeScript, build, budgets et diff hygiene, puis documenter et sauvegarder le correctif.
+
+# Audit login production Netlify — exigences reçues le 2026-08-31
+- [x] Cartographier la chaîne OAuth/session/cookies, les routes protégées, les APIs, le SSE et la configuration Netlify du projet existant.
+- [x] Comparer les hypothèses local/Netlify et confirmer le premier point de rupture: callback construit côté frontend et garde CORS backend incompatible avec une origine séparée, sans inventer d’URL backend ni de secrets.
+- [x] Vérifier la consommation build-time de `VITE_API_BASE_URL`, la SPA fallback et l’absence de secrets ou d’URL locales dans le bundle production.
+- [x] Vérifier les exigences CORS, cookies, OAuth, JWT, 401/403, logout et backend externe; corriger les défauts confirmés dans le contrat CORS/OAuth sans affaiblir la sécurité.
+- [x] Exécuter les tests sûrs, les contrôles de sécurité et le build; documenter les limites E2E protégées sans demander de credentials.
+- [x] Mettre à jour le rapport final Netlify avec les fichiers modifiés, variables non secrètes, exigences backend et statut READY honnête.
