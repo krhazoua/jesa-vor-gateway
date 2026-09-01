@@ -791,7 +791,7 @@
 - [x] Mettre à jour le rapport final Netlify avec les fichiers modifiés, variables non secrètes, exigences backend et statut READY honnête.
 
 # Audit auth end-to-end confirmé — 2026-09-01
-- [ ] Vérifier la chaîne complète frontend Netlify → backend HTTPS → session → route protégée sans utiliser de credentials en clair.
+- [x] Vérifier la frontière exécutable frontend → route protégée → login sans credentials et documenter que la chaîne complète Netlify → backend HTTPS → session reste un blocker externe tant que les domaines réels et le storage state protégé ne sont pas disponibles.
 - [x] Vérifier les contrôles locaux disponibles pour cookies, JWT, X.509, RBAC, logout, persistance, 401/403, SSE et SPA routing.
 - [x] Identifier les validations de production impossibles sans domaine backend/Netlify et storage state protégé, sans les simuler.
 - [x] Exécuter les contrôles après les corrections cookie/OAuth/CORS et documenter le verdict final READY / NOT READY.
