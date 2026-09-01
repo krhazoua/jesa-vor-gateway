@@ -795,3 +795,10 @@
 - [x] Vérifier les contrôles locaux disponibles pour cookies, JWT, X.509, RBAC, logout, persistance, 401/403, SSE et SPA routing.
 - [x] Identifier les validations de production impossibles sans domaine backend/Netlify et storage state protégé, sans les simuler.
 - [x] Exécuter les contrôles après les corrections cookie/OAuth/CORS et documenter le verdict final READY / NOT READY.
+
+# Audit Netlify « Adresse introuvable » — 2026-09-01
+- [x] Vérifier la commande de build, le répertoire publié, `index.html`, les assets et la compatibilité Node/Netlify.
+- [x] Vérifier `netlify.toml`, SPA fallback, headers, exclusions API et références d’environnement sans inventer de domaine.
+- [x] Distinguer une panne de déploiement/domaine DNS d’une panne SPA/runtime: le dépôt est publiable; l’URL Netlify réelle n’a pas été fournie, donc la résolution/publication/DNS restent un blocker externe non simulé.
+- [x] Vérifier les routes directes, le runtime frontend, l’API configurable et le SSE après confirmation que le preview et les artefacts de production répondent.
+- [x] Corriger les écarts confirmés, exécuter les gates finales et documenter ROOT CAUSE, fichiers, tests, réglages restants et READY/NOT READY.

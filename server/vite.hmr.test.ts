@@ -6,6 +6,7 @@ import {
   isManagedHmrModulePath,
   managedHmrNoopModule,
 } from "./_core/vite";
+import { shouldInjectDebugCollector } from "../vite.config";
 
 describe("resolveHmrClientPort", () => {
   it("preserves a valid managed application port", () => {
@@ -45,5 +46,10 @@ describe("resolveHmrClientPort", () => {
 
   it("provides a harmless JavaScript response for stale managed HMR requests", () => {
     expect(managedHmrNoopModule()).toContain("HMR is disabled");
+  });
+
+  it("injects the debug collector only during Vite serve", () => {
+    expect(shouldInjectDebugCollector("serve")).toBe(true);
+    expect(shouldInjectDebugCollector("build")).toBe(false);
   });
 });

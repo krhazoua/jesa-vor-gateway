@@ -15,15 +15,15 @@
 
 | Gate | Status | Verification or action |
 |---|---|---|
-| Production build passes | [x] | `pnpm build` passes. |
-| Tests pass | [x] | 156 Vitest tests pass, including nameless OAuth-session, exact-origin CORS, split-origin OAuth return-URI, and HTTPS/local cookie-policy regression coverage. |
+| Production build passes | [x] | `pnpm build` passes; production output contains `index.html`, generated assets, no unresolved `%VITE_*%` placeholders, and no development debug/HMR bootstrap. |
+| Tests pass | [x] | 157 Vitest tests pass, including nameless OAuth-session, exact-origin CORS, split-origin OAuth return-URI, and HTTPS/local cookie-policy regression coverage. |
 | TypeScript passes | [x] | `pnpm check` passes. |
 | Lint passes | [x] | Scoped Prettier lint passes. |
-| SPA routing works | [x] | Direct route and refresh checks return the application shell for major routes. |
+| SPA routing works | [x] | Direct route and refresh checks return the application shell for major routes; production output contains the SPA fallback configuration. |
 | Authentication works | [x] | Server-enforced OAuth/session boundary is preserved. OAuth starts at the backend, sets the HttpOnly CSRF state cookie on the backend host, validates the return URI, uses secure HTTPS versus safe local cookie policy, and nameless OAuth profiles receive a valid verification-safe session claim derived from `openId`. |
 | Protected routes work | [x] | Protected route rendering and structured unauthenticated API behavior are verified. |
 | No frontend secrets | [x] | No tracked secret-like files or deployable frontend credentials found. |
-| API URL configurable | [x] | `VITE_API_BASE_URL` is centralized, optional, and has no placeholder production value. |
+| API URL configurable | [x] | `VITE_API_BASE_URL` is centralized, optional, and has no placeholder production value; the real HTTPS backend origin remains an external Netlify setting. |
 | SSE URL configurable | [x] | SSE construction uses the same runtime backend-origin helper. |
 | Security headers configured | [x] | Netlify headers include CSP, frame protection, MIME protection, referrer policy, permissions policy, and HTTPS-aware configuration. |
 | CORS contract documented | [x] | `CORS_ALLOWED_ORIGINS` is an exact-origin server configuration; `docs/netlify-deployment.md` and `docs/netlify_backend_contract.md` describe credentials, preflight, and no-wildcard requirements. |

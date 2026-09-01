@@ -74,14 +74,16 @@ function writeToLogFile(source: LogSource, entries: unknown[]) {
  * - Files: browserConsole.log, networkRequests.log, sessionReplay.log
  * - Auto-trimmed when exceeding 1MB (keeps newest entries)
  */
+export function shouldInjectDebugCollector(command: "serve" | "build") {
+  return command === "serve";
+}
+
 function vitePluginManusDebugCollector(): Plugin {
   return {
     name: "manus-debug-collector",
+    apply: "serve",
 
     transformIndexHtml(html) {
-      if (process.env.NODE_ENV === "production") {
-        return html;
-      }
       return {
         html,
         tags: [
