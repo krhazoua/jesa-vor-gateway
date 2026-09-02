@@ -763,3 +763,15 @@
 - [x] Apply and test a definitive development-only suppression without affecting local HMR or production output.
 - [x] Restart and verify the root route, `/@vite/client`, browser diagnostics, TypeScript, tests, build, and preview behavior.
 - [x] Document the recurrence resolution, close the checklist, and save a verified checkpoint.
+
+# Récurrence HMR WebSocket — 2026-09-02
+- [x] Inspecter les diagnostics récents, le HTML servi et la configuration HMR active pour identifier la source de la nouvelle tentative WebSocket.
+- [x] Appliquer un correctif ciblé au preview géré sans réactiver HMR WebSocket ni modifier le build Netlify.
+- [x] Redémarrer le serveur, vérifier le rendu et l’absence de nouveaux diagnostics WebSocket/HMR.
+- [x] Exécuter les tests HMR, TypeScript et les contrôles de build, puis documenter et sauvegarder le correctif.
+
+# Résolution conflit local/distant — 2026-09-02
+- [ ] Comparer local et commit distant `1f3097e9` sans modifier l’arbre de travail.
+- [ ] Résoudre uniquement les conflits réels en préservant les corrections HMR et Netlify fonctionnelles.
+- [ ] Vérifier preview, tests, build et absence de perte des contrôles auth/RBAC/OT-IT.
+- [ ] Sauvegarder un checkpoint cohérent contenant les corrections locales et la version distante.
