@@ -771,7 +771,46 @@
 - [x] Exécuter les tests HMR, TypeScript et les contrôles de build, puis documenter et sauvegarder le correctif.
 
 # Résolution conflit local/distant — 2026-09-02
-- [ ] Comparer local et commit distant `1f3097e9` sans modifier l’arbre de travail.
-- [ ] Résoudre uniquement les conflits réels en préservant les corrections HMR et Netlify fonctionnelles.
-- [ ] Vérifier preview, tests, build et absence de perte des contrôles auth/RBAC/OT-IT.
-- [ ] Sauvegarder un checkpoint cohérent contenant les corrections locales et la version distante.
+- [x] Comparer local et commit distant `1f3097e9` sans modifier l’arbre de travail.
+- [x] Résoudre uniquement les conflits réels en préservant les corrections HMR et Netlify fonctionnelles.
+- [x] Vérifier preview, tests, build et absence de perte des contrôles auth/RBAC/OT-IT.
+- [x] Sauvegarder un checkpoint cohérent contenant les corrections locales et la version distante.
+
+# Réparation du login avant Netlify — 2026-08-26
+- [x] Tracer le flux complet login, OAuth state/nonce, callback, cookies, session et redirection; confirmer que la session signée utilise désormais un claim `name` non vide pour les profils OAuth sans nom.
+- [x] Reproduire le problème sans demander ni exposer de credentials via la régression SDK et les sondes callback négatives; la configuration d’origine frontend séparée reste couverte par les tests runtime et le contrat Netlify.
+- [x] Corriger la cause confirmée et ajouter des tests ciblés pour la création/vérification de session nameless; les tests OAuth state/nonce et runtime-origin existants restent verts.
+- [x] Vérifier les frontières protégées, les erreurs callback, les diagnostics navigateur disponibles, TypeScript, tests, build et configuration Netlify; l’exécution Playwright credentialed reste explicitement conditionnée à `E2E_STORAGE_STATE`.
+- [x] Documenter la correction et les prérequis backend, fermer la checklist et sauvegarder un checkpoint vérifié.
+
+- [x] Repair OAuth session verification for users whose persisted profile has a null or empty display name.
+- [x] Add regression coverage proving nameless OAuth sessions remain verifiable without changing the persisted profile.
+- [x] Update Netlify readiness documentation with the resolved authentication blocker and final verification evidence.
+- [x] Complete final deployment-readiness checkpoint after authentication repair.
+
+# Récurrence HMR WebSocket — 2026-08-31
+- [x] Inspecter les diagnostics récents et la configuration Vite/HMR responsables de la fermeture WebSocket sur la route racine.
+- [x] Appliquer un correctif de développement ciblé sans modifier le comportement du build Netlify.
+- [x] Redémarrer le serveur, vérifier le HTML servi et l’absence de nouvelle erreur WebSocket dans les diagnostics navigateur.
+- [x] Exécuter les tests, TypeScript, build, budgets et diff hygiene, puis documenter et sauvegarder le correctif.
+
+# Audit login production Netlify — exigences reçues le 2026-08-31
+- [x] Cartographier la chaîne OAuth/session/cookies, les routes protégées, les APIs, le SSE et la configuration Netlify du projet existant.
+- [x] Comparer les hypothèses local/Netlify et confirmer le premier point de rupture: callback construit côté frontend et garde CORS backend incompatible avec une origine séparée, sans inventer d’URL backend ni de secrets.
+- [x] Vérifier la consommation build-time de `VITE_API_BASE_URL`, la SPA fallback et l’absence de secrets ou d’URL locales dans le bundle production.
+- [x] Vérifier les exigences CORS, cookies, OAuth, JWT, 401/403, logout et backend externe; corriger les défauts confirmés dans le contrat CORS/OAuth sans affaiblir la sécurité.
+- [x] Exécuter les tests sûrs, les contrôles de sécurité et le build; documenter les limites E2E protégées sans demander de credentials.
+- [x] Mettre à jour le rapport final Netlify avec les fichiers modifiés, variables non secrètes, exigences backend et statut READY honnête.
+
+# Audit auth end-to-end confirmé — 2026-09-01
+- [x] Vérifier la frontière exécutable frontend → route protégée → login sans credentials et documenter que la chaîne complète Netlify → backend HTTPS → session reste un blocker externe tant que les domaines réels et le storage state protégé ne sont pas disponibles.
+- [x] Vérifier les contrôles locaux disponibles pour cookies, JWT, X.509, RBAC, logout, persistance, 401/403, SSE et SPA routing.
+- [x] Identifier les validations de production impossibles sans domaine backend/Netlify et storage state protégé, sans les simuler.
+- [x] Exécuter les contrôles après les corrections cookie/OAuth/CORS et documenter le verdict final READY / NOT READY.
+
+# Audit Netlify « Adresse introuvable » — 2026-09-01
+- [x] Vérifier la commande de build, le répertoire publié, `index.html`, les assets et la compatibilité Node/Netlify.
+- [x] Vérifier `netlify.toml`, SPA fallback, headers, exclusions API et références d’environnement sans inventer de domaine.
+- [x] Distinguer une panne de déploiement/domaine DNS d’une panne SPA/runtime: le dépôt est publiable; l’URL Netlify réelle n’a pas été fournie, donc la résolution/publication/DNS restent un blocker externe non simulé.
+- [x] Vérifier les routes directes, le runtime frontend, l’API configurable et le SSE après confirmation que le preview et les artefacts de production répondent.
+- [x] Corriger les écarts confirmés, exécuter les gates finales et documenter ROOT CAUSE, fichiers, tests, réglages restants et READY/NOT READY.

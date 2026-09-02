@@ -10,14 +10,14 @@ export default defineConfig({
     ["html", { outputFolder: "playwright-report", open: "never" }],
   ],
   use: {
+    ...devices["Desktop Chrome"],
     baseURL: process.env.E2E_BASE_URL ?? "http://127.0.0.1:3000",
     browserName: "chromium",
-    executablePath: process.env.E2E_CHROMIUM_PATH ?? "/usr/bin/chromium",
-    headless: false,
-    args: ["--headless=new"],
+    launchOptions: {
+      executablePath: process.env.E2E_CHROMIUM_PATH || "/usr/bin/chromium",
+    },
     storageState: process.env.E2E_STORAGE_STATE,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
-    ...devices["Desktop Chrome"],
   },
 });

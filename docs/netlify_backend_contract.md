@@ -14,7 +14,7 @@ The browser must never connect directly to PostgreSQL, TiDB, OPC UA, DCS, or any
 
 ## CORS
 
-The backend must allow only the exact production Netlify origin, for example `CORS_ORIGINS=https://<NETLIFY_DOMAIN>`. Credentialed requests must not use `Access-Control-Allow-Origin: *`. Development may use an explicitly configured localhost origin, but production must use the real Netlify origin and must enable credentials only where required by the existing session model.
+The backend must allow only the exact production Netlify origin through `CORS_ALLOWED_ORIGINS=https://<NETLIFY_DOMAIN>`. Credentialed requests must not use `Access-Control-Allow-Origin: *`. Development may use an explicitly configured localhost origin, but production must use the real Netlify origin and must enable credentials only where required by the existing session model.
 
 Required response behavior includes `Access-Control-Allow-Origin` matching the request origin, `Access-Control-Allow-Credentials: true` when cookie-backed authentication requires it, and an appropriate `Access-Control-Allow-Headers` list for `Content-Type`, `Accept`, and any existing authorization header.
 
@@ -24,7 +24,7 @@ The backend must expose the existing routes over HTTPS without changing their pr
 
 | Capability | Required endpoint/behavior |
 |---|---|
-| Authentication | Existing OAuth/session entry and callback contract, registered for the real frontend and backend domains |
+| Authentication | `GET /api/oauth/start?returnUri=https://<NETLIFY_DOMAIN>/` starts OAuth on the backend, sets the host-only CSRF state cookie, and redirects to the provider; `/api/oauth/callback` exchanges the code and returns to the validated frontend URI |
 | Protected API | `POST`/`GET https://<BACKEND_DOMAIN>/api/trpc` with the existing tRPC and SuperJSON response contract |
 | Realtime notifications | `GET https://<BACKEND_DOMAIN>/api/notifications/stream` or the existing registered SSE path, authenticated and credential-compatible |
 | Health | Existing protected system-health procedure/API used by the System Health route |
@@ -40,8 +40,11 @@ Register the real OAuth URLs only after domains exist:
 
 - `https://<NETLIFY_DOMAIN>/login`
 - `https://<NETLIFY_DOMAIN>/dashboard`
+- `https://<BACKEND_DOMAIN>/api/oauth/start`
 - `https://<BACKEND_DOMAIN>/api/oauth/callback`
 - Any provider-specific authorization and logout callback URLs required by the existing OAuth integration.
+
+The frontend login action must navigate to the backend `/api/oauth/start` endpoint with a validated `returnUri`; it must not create the CSRF cookie or call the provider directly. The backend state cookie is `HttpOnly`, host-only, `Path=/`, short-lived, and `Secure` with `SameSite=None` over HTTPS. The session cookie remains `HttpOnly`, `Secure`, and `SameSite=None` for a split HTTPS deployment.
 
 ## SSE lifecycle
 

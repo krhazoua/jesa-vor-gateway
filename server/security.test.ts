@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { applySecurityHeaders, getRequestOrigin } from "./security";
 
 function response() {
@@ -10,6 +10,13 @@ function response() {
     json: vi.fn().mockReturnThis(),
   };
 }
+
+const originalCorsOrigins = process.env.CORS_ALLOWED_ORIGINS;
+
+afterEach(() => {
+  if (originalCorsOrigins === undefined) delete process.env.CORS_ALLOWED_ORIGINS;
+  else process.env.CORS_ALLOWED_ORIGINS = originalCorsOrigins;
+});
 
 describe("applySecurityHeaders", () => {
   it("sets baseline protective headers and allows same-origin API traffic", () => {
@@ -32,6 +39,19 @@ describe("applySecurityHeaders", () => {
     expect(getRequestOrigin({ protocol: "http", get: () => "localhost:3000", headers: { "x-forwarded-proto": "https, http", "x-forwarded-host": "public.gateway.example, localhost:3000" } } as never)).toBe("https://public.gateway.example");
     expect(next).toHaveBeenCalledOnce();
     expect(res.status).not.toHaveBeenCalled();
+  });
+
+  it("allows an explicitly configured Netlify origin with credentials", () => {
+    process.env.CORS_ALLOWED_ORIGINS = "https://jesa-vor.netlify.app";
+    const res = response();
+    const next = vi.fn();
+    applySecurityHeaders({ path: "/api/trpc", protocol: "https", get: () => "gateway.example", headers: { origin: "https://jesa-vor.netlify.app" } } as never, res as never, next);
+
+    expect(res.headers.get("Access-Control-Allow-Origin")).toBe("https://jesa-vor.netlify.app");
+    expect(res.headers.get("Access-Control-Allow-Credentials")).toBe("true");
+    expect(res.headers.get("Access-Control-Allow-Headers")).toContain("Accept");
+    expect(res.headers.get("Access-Control-Allow-Headers")).toContain("Authorization");
+    expect(next).toHaveBeenCalledOnce();
   });
 
   it("blocks cross-origin API requests", () => {

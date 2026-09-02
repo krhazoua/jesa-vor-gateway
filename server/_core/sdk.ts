@@ -171,7 +171,9 @@ class SDKServer {
       {
         openId,
         appId: ENV.appId,
-        name: options.name || "",
+        // OAuth user profiles may omit a display name. Keep the session
+        // payload valid for verification without changing the persisted profile.
+        name: options.name || openId,
       },
       options
     );

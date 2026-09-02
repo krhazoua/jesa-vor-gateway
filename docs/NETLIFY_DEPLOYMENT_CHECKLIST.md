@@ -15,18 +15,18 @@
 
 | Gate | Status | Verification or action |
 |---|---|---|
-| Production build passes | [x] | `pnpm build` passes. |
-| Tests pass | [x] | 141 Vitest tests pass in the current checkpoint. |
+| Production build passes | [x] | `pnpm build` passes; production output contains `index.html`, generated assets, no unresolved `%VITE_*%` placeholders, and no development debug/HMR bootstrap. |
+| Tests pass | [x] | 157 Vitest tests pass, including nameless OAuth-session, exact-origin CORS, split-origin OAuth return-URI, and HTTPS/local cookie-policy regression coverage. |
 | TypeScript passes | [x] | `pnpm check` passes. |
 | Lint passes | [x] | Scoped Prettier lint passes. |
-| SPA routing works | [x] | Direct route and refresh checks return the application shell for major routes. |
-| Authentication works | [x] | Existing server-enforced OAuth/session boundary is preserved. |
+| SPA routing works | [x] | Direct route and refresh checks return the application shell for major routes; production output contains the SPA fallback configuration. |
+| Authentication works | [x] | Server-enforced OAuth/session boundary is preserved. OAuth starts at the backend, sets the HttpOnly CSRF state cookie on the backend host, validates the return URI, uses secure HTTPS versus safe local cookie policy, and nameless OAuth profiles receive a valid verification-safe session claim derived from `openId`. |
 | Protected routes work | [x] | Protected route rendering and structured unauthenticated API behavior are verified. |
 | No frontend secrets | [x] | No tracked secret-like files or deployable frontend credentials found. |
-| API URL configurable | [x] | `VITE_API_BASE_URL` is centralized, optional, and has no placeholder production value. |
+| API URL configurable | [x] | `VITE_API_BASE_URL` is centralized, optional, and has no placeholder production value; the real HTTPS backend origin remains an external Netlify setting. |
 | SSE URL configurable | [x] | SSE construction uses the same runtime backend-origin helper. |
 | Security headers configured | [x] | Netlify headers include CSP, frame protection, MIME protection, referrer policy, permissions policy, and HTTPS-aware configuration. |
-| CORS contract documented | [x] | `docs/netlify-deployment.md` and `docs/netlify_backend_contract.md` describe exact-origin credentials requirements. |
+| CORS contract documented | [x] | `CORS_ALLOWED_ORIGINS` is an exact-origin server configuration; `docs/netlify-deployment.md` and `docs/netlify_backend_contract.md` describe credentials, preflight, and no-wildcard requirements. |
 
 ## Netlify settings
 
@@ -46,7 +46,7 @@
 |---|---|---|
 | HTTPS backend | [ ] | Deploy the existing backend at a stable public HTTPS origin. |
 | Exact-origin CORS | [ ] | Allow only the exact Netlify origin; never use `*` with credentials. |
-| OAuth/session callbacks | [ ] | Register the real Netlify and backend callback URLs after domains exist. |
+| OAuth/session callbacks | [ ] | Register `https://<BACKEND_DOMAIN>/api/oauth/callback` with the provider and use the backend `/api/oauth/start` entry point with the real Netlify `returnUri` after domains exist. |
 | Authentication | [ ] | Validate secure session behavior from the Netlify origin, including cookie scope and redirect behavior. |
 | tRPC API | [ ] | Expose `/api/trpc` over HTTPS with the existing protected procedures and response contract. |
 | SSE | [ ] | Expose the authenticated SSE endpoint over HTTPS with credential-compatible headers and controlled reconnects. |
@@ -60,7 +60,7 @@ Run these checks only after the real backend and domains are configured.
 
 | Check | Status | Action |
 |---|---|---|
-| Login | [ ] | Complete normal OAuth login from the Netlify origin. |
+| Login | [ ] | Complete normal OAuth login from the Netlify origin after the real backend domain, `CORS_ALLOWED_ORIGINS`, provider callback allowlist, cookie policy, and `VITE_API_BASE_URL` are configured. Local regression coverage confirms both the prior null-name login-loop defect and split-origin return-URI validation. |
 | Dashboard | [ ] | Confirm authenticated summary data loads. |
 | Operations | [ ] | Confirm live canonical query, filters, sorting, columns, notifications, and refresh. |
 | Validation | [ ] | Confirm nine-step evidence and protected rerun behavior. |
