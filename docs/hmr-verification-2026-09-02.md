@@ -5,3 +5,7 @@ Après redémarrage du serveur géré, une navigation fraîche vers la route rac
 ## Contrôle complémentaire
 
 Le HTML servi avec `Accept: text/html` répond en 200 avec `Cache-Control: no-store, no-cache, must-revalidate`; il contient le collector de debug de preview et le module source attendu, mais aucun `/@vite/client` ni `/@react-refresh`. Après un nouveau chargement navigateur cache-busté, la route racine redirige vers `/login`, l’interface JESA est rendue et la console fraîche ne contient aucun message HMR/WebSocket. Les erreurs du journal historique à 01:06, 01:14, 01:15 et 01:16 précèdent ou concernent des onglets legacy; elles ne sont pas reproduites par le document frais actuel.
+
+## Revalidation après le signalement de 01:24
+
+Après le redémarrage et le merge, la navigation cache-bustée vers la racine a redirigé vers `/login` et a rendu l’interface JESA complète. La console navigateur du chargement frais est vide: aucune erreur WebSocket, HMR, module ou JavaScript n’a été produite. Les sondes HTML avec `Accept: text/html` ont retourné 200 pour `/`, `/login`, `/dashboard`, `/operations`, `/requests`, `/validation`, `/approvals`, `/audit-trail`, `/analytics`, `/configuration` et `/system-health`; l’API protégée a retourné 401 avec le message d’authentification attendu. Un probe sans l’en-tête HTML retournait 404 par design du serveur et ne constitue pas une panne de route navigateur.

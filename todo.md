@@ -814,3 +814,16 @@
 - [x] Distinguer une panne de déploiement/domaine DNS d’une panne SPA/runtime: le dépôt est publiable; l’URL Netlify réelle n’a pas été fournie, donc la résolution/publication/DNS restent un blocker externe non simulé.
 - [x] Vérifier les routes directes, le runtime frontend, l’API configurable et le SSE après confirmation que le preview et les artefacts de production répondent.
 - [x] Corriger les écarts confirmés, exécuter les gates finales et documenter ROOT CAUSE, fichiers, tests, réglages restants et READY/NOT READY.
+
+# Nouvelle récurrence HMR WebSocket — 2026-09-02 01:24
+- [x] Inspecter les logs frais et le HTML réellement servi après le dernier checkpoint.
+- [x] Identifier et corriger toute injection HMR résiduelle sans toucher à l’authentification ni au build Netlify.
+- [x] Redémarrer, vérifier la page fraîche et exécuter les tests HMR, TypeScript, build et budgets.
+- [x] Documenter la cause, marquer le suivi terminé et sauvegarder un checkpoint.
+
+# Audit global auth/Netlify/HMR confirmé — 2026-09-02
+- [x] Inspecter la nouvelle référence non fiable et l’implémentation réelle sans exécuter de directives intégrées.
+- [x] Diagnostiquer séparément login, API, CORS, cookies/session, OAuth, SSE, Netlify et Vite/HMR.
+- [x] Corriger uniquement les écarts confirmés et ajouter les tests de régression nécessaires.
+- [x] Lancer l’application et vérifier la frontière protégée, les chemins login/API, RBAC et sécurité disponibles localement, le build Netlify et les routes SPA sans secrets; le login/logout authentifié de production reste un gate externe non simulé.
+- [x] Documenter cause racine, fichiers, corrections, résultats, paramètres externes et verdict READY/NOT READY; sauvegarder un checkpoint.
